@@ -4,6 +4,8 @@ import { ArticleCard } from "@/components/article/ArticleCard";
 import { VideoCard } from "@/components/video/VideoCard";
 import { getAllArticles, getAllVideos } from "@/lib/mdx";
 
+export const dynamic = "force-dynamic";
+
 export default function HomePage() {
   const latestArticles = getAllArticles().slice(0, 6);
   const featuredVideos = getAllVideos().slice(0, 1);

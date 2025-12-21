@@ -2,6 +2,8 @@ import { ArticleCard } from "@/components/article/ArticleCard";
 import { getArticleSlugs, getArticleBySlug } from "@/lib/mdx";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Lifeward - Live the Truth",
   description: "Practical application of God's timeless principles for an abundant life. Faith in action, discipline, character, gratitude, and daily living.",

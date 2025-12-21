@@ -2,6 +2,8 @@ import { ArticleCard } from "@/components/article/ArticleCard";
 import { getArticleSlugs, getArticleBySlug } from "@/lib/mdx";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Esoteriment - Understand the Unseen",
   description: "Simplifying esoteric, metaphysical, and mystical concepts. Exploring consciousness, mind, energy, symbolism, and universal laws.",

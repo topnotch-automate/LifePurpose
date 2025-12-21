@@ -3,6 +3,8 @@ import { getAllBooks } from "@/lib/mdx";
 import { formatDate } from "@/lib/utils";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Books - Mini-Books Library",
   description: "Digital bookshelf of self-help mini-books. Practical wisdom in digestible formats.",

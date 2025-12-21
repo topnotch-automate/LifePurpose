@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { getBookSlugs, getBookBySlug } from "@/lib/mdx";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export async function generateStaticParams() {
   const slugs = getBookSlugs();
   return slugs.map((slug) => ({ slug }));

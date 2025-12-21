@@ -3,6 +3,8 @@ import { getArticleSlugs, getArticleBySlug } from "@/lib/mdx";
 import { ArticleContent } from "@/components/article/ArticleContent";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export async function generateStaticParams() {
   const slugs = getArticleSlugs("esoteriment");
   return slugs.map((slug) => ({ slug }));

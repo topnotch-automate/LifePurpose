@@ -2,6 +2,8 @@ import { VideoCard } from "@/components/video/VideoCard";
 import { getAllVideos } from "@/lib/mdx";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Videos - Curated Teachings",
   description: "Video teachings from Esoteriment and Lifeward. Curated wisdom, not just content.",

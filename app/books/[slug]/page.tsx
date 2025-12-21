@@ -7,6 +7,8 @@ import { MarkdownContent } from "@/components/article/MarkdownContent";
 import { BookEmailCapture } from "@/components/email/BookEmailCapture";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export async function generateStaticParams() {
   const slugs = getBookSlugs();
   return slugs.map((slug) => ({ slug }));

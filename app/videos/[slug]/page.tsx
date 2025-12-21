@@ -7,6 +7,8 @@ import { LikeButton } from "@/components/article/LikeButton";
 import { CommentsSection } from "@/components/article/CommentsSection";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export async function generateStaticParams() {
   const slugs = getVideoSlugs();
   return slugs.map((slug) => ({ slug }));
