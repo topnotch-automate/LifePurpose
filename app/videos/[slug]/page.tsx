@@ -9,10 +9,11 @@ import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
 
-export async function generateStaticParams() {
-  const slugs = getVideoSlugs();
-  return slugs.map((slug) => ({ slug }));
-}
+// Temporarily disabled to ensure fully dynamic rendering
+// export async function generateStaticParams() {
+//   const slugs = getVideoSlugs();
+//   return slugs.map((slug) => ({ slug }));
+// }
 
 export async function generateMetadata({
   params,
