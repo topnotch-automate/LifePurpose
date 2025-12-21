@@ -1,3 +1,8 @@
+export interface FunnelMetadata {
+  book: string;
+  ctaType?: "soft" | "standard";
+}
+
 export interface Article {
   slug: string;
   title: string;
@@ -8,6 +13,7 @@ export interface Article {
   section: "esoteriment" | "lifeward";
   readingTime?: number;
   content: string;
+  funnel?: FunnelMetadata;
 }
 
 export interface Video {
@@ -25,12 +31,18 @@ export interface Video {
 export interface Book {
   slug: string;
   title: string;
+  subtitle?: string;
   description: string;
   cover?: string;
   themes: string[];
   sampleChapter?: string;
   downloadLink?: string;
   purchaseLink?: string;
+  purchaseUrl?: string;
+  price?: number;
+  currency?: string;
+  status?: "free" | "paid" | "coming-soon";
+  excerpt?: boolean;
   date: string;
 }
 

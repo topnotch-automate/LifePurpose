@@ -6,6 +6,7 @@ import { ShareButtons } from "./ShareButtons";
 import { RelatedArticles } from "./RelatedArticles";
 import { LikeButton } from "./LikeButton";
 import { CommentsSection } from "./CommentsSection";
+import { FunnelCTA } from "@/components/funnel/FunnelCTA";
 import { getAllArticles } from "@/lib/mdx";
 
 interface ArticleContentProps {
@@ -71,6 +72,10 @@ export function ArticleContent({ article }: ArticleContentProps) {
         <div className="prose prose-lg max-w-none article-content bg-white rounded-lg p-8 md:p-12 shadow-sm">
           <MarkdownContent content={article.content} />
         </div>
+
+        {article.funnel && (
+          <FunnelCTA funnel={article.funnel} />
+        )}
 
         <ShareButtons title={article.title} url={articleUrl} description={article.description} />
         

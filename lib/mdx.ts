@@ -38,6 +38,7 @@ export function getArticleBySlug(
     section,
     readingTime: Math.ceil(stats.minutes),
     content,
+    funnel: data.funnel || undefined,
   };
 }
 
@@ -120,12 +121,18 @@ export function getBookBySlug(slug: string): Book | null {
   return {
     slug,
     title: data.title || "",
+    subtitle: data.subtitle,
     description: data.description || "",
     cover: data.cover,
     themes: data.themes || [],
     sampleChapter: data.sampleChapter,
     downloadLink: data.downloadLink,
     purchaseLink: data.purchaseLink,
+    purchaseUrl: data.purchaseUrl,
+    price: data.price,
+    currency: data.currency || "USD",
+    status: data.status || "free",
+    excerpt: data.excerpt,
     date: data.date || new Date().toISOString(),
   };
 }

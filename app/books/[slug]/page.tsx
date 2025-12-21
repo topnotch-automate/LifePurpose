@@ -4,6 +4,7 @@ import Link from "next/link";
 import { LikeButton } from "@/components/article/LikeButton";
 import { CommentsSection } from "@/components/article/CommentsSection";
 import { MarkdownContent } from "@/components/article/MarkdownContent";
+import { BookEmailCapture } from "@/components/email/BookEmailCapture";
 import type { Metadata } from "next";
 
 export async function generateStaticParams() {
@@ -51,7 +52,13 @@ export default async function BookPage({
             {book.title}
           </h1>
           
-          <p className="text-xl text-gray-600 mb-6">
+          {book.subtitle && (
+            <p className="text-xl text-gray-600 italic mb-4">
+              {book.subtitle}
+            </p>
+          )}
+          
+          <p className="text-lg text-gray-700 mb-6 leading-relaxed">
             {book.description}
           </p>
 
@@ -93,7 +100,7 @@ export default async function BookPage({
           )}
 
           <div className="flex flex-col sm:flex-row gap-4 mt-8">
-            {book.downloadLink && (
+            {book.status === "free" && book.downloadLink && (
               <Link
                 href={book.downloadLink}
                 className="px-6 py-3 bg-gray-900 text-white rounded-lg text-center font-medium hover:bg-gray-800 transition-colors"
@@ -101,18 +108,36 @@ export default async function BookPage({
                 Download
               </Link>
             )}
-            {book.purchaseLink && (
-              <Link
-                href={book.purchaseLink}
-                className="px-6 py-3 border-2 border-gray-900 text-gray-900 rounded-lg text-center font-medium hover:bg-gray-50 transition-colors"
-              >
-                Purchase
-              </Link>
+            {book.status === "paid" && (
+              <>
+                {book.purchaseUrl ? (
+                  <Link
+                    href={book.purchaseUrl}
+                    className="px-6 py-3 bg-gray-900 text-white rounded-lg text-center font-medium hover:bg-gray-800 transition-colors"
+                  >
+                    {book.price ? `Purchase – $${book.price.toFixed(2)}` : "Purchase"}
+                  </Link>
+                ) : book.purchaseLink ? (
+                  <Link
+                    href={book.purchaseLink}
+                    className="px-6 py-3 bg-gray-900 text-white rounded-lg text-center font-medium hover:bg-gray-800 transition-colors"
+                  >
+                    {book.price ? `Purchase – $${book.price.toFixed(2)}` : "Purchase"}
+                  </Link>
+                ) : null}
+              </>
+            )}
+            {book.status === "coming-soon" && (
+              <div className="px-6 py-3 bg-gray-100 text-gray-600 rounded-lg text-center font-medium">
+                Coming Soon
+              </div>
             )}
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
+        <BookEmailCapture book={book} />
+
+        <div className="flex items-center gap-4 mt-8">
           <LikeButton contentType="book" contentId={book.slug} />
         </div>
 
