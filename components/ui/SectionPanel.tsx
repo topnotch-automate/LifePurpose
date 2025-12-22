@@ -7,6 +7,7 @@ interface SectionPanelProps {
   title: string;
   subtitle: string;
   description: string;
+  tagline?: string;
   href: string;
   theme: "esoteriment" | "lifeward";
   children?: ReactNode;
@@ -16,6 +17,7 @@ export function SectionPanel({
   title,
   subtitle,
   description,
+  tagline,
   href,
   theme,
   children,
@@ -40,9 +42,14 @@ export function SectionPanel({
             {subtitle}
           </span>
         </div>
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 group-hover:opacity-80 transition-opacity">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3 group-hover:opacity-80 transition-opacity">
           {title}
         </h2>
+        {tagline && (
+          <p className="text-base italic text-gray-600 mb-4 max-w-2xl" style={{ color: accentColor }}>
+            {tagline}
+          </p>
+        )}
         <p className="text-lg text-gray-700 mb-6 max-w-2xl">
           {description}
         </p>

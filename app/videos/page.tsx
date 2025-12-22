@@ -20,9 +20,10 @@ export default function VideosPage() {
             Curated Teachings
           </h1>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-            Instead of dumping links, we curate teachings. Each video is 
-            contextualized, anchored to written wisdom, and designed to turn 
-            short-form content into long-term teaching assets.
+            Here, each video is carefully selected and contextualized.
+            Every teaching is anchored to written wisdom, ensuring short-form content becomes a lasting source of insight and guidance.
+
+            We do not just share videos — we connect them to a deeper framework for understanding and practice.
           </p>
         </header>
 

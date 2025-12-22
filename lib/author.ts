@@ -1,6 +1,6 @@
 // Author configuration
 // Set this in your environment variables or update directly here
-export const AUTHOR_NAME = process.env.AUTHOR_NAME || "Your Name";
+export const AUTHOR_NAME = process.env.AUTHOR_NAME || "Albert Blibo";
 export const AUTHOR_EMAIL = process.env.AUTHOR_EMAIL || "";
 
 export function isAuthor(name: string, email?: string): boolean {

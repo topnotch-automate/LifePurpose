@@ -1,23 +1,26 @@
 import Link from "next/link";
 import { SectionPanel } from "@/components/ui/SectionPanel";
 import { ArticleCard } from "@/components/article/ArticleCard";
-import { VideoCard } from "@/components/video/VideoCard";
+import { VideoCarousel } from "@/components/video/VideoCarousel";
 import { getAllArticles, getAllVideos } from "@/lib/mdx";
 
 export const dynamic = "force-dynamic";
 
 export default function HomePage() {
   const latestArticles = getAllArticles().slice(0, 6);
-  const featuredVideos = getAllVideos().slice(0, 1);
+  const featuredVideos = getAllVideos().slice(0, 4); // Show up to 4 videos in carousel
   
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         <div className="text-center mb-16">
-          <h1 className="text-5xl md:text-6xl font-serif font-bold text-gray-900 mb-6 leading-tight">
+          <h1 className="text-5xl md:text-6xl font-serif font-bold text-gray-900 mb-4 leading-tight">
             I write to awaken clarity, discipline, and life.
           </h1>
+          <p className="text-lg text-gray-500 max-w-2xl mx-auto mb-4 italic">
+            Explore spiritual and practical wisdom for inner clarity and abundant life.
+          </p>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
             Welcome to a digital sanctuary where understanding becomes practice.
             Explore timeless principles and their lived application through <strong>Esoteriment</strong> and <strong>Lifeward.</strong>
@@ -45,12 +48,63 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Start Here Section */}
+      <section aria-labelledby="start-here" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
+        <div>
+          <h2 id="start-here" className="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-6">
+            Start Here
+          </h2>
+          
+          <div className="space-y-4 text-lg text-gray-700 mb-8">
+            <p>
+              This platform is centered on one idea: truth must be understood and lived.
+            </p>
+            
+            <p>
+              If you are drawn to understanding the deeper laws of mind, consciousness,
+              and reality, begin with <strong>Esoteriment</strong>.
+            </p>
+            
+            <p>
+              If you are drawn to applying truth faithfully in daily life—through
+              discipline, character, and practice—begin with <strong>Lifeward</strong>.
+            </p>
+            
+            <p className="text-gray-600">
+              Many readers find value in walking both paths together.
+            </p>
+          </div>
+
+          <nav className="flex flex-col sm:flex-row gap-4">
+            <Link
+              href="/esoteriment"
+              className="px-6 py-3 border-2 border-gray-900 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors inline-flex items-center justify-center gap-2"
+            >
+              Begin with Esoteriment
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+            <Link
+              href="/lifeward"
+              className="px-6 py-3 border-2 border-gray-900 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors inline-flex items-center justify-center gap-2"
+            >
+              Begin with Lifeward
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </nav>
+        </div>
+      </section>
+
       {/* Two Feature Panels */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
         <div className="grid md:grid-cols-2 gap-8">
           <SectionPanel
             title="Esoteriment"
             subtitle="Understand the unseen"
+            tagline="Understand the unseen with clear metaphysical insights"
             description="Esoteriment exists to bring clarity to what is often hidden or misunderstood. Here I simplify esoteric, metaphysical, and mystical ideas so they can be understood, tested, and lived. This work explores consciousness, mind, energy, symbolism, and the universal laws that quietly shape experience and reality."
             href="/esoteriment"
             theme="esoteriment"
@@ -58,27 +112,26 @@ export default function HomePage() {
           <SectionPanel
             title="Lifeward"
             subtitle="Live the truth"
-            description="Lifeward is devoted to the daily practice of God’s timeless principles. Here, faith is not abstract belief, but something lived and expressed through discipline, character, gratitude, prayer, health, and ordinary daily life. The aim is simple: to grow into a life that is more ordered, faithful, and abundant."
+            tagline="Apply timeless spiritual truths to everyday life"
+            description="Lifeward is devoted to the daily practice of God's timeless principles. Here, faith is not abstract belief, but something lived and expressed through discipline, character, gratitude, prayer, health, and ordinary daily life. The aim is simple: to grow into a life that is more ordered, faithful, and abundant."
             href="/lifeward"
             theme="lifeward"
           />
         </div>
       </section>
 
-      {/* Featured Video */}
+      {/* Featured Videos */}
       {featuredVideos.length > 0 && (
         <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
           <div className="mb-12">
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-4">
-              Featured Teaching
+              Featured Teachings
             </h2>
             <p className="text-lg text-gray-600">
-              A curated video teaching to inspire and guide.
+              Curated video teachings to inspire and guide.
             </p>
           </div>
-          <div className="max-w-3xl mx-auto">
-            <VideoCard video={featuredVideos[0]} />
-          </div>
+          <VideoCarousel videos={featuredVideos} />
         </section>
       )}
 
