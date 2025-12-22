@@ -24,21 +24,19 @@ export default function AboutPage() {
           <p className="mb-4">
             This platform represents a unified vision of wisdom and practice. 
             Through <strong>Esoteriment</strong>, I simplify the unseen—making 
-            esoteric, metaphysical, and mystical concepts accessible and clear. 
-            Through <strong>Lifeward</strong>, I guide you in living the truth—applying 
-            God's timeless principles for an abundant life.
+            esoteric, metaphysical, and mystical concepts clear, grounded and accessible.
+            Through <strong>Lifeward</strong>, I focus on living the truth—applying God’s
+            timeless principles in daily life for a more ordered and abundant life.
           </p>
           
           <p className="mb-4">
             I believe that understanding without application is incomplete. 
-            That's why this platform bridges the gap between knowledge and practice, 
-            between contemplation and action.
+            Knowledge must move from thought into action, from contemplation into daily practice.
           </p>
           
           <p className="mb-4">
-            Every article, video, and book is crafted to serve one purpose: 
-            to help you live with greater clarity, deeper discipline, and more 
-            abundant life.
+            Every article, video, and book here is written with a single purpose:
+            to help you live with greater clarity, deeper discipline, and a more abundant life.
           </p>
           
           <div className="mt-12 pt-8 border-t border-gray-200">

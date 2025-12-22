@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Books - Mini-Books Library",
-  description: "Digital bookshelf of self-help mini-books. Practical wisdom in digestible formats.",
+  description: "A growing collection of concise writings focused on practical wisdom. Each mini-book explores a core theme and offers clear, actionable insights meant to be read slowly, reflected on, and applied in daily life.",
 };
 
 export default function BooksPage() {
@@ -21,8 +21,8 @@ export default function BooksPage() {
             Mini-Books Library
           </h1>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-            Practical wisdom in digestible formats. Each book explores core themes 
-            and provides actionable insights for transformation.
+            A growing collection of concise writings focused on practical wisdom.
+            Each mini-book explores a core theme and offers clear, actionable insights meant to be <em>read slowly, reflected on, and applied in daily life.</em>
           </p>
         </header>
 

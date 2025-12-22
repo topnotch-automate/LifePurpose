@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Lifeward - Live the Truth",
-  description: "Practical application of God's timeless principles for an abundant life. Faith in action, discipline, character, gratitude, and daily living.",
+  description: "Lifeward is devoted to the daily practice of God’s timeless principles. Here, faith is not abstract belief, but something lived and expressed through discipline, character, gratitude, prayer, health, and ordinary daily life. The aim is simple: to grow into a life that is more ordered, faithful, and abundant.",
 };
 
 export default function LifewardPage() {
@@ -30,9 +30,11 @@ export default function LifewardPage() {
             Live the Truth
           </h1>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-            Practical application of God's timeless principles for an abundant life. 
-            Faith in action, discipline, character, gratitude, prayer, health, 
-            and daily living.
+            Lifeward is devoted to the <em>daily practice</em> of God’s timeless principles.
+
+            Here, faith is not abstract belief, but something lived and expressed through discipline, character, gratitude, prayer, health, and ordinary daily life.
+
+            The aim is simple: to grow into a life that is more ordered, faithful, and abundant.
           </p>
         </header>
 

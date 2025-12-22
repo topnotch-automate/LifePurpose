@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Esoteriment - Understand the Unseen",
-  description: "Simplifying esoteric, metaphysical, and mystical concepts. Exploring consciousness, mind, energy, symbolism, and universal laws.",
+  description: "Esoteriment exists to bring clarity to what is often hidden or misunderstood. Here I simplify esoteric, metaphysical, and mystical ideas so they can be understood, tested, and lived. This work explores consciousness, mind, energy, symbolism, and the universal laws that quietly shape experience and reality.",
 };
 
 export default function EsoterimentPage() {
@@ -30,9 +30,10 @@ export default function EsoterimentPage() {
             Understand the Unseen
           </h1>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-            Simplifying esoteric, metaphysical, and mystical concepts. 
-            Exploring consciousness, mind, energy, symbolism, and the universal 
-            laws that govern reality.
+            Esoteriment exists to bring clarity to what is often hidden or misunderstood.
+            Here I simplify esoteric, metaphysical, and mystical ideas so they can be <em>understood, tested, and lived.</em>
+
+            This work explores consciousness, mind, energy, symbolism, and the universal laws that quietly shape experience and reality.
           </p>
         </header>
 
