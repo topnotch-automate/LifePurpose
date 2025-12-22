@@ -10,6 +10,12 @@ export default function HomePage() {
   const latestArticles = getAllArticles().slice(0, 6);
   const featuredVideos = getAllVideos().slice(0, 4); // Show up to 4 videos in carousel
   
+  // Get first article from each section for foundational CTAs
+  const esoterimentArticles = getAllArticles("esoteriment");
+  const lifewardArticles = getAllArticles("lifeward");
+  const firstEsoterimentArticle = esoterimentArticles.length > 0 ? esoterimentArticles[0] : null;
+  const firstLifewardArticle = lifewardArticles.length > 0 ? lifewardArticles[0] : null;
+  
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -157,6 +163,69 @@ export default function HomePage() {
             <p>Articles coming soon...</p>
           </div>
         )}
+      </section>
+
+      {/* Gentle CTAs for Deeper Exploration */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
+        <div className="border-t border-gray-200 pt-12">
+          <div className="grid md:grid-cols-3 gap-6">
+            {firstEsoterimentArticle && (
+              <Link
+                href={`/esoteriment/${firstEsoterimentArticle.slug}`}
+                className="group p-6 bg-white border border-gray-200 rounded-lg hover:shadow-md hover:border-gray-300 transition-all"
+              >
+                <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-gray-700">
+                  Read a foundational Esoteriment article
+                </h3>
+                <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                  {firstEsoterimentArticle.title}
+                </p>
+                <span className="text-sm text-gray-500 inline-flex items-center gap-1 group-hover:text-gray-700">
+                  Begin reading
+                  <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </span>
+              </Link>
+            )}
+            {firstLifewardArticle && (
+              <Link
+                href={`/lifeward/${firstLifewardArticle.slug}`}
+                className="group p-6 bg-white border border-gray-200 rounded-lg hover:shadow-md hover:border-gray-300 transition-all"
+              >
+                <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-gray-700">
+                  Start your Lifeward journey here
+                </h3>
+                <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                  {firstLifewardArticle.title}
+                </p>
+                <span className="text-sm text-gray-500 inline-flex items-center gap-1 group-hover:text-gray-700">
+                  Begin reading
+                  <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </span>
+              </Link>
+            )}
+            <Link
+              href="/books"
+              className="group p-6 bg-white border border-gray-200 rounded-lg hover:shadow-md hover:border-gray-300 transition-all"
+            >
+              <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-gray-700">
+                Browse the Mini-Books Library
+              </h3>
+              <p className="text-sm text-gray-600 mb-3">
+                Explore practical guides and teachings in book format.
+              </p>
+              <span className="text-sm text-gray-500 inline-flex items-center gap-1 group-hover:text-gray-700">
+                View books
+                <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </span>
+            </Link>
+          </div>
+        </div>
       </section>
     </div>
   );
