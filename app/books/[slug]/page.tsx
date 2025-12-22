@@ -5,6 +5,7 @@ import { LikeButton } from "@/components/article/LikeButton";
 import { CommentsSection } from "@/components/article/CommentsSection";
 import { MarkdownContent } from "@/components/article/MarkdownContent";
 import { BookEmailCapture } from "@/components/email/BookEmailCapture";
+import { generateBookMetadata, generateStructuredData } from "@/lib/metadata";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -26,13 +27,14 @@ export async function generateMetadata({
   if (!book) {
     return {
       title: "Book Not Found",
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
 
-  return {
-    title: `${book.title} | Books`,
-    description: book.description,
-  };
+  return generateBookMetadata(book);
 }
 
 export default async function BookPage({
@@ -47,8 +49,17 @@ export default async function BookPage({
     notFound();
   }
 
+  const structuredData = generateStructuredData("Book", book);
+
   return (
-    <div className="min-h-screen bg-white py-12">
+    <>
+      {structuredData && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+      )}
+      <div className="min-h-screen bg-white py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <header className="mb-8">
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-4">
@@ -147,6 +158,7 @@ export default async function BookPage({
         <CommentsSection contentType="book" contentId={book.slug} />
       </div>
     </div>
+    </>
   );
 }
 

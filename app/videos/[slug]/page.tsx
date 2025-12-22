@@ -5,6 +5,7 @@ import Link from "next/link";
 import { MarkdownContent } from "@/components/article/MarkdownContent";
 import { LikeButton } from "@/components/article/LikeButton";
 import { CommentsSection } from "@/components/article/CommentsSection";
+import { generateVideoMetadata, generateStructuredData } from "@/lib/metadata";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -26,13 +27,14 @@ export async function generateMetadata({
   if (!video) {
     return {
       title: "Video Not Found",
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
 
-  return {
-    title: `${video.title} | Videos`,
-    description: video.description,
-  };
+  return generateVideoMetadata(video);
 }
 
 export default async function VideoPage({
@@ -47,11 +49,19 @@ export default async function VideoPage({
     notFound();
   }
 
+  const structuredData = generateStructuredData("Video", video);
   const sectionColor = video.section === "esoteriment" ? "text-[#7C8A9E]" : "text-[#9A7B4F]";
   const sectionBg = video.section === "esoteriment" ? "bg-[#FAFAF9]" : "bg-[#FFFDF8]";
 
   return (
-    <div className={`min-h-screen ${sectionBg} py-12`}>
+    <>
+      {structuredData && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+      )}
+      <div className={`min-h-screen ${sectionBg} py-12`}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <header className="mb-8">
           <div className="flex items-center gap-3 mb-4">
@@ -108,6 +118,7 @@ export default async function VideoPage({
         )}
       </div>
     </div>
+    </>
   );
 }
 

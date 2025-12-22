@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getArticleSlugs, getArticleBySlug } from "@/lib/mdx";
 import { ArticleContent } from "@/components/article/ArticleContent";
+import { generateArticleMetadata, generateStructuredData } from "@/lib/metadata";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -22,13 +23,14 @@ export async function generateMetadata({
   if (!article) {
     return {
       title: "Article Not Found",
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
 
-  return {
-    title: `${article.title} | Lifeward`,
-    description: article.description,
-  };
+  return generateArticleMetadata(article);
 }
 
 export default async function LifewardArticlePage({
@@ -43,6 +45,18 @@ export default async function LifewardArticlePage({
     notFound();
   }
 
-  return <ArticleContent article={article} />;
+  const structuredData = generateStructuredData("Article", article);
+
+  return (
+    <>
+      {structuredData && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+      )}
+      <ArticleContent article={article} />
+    </>
+  );
 }
 

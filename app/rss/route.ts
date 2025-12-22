@@ -6,14 +6,17 @@ export async function GET() {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://yourname.com";
 
   const rss = `<?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Your Name - Writer, Teacher, Guide</title>
+    <title>Albert Blibo - Writer, Teacher, Guide</title>
     <description>I write to awaken clarity, discipline, and life. Explore Esoteriment and Lifeward.</description>
     <link>${siteUrl}</link>
     <atom:link href="${siteUrl}/rss" rel="self" type="application/rss+xml" />
     <language>en-us</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+    <managingEditor>albert@example.com (Albert Blibo)</managingEditor>
+    <webMaster>albert@example.com (Albert Blibo)</webMaster>
+    <copyright>Copyright ${new Date().getFullYear()} Albert Blibo</copyright>
     ${articles
       .map(
         (article) => `    <item>
