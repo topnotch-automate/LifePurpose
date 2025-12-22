@@ -31,7 +31,7 @@ export default function EsoterimentPage() {
           </h1>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto">
             Esoteriment exists to bring clarity to what is often hidden or misunderstood.
-            Here I simplify esoteric, metaphysical, and mystical ideas so they can be <em>understood, tested, and lived.</em>
+            Here I simplify esoteric, metaphysical, and mystical ideas so they can be <strong>understood, tested, and lived.</strong>
 
             This work explores consciousness, mind, energy, symbolism, and the universal laws that quietly shape experience and reality.
           </p>

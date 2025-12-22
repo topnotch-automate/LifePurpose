@@ -19,9 +19,8 @@ export default function HomePage() {
             I write to awaken clarity, discipline, and life.
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-            Welcome to a digital sanctuary where wisdom meets practice. 
-            Explore timeless principles and their practical application through 
-            <strong> Esoteriment</strong> and <strong>Lifeward</strong>.
+            Welcome to a digital sanctuary where understanding becomes practice.
+            Explore timeless principles and their lived application through <strong>Esoteriment</strong> and <strong>Lifeward.</strong>
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -52,14 +51,14 @@ export default function HomePage() {
           <SectionPanel
             title="Esoteriment"
             subtitle="Understand the unseen"
-            description="Simplifying esoteric, metaphysical, and mystical concepts. Exploring consciousness, mind, energy, symbolism, and the universal laws that govern reality."
+            description="Esoteriment exists to bring clarity to what is often hidden or misunderstood. Here I simplify esoteric, metaphysical, and mystical ideas so they can be understood, tested, and lived. This work explores consciousness, mind, energy, symbolism, and the universal laws that quietly shape experience and reality."
             href="/esoteriment"
             theme="esoteriment"
           />
           <SectionPanel
             title="Lifeward"
             subtitle="Live the truth"
-            description="Practical application of God's timeless principles for an abundant life. Faith in action, discipline, character, gratitude, and daily living."
+            description="Lifeward is devoted to the daily practice of God’s timeless principles. Here, faith is not abstract belief, but something lived and expressed through discipline, character, gratitude, prayer, health, and ordinary daily life. The aim is simple: to grow into a life that is more ordered, faithful, and abundant."
             href="/lifeward"
             theme="lifeward"
           />

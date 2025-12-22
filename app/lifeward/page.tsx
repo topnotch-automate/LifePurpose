@@ -30,7 +30,7 @@ export default function LifewardPage() {
             Live the Truth
           </h1>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-            Lifeward is devoted to the <em>daily practice</em> of God’s timeless principles.
+            Lifeward is devoted to the <strong>daily practice</strong> of God’s timeless principles.
 
             Here, faith is not abstract belief, but something lived and expressed through discipline, character, gratitude, prayer, health, and ordinary daily life.
 
