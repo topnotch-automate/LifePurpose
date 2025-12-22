@@ -14,6 +14,7 @@ export interface Article {
   readingTime?: number;
   content: string;
   funnel?: FunnelMetadata;
+  image?: string;
 }
 
 export interface Video {
@@ -26,6 +27,7 @@ export interface Video {
   relatedArticle?: string;
   date: string;
   content: string;
+  thumbnail?: string;
 }
 
 export interface Book {
