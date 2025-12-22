@@ -39,6 +39,7 @@ export function getArticleBySlug(
     readingTime: Math.ceil(stats.minutes),
     content,
     funnel: data.funnel || undefined,
+    image: data.image,
   };
 }
 
@@ -87,6 +88,7 @@ export function getVideoBySlug(slug: string): Video | null {
     relatedArticle: data.relatedArticle,
     date: data.date || new Date().toISOString(),
     content,
+    thumbnail: data.thumbnail,
   };
 }
 

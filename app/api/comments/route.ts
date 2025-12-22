@@ -14,7 +14,10 @@ interface Comment {
   authorLiked?: boolean;
 }
 
-const commentsFilePath = path.join(process.cwd(), "data", "comments.json");
+// Use /tmp in serverless environments (Vercel), fallback to local data directory for development
+const commentsFilePath = process.env.VERCEL 
+  ? path.join("/tmp", "comments.json")
+  : path.join(process.cwd(), "data", "comments.json");
 
 // Ensure data directory exists
 function ensureDataDir() {

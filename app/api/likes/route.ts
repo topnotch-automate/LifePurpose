@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 
-const likesFilePath = path.join(process.cwd(), "data", "likes.json");
+// Use /tmp in serverless environments (Vercel), fallback to local data directory for development
+const likesFilePath = process.env.VERCEL 
+  ? path.join("/tmp", "likes.json")
+  : path.join(process.cwd(), "data", "likes.json");
 
 // Ensure data directory exists
 function ensureDataDir() {

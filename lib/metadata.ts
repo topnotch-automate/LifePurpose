@@ -107,15 +107,10 @@ export function generateVideoMetadata(video: Video): Metadata {
     },
     twitter: {
       ...getDefaultMetadata().twitter,
-      card: "player",
+      card: "summary_large_image",
       title: video.title,
       description: video.description,
       images: [imageUrl],
-      players: {
-        playerUrl: video.embedUrl,
-        width: 1280,
-        height: 720,
-      },
     },
   };
 }
