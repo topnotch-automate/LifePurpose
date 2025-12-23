@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "content:new": "tsx scripts/content-manager.ts new",
+    "content:sync": "tsx scripts/content-manager.ts sync",
+    "content": "tsx scripts/content-manager.ts"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
@@ -31,7 +34,9 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.0",
+    "prompts": "^2.4.2",
     "tailwindcss": "^4",
+    "tsx": "^4.19.2",
     "typescript": "^5"
   }
 }
