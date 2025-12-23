@@ -1,53 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import { storage, CommentRecord } from "@/lib/storage";
 import { getAuthorDisplayName } from "@/lib/author";
-
-interface Comment {
-  id: string;
-  author: string;
-  content: string;
-  date: string;
-  type: string;
-  contentId: string;
-  parentId?: string;
-  replies?: Comment[];
-  authorLiked?: boolean;
-}
-
-// Use /tmp in serverless environments (Vercel), fallback to local data directory for development
-const commentsFilePath = process.env.VERCEL 
-  ? path.join("/tmp", "comments.json")
-  : path.join(process.cwd(), "data", "comments.json");
-
-function ensureDataDir() {
-  const dataDir = path.dirname(commentsFilePath);
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
-  }
-}
-
-function initCommentsFile() {
-  ensureDataDir();
-  if (!fs.existsSync(commentsFilePath)) {
-    fs.writeFileSync(commentsFilePath, JSON.stringify([]), "utf8");
-  }
-}
-
-function getComments(): Comment[] {
-  initCommentsFile();
-  try {
-    const data = fs.readFileSync(commentsFilePath, "utf8");
-    return JSON.parse(data);
-  } catch (error) {
-    return [];
-  }
-}
-
-function saveComments(comments: Comment[]) {
-  ensureDataDir();
-  fs.writeFileSync(commentsFilePath, JSON.stringify(comments, null, 2), "utf8");
-}
 
 export async function POST(request: NextRequest) {
   try {
@@ -73,7 +26,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const allComments = getComments();
+    const allComments = await storage.getComments();
     
     // Find parent comment
     const parentComment = allComments.find((c) => c.id === commentId);
@@ -81,8 +34,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Parent comment not found" }, { status: 404 });
     }
 
-    // Create reply
-    const reply: Comment = {
+    // Create reply (stored flat with parentId, replies array is reconstructed in GET)
+    const reply: CommentRecord = {
       id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       author: author.trim(),
       content: content.trim(),
@@ -90,20 +43,12 @@ export async function POST(request: NextRequest) {
       type,
       contentId,
       parentId: commentId,
+      authorLiked: false,
     };
 
-    // Add reply to parent's replies array
-    if (!parentComment.replies) {
-      parentComment.replies = [];
-    }
-    parentComment.replies.push(reply);
-
-    // Update in allComments array
-    const updatedComments = allComments.map((c) =>
-      c.id === commentId ? parentComment : c
-    );
-
-    saveComments(updatedComments);
+    // Add reply to allComments array
+    allComments.push(reply);
+    await storage.saveComments(allComments);
 
     // Return reply without internal fields
     const { type: _, contentId: __, parentId: ___, ...replyResponse } = reply;

@@ -1,52 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
-
-interface Comment {
-  id: string;
-  author: string;
-  content: string;
-  date: string;
-  type: string;
-  contentId: string;
-  parentId?: string;
-  replies?: Comment[];
-  authorLiked?: boolean;
-}
-
-// Use /tmp in serverless environments (Vercel), fallback to local data directory for development
-const commentsFilePath = process.env.VERCEL 
-  ? path.join("/tmp", "comments.json")
-  : path.join(process.cwd(), "data", "comments.json");
-
-function ensureDataDir() {
-  const dataDir = path.dirname(commentsFilePath);
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
-  }
-}
-
-function initCommentsFile() {
-  ensureDataDir();
-  if (!fs.existsSync(commentsFilePath)) {
-    fs.writeFileSync(commentsFilePath, JSON.stringify([]), "utf8");
-  }
-}
-
-function getComments(): Comment[] {
-  initCommentsFile();
-  try {
-    const data = fs.readFileSync(commentsFilePath, "utf8");
-    return JSON.parse(data);
-  } catch (error) {
-    return [];
-  }
-}
-
-function saveComments(comments: Comment[]) {
-  ensureDataDir();
-  fs.writeFileSync(commentsFilePath, JSON.stringify(comments, null, 2), "utf8");
-}
+import { storage, CommentRecord } from "@/lib/storage";
 
 export async function POST(request: NextRequest) {
   try {
@@ -57,7 +10,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    const allComments = getComments();
+    const allComments = await storage.getComments();
 
     // Find and toggle like on comment
     const updatedComments = allComments.map((comment) => {
@@ -70,7 +23,7 @@ export async function POST(request: NextRequest) {
       return comment;
     });
 
-    saveComments(updatedComments);
+    await storage.saveComments(updatedComments);
 
     const updatedComment = updatedComments.find(
       (c) => c.id === commentId && c.type === type && c.contentId === contentId

@@ -1,42 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
-
-// Use /tmp in serverless environments (Vercel), fallback to local data directory for development
-const likesFilePath = process.env.VERCEL 
-  ? path.join("/tmp", "likes.json")
-  : path.join(process.cwd(), "data", "likes.json");
-
-// Ensure data directory exists
-function ensureDataDir() {
-  const dataDir = path.dirname(likesFilePath);
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
-  }
-}
-
-// Initialize likes file if it doesn't exist
-function initLikesFile() {
-  ensureDataDir();
-  if (!fs.existsSync(likesFilePath)) {
-    fs.writeFileSync(likesFilePath, JSON.stringify({}), "utf8");
-  }
-}
-
-function getLikes() {
-  initLikesFile();
-  try {
-    const data = fs.readFileSync(likesFilePath, "utf8");
-    return JSON.parse(data);
-  } catch (error) {
-    return {};
-  }
-}
-
-function saveLikes(likes: Record<string, number>) {
-  ensureDataDir();
-  fs.writeFileSync(likesFilePath, JSON.stringify(likes, null, 2), "utf8");
-}
+import { storage } from "@/lib/storage";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -47,11 +10,16 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Missing type or id" }, { status: 400 });
   }
 
-  const likes = getLikes();
-  const key = `${type}-${id}`;
-  const likeCount = likes[key] || 0;
+  try {
+    const likes = await storage.getLikes();
+    const key = `${type}-${id}`;
+    const likeCount = likes[key] || 0;
 
-  return NextResponse.json({ likes: likeCount });
+    return NextResponse.json({ likes: likeCount });
+  } catch (error) {
+    console.error("Error getting likes:", error);
+    return NextResponse.json({ error: "Failed to get likes" }, { status: 500 });
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -67,12 +35,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid action" }, { status: 400 });
     }
 
-    const likes = getLikes();
+    const likes = await storage.getLikes();
     const key = `${type}-${id}`;
     const currentLikes = likes[key] || 0;
 
     likes[key] = action === "like" ? currentLikes + 1 : Math.max(0, currentLikes - 1);
-    saveLikes(likes);
+    await storage.saveLikes(likes);
 
     return NextResponse.json({ likes: likes[key], success: true });
   } catch (error) {
