@@ -17,6 +17,18 @@ This system allows you to:
 npm run content:new
 ```
 
+### Validate Content
+
+```bash
+npm run content:validate
+```
+
+### Sync Content
+
+```bash
+npm run content:sync
+```
+
 Or use the interactive menu:
 ```bash
 npm run content
@@ -39,6 +51,23 @@ This allows you to:
 - Update dates based on file modification time
 - Sync all content or specific files
 
+### Validate All Content
+
+```bash
+npm run content:validate
+```
+
+This validates all content files and checks for:
+- Required frontmatter fields (title, date, section)
+- Valid date formats (YYYY-MM-DD)
+- Valid section values (esoteriment/lifeward)
+- Section matches directory location
+- Required fields for videos (embedUrl) and books (description)
+- Filename matches title slug (warning)
+- Missing descriptions (warning)
+
+**Use this before deploying** to catch errors early. Exit code 1 if errors found (useful for CI/CD).
+
 ## Workflow
 
 ### Recommended Writing Workflow
@@ -56,7 +85,15 @@ This allows you to:
    - Add your markdown content below the frontmatter
    - **Don't worry about frontmatter** - it stays intact
 
-3. **Sync if needed:**
+3. **Validate before deploying:**
+   ```bash
+   npm run content:validate
+   ```
+   - Checks for errors and warnings
+   - Fix any errors before deploying
+   - Warnings are informational
+
+4. **Sync if needed (optional):**
    ```bash
    npm run content:sync
    ```
@@ -166,12 +203,43 @@ You can still edit frontmatter manually if you prefer:
 
 The sync tool **will not overwrite** existing frontmatter fields - it only adds missing ones or updates based on your chosen sync options.
 
+## Validation
+
+The validation command checks all content files for consistency and correctness:
+
+### Errors (Must Fix)
+- Missing required fields (title, date, section)
+- Invalid date formats
+- Invalid section values
+- Section doesn't match directory
+- Missing video embedUrl
+- Missing book description
+- File parse errors
+
+### Warnings (Informational)
+- Missing descriptions (recommended for SEO)
+- Filename doesn't match title slug
+- Empty content (frontmatter only)
+- Missing book themes array
+
+### Usage in CI/CD
+
+The validation command exits with code 1 if errors are found, making it perfect for CI/CD:
+
+```bash
+npm run content:validate
+# If errors found, exit code 1 prevents deployment
+```
+
+You can add this to your build process to prevent invalid content from being deployed.
+
 ## Tips
 
 1. **Focus on writing** - Let the tools handle metadata
-2. **Sync periodically** - Run `npm run content:sync` to keep metadata fresh
-3. **Manual edits are fine** - The system doesn't lock you in
-4. **Descriptions are optional** - They're nice to have but not required
+2. **Validate before deploying** - Run `npm run content:validate` to catch issues
+3. **Sync periodically** - Run `npm run content:sync` to keep metadata fresh
+4. **Manual edits are fine** - The system doesn't lock you in
+5. **Descriptions are optional** - They're nice to have but not required (warnings only)
 
 ## Troubleshooting
 

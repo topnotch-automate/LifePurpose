@@ -9,6 +9,7 @@
     "lint": "eslint",
     "content:new": "tsx scripts/content-manager.ts new",
     "content:sync": "tsx scripts/content-manager.ts sync",
+    "content:validate": "tsx scripts/content-manager.ts validate",
     "content": "tsx scripts/content-manager.ts"
   },
   "dependencies": {

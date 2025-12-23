@@ -390,6 +390,188 @@ async function syncContent() {
   console.log(`\n✨ Synced ${synced} file(s).\n`);
 }
 
+function validateContent() {
+  function findMdxFiles(dir: string): string[] {
+    const files: string[] = [];
+    if (!fs.existsSync(dir)) return files;
+    
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        files.push(...findMdxFiles(fullPath));
+      } else if (entry.isFile() && entry.name.endsWith(".mdx")) {
+        files.push(fullPath);
+      }
+    }
+    
+    return files;
+  }
+
+  interface ValidationError {
+    file: string;
+    field: string;
+    message: string;
+  }
+
+  interface ValidationWarning {
+    file: string;
+    message: string;
+  }
+
+  const errors: ValidationError[] = [];
+  const warnings: ValidationWarning[] = [];
+  const files = findMdxFiles(CONTENT_ROOT);
+
+  console.log(`\n🔍 Validating ${files.length} content file(s)...\n`);
+
+  for (const filePath of files) {
+    const relativePath = path.relative(process.cwd(), filePath);
+    const fileName = path.basename(filePath);
+    const dirName = path.basename(path.dirname(filePath));
+    
+    try {
+      const fileContent = fs.readFileSync(filePath, "utf8");
+      const { data, content } = matter(fileContent);
+
+      // Determine content type based on directory
+      const isArticle = dirName === "esoteriment" || dirName === "lifeward";
+      const isVideo = dirName === "videos";
+      const isBook = dirName === "books";
+
+      // Common validations
+      if (!data.title || typeof data.title !== "string" || data.title.trim() === "") {
+        errors.push({ file: relativePath, field: "title", message: "Title is required" });
+      }
+
+      if (!data.date || typeof data.date !== "string") {
+        errors.push({ file: relativePath, field: "date", message: "Date is required" });
+      } else {
+        // Validate date format (YYYY-MM-DD)
+        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+        if (!dateRegex.test(data.date)) {
+          errors.push({ file: relativePath, field: "date", message: `Invalid date format: "${data.date}". Expected YYYY-MM-DD` });
+        } else {
+          // Validate date is valid
+          const dateObj = new Date(data.date);
+          if (isNaN(dateObj.getTime())) {
+            errors.push({ file: relativePath, field: "date", message: `Invalid date: "${data.date}"` });
+          }
+        }
+      }
+
+      // Article validations
+      if (isArticle) {
+        if (!data.section || (data.section !== "esoteriment" && data.section !== "lifeward")) {
+          errors.push({ 
+            file: relativePath, 
+            field: "section", 
+            message: `Invalid section: "${data.section}". Must be "esoteriment" or "lifeward"` 
+          });
+        }
+
+        // Check section matches directory
+        if (data.section && data.section !== dirName) {
+          errors.push({ 
+            file: relativePath, 
+            field: "section", 
+            message: `Section "${data.section}" doesn't match directory "${dirName}"` 
+          });
+        }
+
+        if (!data.description || typeof data.description !== "string" || data.description.trim() === "") {
+          warnings.push({ file: relativePath, message: "Missing description (recommended for SEO)" });
+        }
+
+        // Validate slug matches filename
+        const expectedSlug = fileName.replace(".mdx", "");
+        if (data.title) {
+          const titleSlug = slugify(data.title);
+          if (titleSlug !== expectedSlug) {
+            warnings.push({ 
+              file: relativePath, 
+              message: `Filename "${expectedSlug}" doesn't match title slug "${titleSlug}" (may be intentional)` 
+            });
+          }
+        }
+      }
+
+      // Video validations
+      if (isVideo) {
+        if (!data.section || (data.section !== "esoteriment" && data.section !== "lifeward")) {
+          errors.push({ 
+            file: relativePath, 
+            field: "section", 
+            message: `Invalid section: "${data.section}". Must be "esoteriment" or "lifeward"` 
+          });
+        }
+
+        if (!data.embedUrl || typeof data.embedUrl !== "string" || data.embedUrl.trim() === "") {
+          errors.push({ file: relativePath, field: "embedUrl", message: "Embed URL is required for videos" });
+        }
+
+        if (!data.description || typeof data.description !== "string" || data.description.trim() === "") {
+          warnings.push({ file: relativePath, message: "Missing description (recommended for SEO)" });
+        }
+      }
+
+      // Book validations
+      if (isBook) {
+        if (!data.description || typeof data.description !== "string" || data.description.trim() === "") {
+          errors.push({ file: relativePath, field: "description", message: "Description is required for books" });
+        }
+
+        if (!data.themes || !Array.isArray(data.themes) || data.themes.length === 0) {
+          warnings.push({ file: relativePath, message: "Missing themes array (recommended)" });
+        }
+      }
+
+      // Content validations
+      if (!content || content.trim().length === 0) {
+        warnings.push({ file: relativePath, message: "File has no content (frontmatter only)" });
+      }
+
+    } catch (error) {
+      errors.push({ 
+        file: relativePath, 
+        field: "parse", 
+        message: `Failed to parse file: ${error instanceof Error ? error.message : String(error)}` 
+      });
+    }
+  }
+
+  // Report results
+  if (errors.length > 0) {
+    console.log("❌ Validation Errors:\n");
+    errors.forEach(({ file, field, message }) => {
+      console.log(`  ${file}`);
+      console.log(`    Field: ${field}`);
+      console.log(`    Error: ${message}\n`);
+    });
+  }
+
+  if (warnings.length > 0) {
+    console.log("⚠️  Validation Warnings:\n");
+    warnings.forEach(({ file, message }) => {
+      console.log(`  ${file}`);
+      console.log(`    Warning: ${message}\n`);
+    });
+  }
+
+  if (errors.length === 0 && warnings.length === 0) {
+    console.log("✅ All content files are valid!\n");
+    process.exit(0);
+  } else if (errors.length === 0) {
+    console.log(`✅ No errors found. ${warnings.length} warning(s) above.\n`);
+    process.exit(0);
+  } else {
+    console.log(`\n❌ Found ${errors.length} error(s) and ${warnings.length} warning(s).\n`);
+    console.log("Please fix the errors above before deploying.\n");
+    process.exit(1);
+  }
+}
+
 // Main CLI
 async function main() {
   const command = process.argv[2];
@@ -398,6 +580,8 @@ async function main() {
     await createContent();
   } else if (command === "sync") {
     await syncContent();
+  } else if (command === "validate") {
+    validateContent();
   } else {
     const { action } = await prompts({
       type: "select",
@@ -406,6 +590,7 @@ async function main() {
       choices: [
         { title: "Create new content", value: "create" },
         { title: "Sync existing content frontmatter", value: "sync" },
+        { title: "Validate all content", value: "validate" },
       ],
     });
 
@@ -413,6 +598,8 @@ async function main() {
       await createContent();
     } else if (action === "sync") {
       await syncContent();
+    } else if (action === "validate") {
+      validateContent();
     }
   }
 }
