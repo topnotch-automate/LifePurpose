@@ -40,6 +40,7 @@ export function getArticleBySlug(
     content,
     funnel: data.funnel || undefined,
     image: data.image,
+    foundational: data.foundational || false,
   };
 }
 
@@ -147,5 +148,27 @@ export function getAllBooks(): Book[] {
     .sort((a, b) => {
       return new Date(b.date).getTime() - new Date(a.date).getTime();
     });
+}
+
+/**
+ * Get foundational messages for a specific section
+ * Foundational messages are articles marked with foundational: true
+ */
+export function getFoundationalMessages(section: "esoteriment" | "lifeward"): Article[] {
+  const allArticles = getAllArticles(section);
+  return allArticles
+    .filter((article) => article.foundational === true)
+    .sort((a, b) => {
+      // Sort by date (newest first), but you could also sort by a priority field if added later
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
+}
+
+/**
+ * Get the first foundational message for a section (used for CTAs)
+ */
+export function getFirstFoundationalMessage(section: "esoteriment" | "lifeward"): Article | null {
+  const foundational = getFoundationalMessages(section);
+  return foundational.length > 0 ? foundational[0] : null;
 }
 

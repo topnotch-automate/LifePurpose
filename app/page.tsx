@@ -2,7 +2,7 @@ import Link from "next/link";
 import { SectionPanel } from "@/components/ui/SectionPanel";
 import { ArticleCard } from "@/components/article/ArticleCard";
 import { VideoCarousel } from "@/components/video/VideoCarousel";
-import { getAllArticles, getAllVideos } from "@/lib/mdx";
+import { getAllArticles, getAllVideos, getFirstFoundationalMessage } from "@/lib/mdx";
 
 export const dynamic = "force-dynamic";
 
@@ -10,11 +10,15 @@ export default function HomePage() {
   const latestArticles = getAllArticles().slice(0, 6);
   const featuredVideos = getAllVideos().slice(0, 4); // Show up to 4 videos in carousel
   
-  // Get first article from each section for foundational CTAs
+  // Get foundational messages for CTAs (if no foundational message, fallback to first article)
+  const esoterimentFoundational = getFirstFoundationalMessage("esoteriment");
+  const lifewardFoundational = getFirstFoundationalMessage("lifeward");
+  
+  // Fallback to first article if no foundational message exists
   const esoterimentArticles = getAllArticles("esoteriment");
   const lifewardArticles = getAllArticles("lifeward");
-  const firstEsoterimentArticle = esoterimentArticles.length > 0 ? esoterimentArticles[0] : null;
-  const firstLifewardArticle = lifewardArticles.length > 0 ? lifewardArticles[0] : null;
+  const firstEsoterimentArticle = esoterimentFoundational || (esoterimentArticles.length > 0 ? esoterimentArticles[0] : null);
+  const firstLifewardArticle = lifewardFoundational || (lifewardArticles.length > 0 ? lifewardArticles[0] : null);
   
   return (
     <div className="min-h-screen bg-white">
@@ -82,24 +86,48 @@ export default function HomePage() {
           </div>
 
           <nav className="flex flex-col sm:flex-row gap-4">
-            <Link
-              href="/esoteriment"
-              className="px-6 py-3 border-2 border-gray-900 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors inline-flex items-center justify-center gap-2"
-            >
-              Begin with Esoteriment
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </Link>
-            <Link
-              href="/lifeward"
-              className="px-6 py-3 border-2 border-gray-900 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors inline-flex items-center justify-center gap-2"
-            >
-              Begin with Lifeward
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </Link>
+            {firstEsoterimentArticle ? (
+              <Link
+                href={`/esoteriment/${firstEsoterimentArticle.slug}`}
+                className="px-6 py-3 border-2 border-gray-900 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors inline-flex items-center justify-center gap-2"
+              >
+                Begin with Esoteriment
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            ) : (
+              <Link
+                href="/esoteriment"
+                className="px-6 py-3 border-2 border-gray-900 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors inline-flex items-center justify-center gap-2"
+              >
+                Begin with Esoteriment
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            )}
+            {firstLifewardArticle ? (
+              <Link
+                href={`/lifeward/${firstLifewardArticle.slug}`}
+                className="px-6 py-3 border-2 border-gray-900 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors inline-flex items-center justify-center gap-2"
+              >
+                Begin with Lifeward
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            ) : (
+              <Link
+                href="/lifeward"
+                className="px-6 py-3 border-2 border-gray-900 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors inline-flex items-center justify-center gap-2"
+              >
+                Begin with Lifeward
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            )}
           </nav>
         </div>
       </section>

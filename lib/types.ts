@@ -15,6 +15,7 @@ export interface Article {
   content: string;
   funnel?: FunnelMetadata;
   image?: string;
+  foundational?: boolean;
 }
 
 export interface Video {

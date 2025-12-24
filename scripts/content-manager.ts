@@ -76,6 +76,7 @@ function generateFrontmatter(
       lines.push(`tags: [${data.tags.map((t: string) => `"${t}"`).join(", ")}]`);
     }
     if (data.image) lines.push(`image: "${data.image}"`);
+    if (data.foundational) lines.push(`foundational: true`);
     if (data.funnel) {
       lines.push(`funnel:`);
       lines.push(`  book: "${data.funnel.book}"`);
@@ -190,6 +191,12 @@ async function createContent() {
         type: "text",
         name: "funnelBook",
         message: "Funnel book slug (optional - for book promotion)",
+      },
+      {
+        type: "confirm",
+        name: "foundational",
+        message: "Is this a foundational message? (appears in Start Here section)",
+        initial: false,
       },
     ]);
 
