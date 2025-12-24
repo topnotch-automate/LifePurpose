@@ -14,7 +14,7 @@ export default function LifewardPage() {
     return new Date(b.date).getTime() - new Date(a.date).getTime();
   });
 
-  const categories = ["Faith in Action", "Discipline & Character", "Gratitude & Prayer", "Health & Strength", "Daily Living"];
+  const categories = ["Foundational", "Introductory", "Faith in Action", "Discipline & Character", "Gratitude & Prayer", "Health & Strength", "Daily Living"];
 
   return <LifewardPageClient articles={articles} categories={categories} />;
 }

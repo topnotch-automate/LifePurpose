@@ -14,7 +14,7 @@ export default function EsoterimentPage() {
     return new Date(b.date).getTime() - new Date(a.date).getTime();
   });
 
-  const categories = ["Consciousness", "Mind", "Energy", "Symbolism", "Law"];
+  const categories = ["Foundational", "Introductory", "Consciousness", "Mind", "Energy", "Symbolism", "Law"];
 
   return <EsoterimentPageClient articles={articles} categories={categories} />;
 }

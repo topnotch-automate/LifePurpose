@@ -172,9 +172,38 @@ async function createContent() {
         ],
       },
       {
-        type: "text",
+        type: "select",
         name: "category",
         message: "Category (optional)",
+        choices: (prev: any, values: any) => {
+          const section = values.section;
+          const baseCategories = [
+            { title: "None", value: "" },
+            { title: "Foundational", value: "Foundational" },
+            { title: "Introductory", value: "Introductory" },
+          ];
+          
+          if (section === "esoteriment") {
+            return [
+              ...baseCategories,
+              { title: "Consciousness", value: "Consciousness" },
+              { title: "Mind", value: "Mind" },
+              { title: "Energy", value: "Energy" },
+              { title: "Symbolism", value: "Symbolism" },
+              { title: "Law", value: "Law" },
+            ];
+          } else if (section === "lifeward") {
+            return [
+              ...baseCategories,
+              { title: "Faith in Action", value: "Faith in Action" },
+              { title: "Discipline & Character", value: "Discipline & Character" },
+              { title: "Gratitude & Prayer", value: "Gratitude & Prayer" },
+              { title: "Health & Strength", value: "Health & Strength" },
+              { title: "Daily Living", value: "Daily Living" },
+            ];
+          }
+          return baseCategories;
+        },
       },
       {
         type: "text",
