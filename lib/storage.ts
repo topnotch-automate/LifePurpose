@@ -126,8 +126,9 @@ class DatabaseStorage implements StorageAdapter {
         if (process.env.POSTGRES_URL) {
           try {
             // Dynamic import - will throw if module not installed
-            // @ts-expect-error - @vercel/postgres is an optional dependency
-            const { sql } = await import("@vercel/postgres");
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const postgresModule = await import("@vercel/postgres") as any;
+            const { sql } = postgresModule;
             this.db = sql;
             
             // Initialize tables if they don't exist (with error handling)
