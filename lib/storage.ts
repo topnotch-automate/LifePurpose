@@ -102,6 +102,7 @@ class FileSystemStorage implements StorageAdapter {
 
 // Database storage adapter (PostgreSQL via @vercel/postgres)
 class DatabaseStorage implements StorageAdapter {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private db: any = null;
   private initialized = false;
   private initPromise: Promise<void> | null = null;
@@ -123,38 +124,46 @@ class DatabaseStorage implements StorageAdapter {
         // Note: @vercel/postgres must be installed if using database storage
         // If not installed, this will fail gracefully and use file system fallback
         if (process.env.POSTGRES_URL) {
-          const { sql } = await import("@vercel/postgres");
-          this.db = sql;
-          
-          // Initialize tables if they don't exist (with error handling)
           try {
-            await this.db`
-              CREATE TABLE IF NOT EXISTS likes (
-                id SERIAL PRIMARY KEY,
-                key VARCHAR(255) UNIQUE NOT NULL,
-                count INTEGER NOT NULL DEFAULT 0,
-                updated_at TIMESTAMP DEFAULT NOW()
-              )
-            `;
+            // Dynamic import - will throw if module not installed
+            // @ts-expect-error - @vercel/postgres is an optional dependency
+            const { sql } = await import("@vercel/postgres");
+            this.db = sql;
             
-            await this.db`
-              CREATE TABLE IF NOT EXISTS comments (
-                id VARCHAR(255) PRIMARY KEY,
-                author VARCHAR(255) NOT NULL,
-                content TEXT NOT NULL,
-                date TIMESTAMP NOT NULL,
-                type VARCHAR(50) NOT NULL,
-                content_id VARCHAR(255) NOT NULL,
-                parent_id VARCHAR(255),
-                author_liked BOOLEAN DEFAULT FALSE,
-                created_at TIMESTAMP DEFAULT NOW()
-              )
-            `;
-            
-            this.initialized = true;
-            console.log("DatabaseStorage: Initialized with PostgreSQL");
-          } catch (tableError) {
-            console.warn("DatabaseStorage: Table creation failed, will use fallback:", tableError);
+            // Initialize tables if they don't exist (with error handling)
+            try {
+              await this.db`
+                CREATE TABLE IF NOT EXISTS likes (
+                  id SERIAL PRIMARY KEY,
+                  key VARCHAR(255) UNIQUE NOT NULL,
+                  count INTEGER NOT NULL DEFAULT 0,
+                  updated_at TIMESTAMP DEFAULT NOW()
+                )
+              `;
+              
+              await this.db`
+                CREATE TABLE IF NOT EXISTS comments (
+                  id VARCHAR(255) PRIMARY KEY,
+                  author VARCHAR(255) NOT NULL,
+                  content TEXT NOT NULL,
+                  date TIMESTAMP NOT NULL,
+                  type VARCHAR(50) NOT NULL,
+                  content_id VARCHAR(255) NOT NULL,
+                  parent_id VARCHAR(255),
+                  author_liked BOOLEAN DEFAULT FALSE,
+                  created_at TIMESTAMP DEFAULT NOW()
+                )
+              `;
+              
+              this.initialized = true;
+              console.log("DatabaseStorage: Initialized with PostgreSQL");
+            } catch (tableError) {
+              console.warn("DatabaseStorage: Table creation failed, will use fallback:", tableError);
+              this.initialized = false;
+            }
+          } catch {
+            // Module not found or other import error - use file system fallback
+            console.warn("DatabaseStorage: @vercel/postgres not available, will use file system fallback");
             this.initialized = false;
           }
           return;
@@ -186,6 +195,7 @@ class DatabaseStorage implements StorageAdapter {
         SELECT key, count FROM likes
       `;
       const likes: Record<string, number> = {};
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       rows.forEach((row: any) => {
         likes[row.key] = row.count;
       });
@@ -228,6 +238,7 @@ class DatabaseStorage implements StorageAdapter {
         FROM comments
         ORDER BY date DESC
       `;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return rows.map((row: any) => ({
         id: row.id,
         author: row.author,
@@ -296,7 +307,7 @@ class StorageManager {
       const available = await this.dbStorage.isAvailable();
       this.useDatabase = available;
       return available;
-    } catch (error) {
+    } catch {
       this.useDatabase = false;
       return false;
     }
