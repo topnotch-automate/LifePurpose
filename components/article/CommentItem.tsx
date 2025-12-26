@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from "react";
 import { isAuthor, getAuthorDisplayName } from "@/lib/author";
+import { useAdminAuth } from "@/hooks/useAdminAuth";
 
 interface Comment {
   id: string;
@@ -97,11 +98,9 @@ export function CommentItem({
     }
   };
 
-  // Check if current user is author
-  // For production, you should implement proper authentication
-  // For now, we'll show author features via localStorage flag
-  const isAuthorUser = typeof window !== "undefined" && 
-    localStorage.getItem("isAuthor") === "true";
+  // Check if current user is authenticated as admin/author
+  const { isAuthenticated: isAdmin } = useAdminAuth();
+  const isAuthorUser = isAdmin === true;
 
   return (
     <div className="border-b border-gray-200 pb-6 last:border-0">

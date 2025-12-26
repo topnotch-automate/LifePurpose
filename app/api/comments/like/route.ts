@@ -1,8 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { storage, CommentRecord } from "@/lib/storage";
+import { isAdminAuthenticated } from "@/lib/auth";
 
 export async function POST(request: NextRequest) {
   try {
+    // Require admin authentication for author likes
+    const authenticated = await isAdminAuthenticated();
+    if (!authenticated) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await request.json();
     const { type, contentId, commentId } = body;
 
