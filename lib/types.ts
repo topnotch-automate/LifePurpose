@@ -49,3 +49,15 @@ export interface Book {
   date: string;
 }
 
+export interface Practice {
+  id: string;
+  theme: string;
+  source: string;
+  sourceSlug?: string; // Optional: direct reference to article slug for exact matching
+  depth: "Gentle" | "Reflective" | "Integrative";
+  orientation: string;
+  practice: string;
+  livingIntegration: string;
+  quietReminder: string;
+}
+

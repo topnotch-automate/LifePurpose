@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Link from "next/link";
 import { ArticleCard } from "@/components/article/ArticleCard";
 import { CategoryFilter } from "@/components/ui/CategoryFilter";
 import { Article } from "@/lib/types";
@@ -28,13 +29,19 @@ export function LifewardPageClient({ articles, categories }: LifewardPageClientP
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-4">
             Live the Truth
           </h1>
-          <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-700 max-w-3xl mx-auto mb-6">
             Lifeward is devoted to the <strong>daily practice</strong> of God's timeless principles.
 
             Here, faith is not abstract belief, but something lived and expressed through discipline, character, gratitude, prayer, health, and ordinary daily life.
 
             The aim is simple: to grow into a life that is more ordered, faithful, and abundant.
           </p>
+          <Link
+            href="/lifeward/practice"
+            className="inline-block px-6 py-3 bg-[#9A7B4F] text-white font-medium rounded-md hover:bg-[#8B7355] transition-colors"
+          >
+            Daily Practice
+          </Link>
         </header>
 
         <div className="mb-12">
