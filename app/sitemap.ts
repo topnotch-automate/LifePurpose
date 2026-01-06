@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { getAllArticles, getAllVideos, getAllBooks } from "@/lib/mdx";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://lifeward.vercel.app";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://albertblibo.com";
   const baseUrl = siteUrl;
 
   // Get all content

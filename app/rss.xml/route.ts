@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   const articles = getAllArticles();
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://yourname.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://albertblibo.com";
 
   const rss = `<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">

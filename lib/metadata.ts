@@ -1,7 +1,7 @@
 import { Article, Video, Book } from "./types";
 import type { Metadata } from "next";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://lifeward.vercel.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://albertblibo.com";
 const siteName = "Albert Blibo - Writer, Teacher, Guide";
 const authorName = "Albert Blibo";
 const twitterHandle = process.env.NEXT_PUBLIC_TWITTER_HANDLE || "@albertblibo";

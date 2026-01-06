@@ -17,7 +17,7 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://lifeward.vercel.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://albertblibo.com";
 const siteName = "Albert Blibo - Writer, Teacher, Guide";
 const twitterHandle = process.env.NEXT_PUBLIC_TWITTER_HANDLE || "@albertblibo";
 

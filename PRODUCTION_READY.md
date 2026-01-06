@@ -131,19 +131,24 @@ Before deploying to Railway:
 
 ## 🚀 Post-Deployment
 
-1. **SEO Setup**
-   - [ ] Submit sitemap to Google Search Console
+**📋 See [POST_LAUNCH_OPTIMIZATIONS.md](./POST_LAUNCH_OPTIMIZATIONS.md) for complete guide**
+
+### Quick Start Checklist
+
+1. **SEO Setup** (Critical)
+   - [ ] Verify site in Google Search Console (see GOOGLE_SEARCH_CONSOLE_SETUP.md)
+   - [ ] Submit sitemap: `https://albertblibo.com/sitemap.xml`
    - [ ] Submit sitemap to Bing Webmaster Tools
    - [ ] Verify site in search consoles
    - [ ] Test social sharing (Open Graph)
 
-2. **Monitoring**
+2. **Monitoring** (High Priority)
    - [ ] Set up error tracking (optional: Sentry)
    - [ ] Configure analytics (optional: Google Analytics)
-   - [ ] Monitor Railway logs
-   - [ ] Check performance metrics
+   - [ ] Monitor Vercel logs
+   - [ ] Check performance metrics (Lighthouse)
 
-3. **Content**
+3. **Content** (Critical)
    - [ ] Test all content pages
    - [ ] Verify RSS feed works
    - [ ] Check sitemap accessibility
