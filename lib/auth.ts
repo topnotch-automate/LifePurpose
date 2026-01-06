@@ -5,7 +5,7 @@
 
 import { cookies } from "next/headers";
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const ADMIN_SESSION_KEY = "admin_session";
 const ADMIN_SESSION_VALUE = "authenticated";
 

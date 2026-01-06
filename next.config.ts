@@ -63,6 +63,8 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       // Add any redirects here if needed
+      // Note: Vercel automatically handles HTTP to HTTPS redirects
+      
     ];
   },
 };
