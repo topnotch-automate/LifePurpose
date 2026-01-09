@@ -19,7 +19,7 @@ const playfair = Playfair_Display({
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://albertblibo.com";
 const siteName = "Albert Blibo - Writer, Teacher, Guide";
-const twitterHandle = process.env.NEXT_PUBLIC_TWITTER_HANDLE || "@albertblibo";
+const twitterHandle = process.env.NEXT_PUBLIC_TWITTER_HANDLE || "@thealbertblibo";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
