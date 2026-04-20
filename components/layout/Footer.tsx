@@ -8,14 +8,11 @@ export function Footer() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-center md:text-left text-sm text-gray-600">
-            <p className="mb-2">
-              &copy; {currentYear} Albert Blibo. All rights reserved.
-            </p>
             <p className="text-gray-500">
               Built with clarity, discipline, and purpose.
             </p>
           </div>
-          <div className="flex items-center gap-6 text-sm">
+          <div className="flex items-center gap-6 text-sm flex-wrap justify-center">
             <a
               href="https://x.com/TheAlbertBlibo"
               target="_blank"
@@ -37,6 +34,17 @@ export function Footer() {
               </svg>
               RSS Feed
             </Link>
+            <a
+              href="https://lifewardcoaching.substack.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              Newsletter
+            </a>
+            <span className="text-gray-500">
+              &copy; {currentYear} Albert Blibo. All rights reserved.
+            </span>
           </div>
         </div>
       </div>

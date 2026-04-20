@@ -4,6 +4,7 @@ import Link from "next/link";
 import { LikeButton } from "@/components/article/LikeButton";
 import { CommentsSection } from "@/components/article/CommentsSection";
 import { MarkdownContent } from "@/components/article/MarkdownContent";
+import { CourseReference } from "@/components/article/CourseReference";
 import { BookEmailCapture } from "@/components/email/BookEmailCapture";
 import { generateBookMetadata, generateStructuredData } from "@/lib/metadata";
 import type { Metadata } from "next";
@@ -156,6 +157,8 @@ export default async function BookPage({
         </div>
 
         <CommentsSection contentType="book" contentId={book.slug} />
+
+        <CourseReference />
       </div>
     </div>
     </>

@@ -8,6 +8,7 @@ import { LikeButton } from "./LikeButton";
 import { CommentsSection } from "./CommentsSection";
 import { AuthorBio } from "./AuthorBio";
 import { FunnelCTA } from "@/components/funnel/FunnelCTA";
+import { CourseReference } from "./CourseReference";
 import { getAllArticles } from "@/lib/mdx";
 
 interface ArticleContentProps {
@@ -87,6 +88,8 @@ export function ArticleContent({ article }: ArticleContentProps) {
         </div>
 
         <CommentsSection contentType="article" contentId={article.slug} />
+
+        <CourseReference />
         
         <RelatedArticles currentArticle={article} articles={allArticles} />
       </div>

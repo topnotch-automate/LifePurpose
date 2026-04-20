@@ -5,6 +5,7 @@ import Link from "next/link";
 import { MarkdownContent } from "@/components/article/MarkdownContent";
 import { LikeButton } from "@/components/article/LikeButton";
 import { CommentsSection } from "@/components/article/CommentsSection";
+import { CourseReference } from "@/components/article/CourseReference";
 import { generateVideoMetadata, generateStructuredData } from "@/lib/metadata";
 import type { Metadata } from "next";
 
@@ -104,6 +105,8 @@ export default async function VideoPage({
         </div>
 
         <CommentsSection contentType="video" contentId={video.slug} />
+
+        <CourseReference className="mt-8" />
 
         {video.relatedArticle && (
           <div className="bg-white rounded-lg p-6 border border-gray-200 mt-8">
