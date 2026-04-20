@@ -11,6 +11,7 @@ const navItems = [
   { href: "/lifeward", label: "Lifeward" },
   { href: "/books", label: "Books" },
   { href: "/videos", label: "Videos" },
+  { href: "/#start-here-course", label: "Course" },
   { href: "/about", label: "About" },
 ];
 

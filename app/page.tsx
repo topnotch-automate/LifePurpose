@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Script from "next/script";
 import { SectionPanel } from "@/components/ui/SectionPanel";
 import { ArticleCard } from "@/components/article/ArticleCard";
 import { VideoCarousel } from "@/components/video/VideoCarousel";
@@ -129,8 +130,26 @@ export default function HomePage() {
               </Link>
             )}
           </nav>
+
+          <div id="start-here-course" className="mt-10 rounded-lg border border-gray-200 bg-white p-4 sm:p-6">
+            <h3 className="mb-3 text-2xl font-serif font-semibold text-gray-900">Online Course</h3>
+            <p className="mb-4 text-gray-600">
+              Start the course directly here.
+            </p>
+            <div id="oww-embed-course-all" />
+          </div>
         </div>
       </section>
+      <Script id="owwlish-config" strategy="afterInteractive">
+        {`
+          window.owwlish_id = "a196aefe-67c7-491f-9808-c44dda58d3ff";
+          window.owwlish_platform_name = "Static HTML";
+        `}
+      </Script>
+      <Script
+        src="https://app.owwlish.com/integration/js/embed-prod.min.js"
+        strategy="afterInteractive"
+      />
 
       {/* Two Feature Panels */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
