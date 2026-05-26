@@ -1,0 +1,44 @@
+---
+description: Website redesign baseline — applies when editing routes, UI, content, or site assets
+globs:
+  - app/**
+  - components/**
+  - content/**
+  - lib/**
+  - public/**
+  - next.config.ts
+  - REDESIGN_BASELINE.md
+alwaysApply: false
+---
+
+# Redesign baseline
+
+Before changing navigation, routes, homepage, section hubs, content model, or SEO:
+
+1. **Read** `LIFEWARD_IMPLEMENTATION_STRATEGY.md` for the Lifeward Coaching rebuild plan (phases, new pages, brand tokens).
+2. **Read** `REDESIGN_BASELINE.md` for current production parity, content inventory, and P0 fixes.
+2. **Do not trust** `IMPROVEMENTS_TO_ADD.md` for current status; use the baseline and code instead.
+
+## Production parity (do not break unintentionally)
+
+- **Learn** (`/learn`) is the unified library; filters: Understanding (Esoteriment), Practice (Lifeward), Books, Videos.
+- Legacy hub URLs redirect to Learn: `/esoteriment`, `/lifeward`, `/lifeward/practice`, `/videos` → `/learn?filter=…` (see `next.config.ts`).
+- Article URLs **unchanged**: `/esoteriment/[slug]`, `/lifeward/[slug]`; 12 articles + 5 books in `content/`.
+- Homepage: Owwlish course (`#online-course`), articles → `/course`. Contact on `/about#contact`.
+
+## P0 — verify in production
+
+| Issue | Note |
+|-------|------|
+| Canonical URL | `NEXT_PUBLIC_SITE_URL` + www redirect in hosting |
+| Sitemap | `/sitemap.xml` after deploy |
+
+## IA (decided)
+
+- Videos hub → Learn (`filter=videos`). Individual `/videos/[slug]` kept when content exists.
+- Daily practice URL → Learn (`filter=practice`); practice MDX remains in repo.
+- Checkout, comments/likes/admin — unchanged; decide separately if simplifying later.
+
+## After structural changes
+
+Update `REDESIGN_BASELINE.md` audit log and sitemap; run `npm run build`. Prefer minimal diffs unrelated to the redesign scope.

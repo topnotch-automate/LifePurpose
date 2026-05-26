@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lifeward Coaching — Visual Style Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1A3260;
+    --royal: #2050A0;
+    --gold: #C8952A;
+    --gold-light: #E8B84B;
+    --cream: #FAF8F4;
+    --warm-white: #FFFFFF;
+    --charcoal: #2C2C2C;
+    --mid: #6B6B6B;
+    --light: #E8E4DC;
+    --accent-sky: #D6E6F7;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--charcoal);
+    line-height: 1.6;
+  }
+
+  /* ─── COVER ─── */
+  .cover {
+    background: linear-gradient(145deg, var(--navy) 0%, #0E2048 60%, #0A1830 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 60px 40px;
+  }
+
+  .cover::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,149,42,0.12) 0%, transparent 70%);
+    top: -100px; right: -100px;
+  }
+
+  .cover::after {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(32,80,160,0.3) 0%, transparent 70%);
+    bottom: -80px; left: -80px;
+  }
+
+  .cover-badge {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    opacity: 0.9;
+  }
+
+  .cover-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(42px, 7vw, 72px);
+    font-weight: 300;
+    color: #fff;
+    text-align: center;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+  }
+
+  .cover-title span {
+    color: var(--gold-light);
+    font-style: italic;
+  }
+
+  .cover-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 56px;
+  }
+
+  .cover-divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto 56px;
+  }
+
+  .cover-liam {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .liam-letter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .liam-char {
+    font-family: 'Cinzel', serif;
+    font-size: 36px;
+    color: var(--gold-light);
+    line-height: 1;
+  }
+
+  .liam-word {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+  }
+
+  /* ─── SECTIONS ─── */
+  .section {
+    padding: 80px 40px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 300;
+    color: var(--navy);
+    margin-bottom: 40px;
+    line-height: 1.2;
+  }
+
+  /* ─── PALETTE ─── */
+  .palette-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .swatch {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+
+  .swatch-color {
+    height: 100px;
+  }
+
+  .swatch-info {
+    padding: 12px 14px;
+    background: white;
+  }
+
+  .swatch-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--charcoal);
+    display: block;
+  }
+
+  .swatch-hex {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    color: var(--mid);
+  }
+
+  .swatch-role {
+    font-size: 10px;
+    color: var(--mid);
+    margin-top: 2px;
+    font-style: italic;
+  }
+
+  /* ─── TYPOGRAPHY ─── */
+  .type-specimens {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .type-specimen {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    border-left: 3px solid var(--gold);
+    box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+  }
+
+  .type-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 12px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .type-display {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 44px;
+    font-weight: 300;
+    color: var(--navy);
+    line-height: 1.1;
+  }
+
+  .type-display em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .type-heading {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    letter-spacing: 3px;
+    color: var(--navy);
+    text-transform: uppercase;
+  }
+
+  .type-body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--charcoal);
+    line-height: 1.8;
+    max-width: 560px;
+  }
+
+  .type-caption {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--mid);
+  }
+
+  /* ─── NOTE TEMPLATES ─── */
+  .templates-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  @media(max-width: 600px) {
+    .templates-grid { grid-template-columns: 1fr; }
+  }
+
+  .note-card {
+    background: white;
+    border-radius: 20px;
+    padding: 36px 32px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .note-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--navy), var(--gold));
+  }
+
+  .note-card.dark {
+    background: linear-gradient(145deg, var(--navy), #0E2048);
+    color: white;
+  }
+
+  .note-card.dark::before {
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  }
+
+  .note-type {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .note-card.dark .note-type {
+    color: var(--gold-light);
+  }
+
+  .note-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--navy);
+  }
+
+  .note-card.dark .note-text {
+    color: rgba(255,255,255,0.92);
+  }
+
+  .note-text em {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .note-card.dark .note-text em {
+    color: var(--gold-light);
+  }
+
+  .note-divider {
+    width: 32px;
+    height: 1px;
+    background: var(--gold);
+    margin: 20px 0;
+  }
+
+  .note-author {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: var(--mid);
+    font-weight: 500;
+  }
+
+  .note-card.dark .note-author {
+    color: rgba(255,255,255,0.4);
+  }
+
+  /* ─── PULL QUOTE ─── */
+  .pull-quote-section {
+    background: linear-gradient(135deg, var(--navy) 0%, #0E2048 100%);
+    padding: 80px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pull-quote-section::before {
+    content: '\201C';
+    position: absolute;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 300px;
+    color: rgba(200,149,42,0.07);
+    top: -40px;
+    left: 40px;
+    line-height: 1;
+  }
+
+  .pull-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(24px, 4vw, 40px);
+    font-weight: 300;
+    font-style: italic;
+    color: white;
+    max-width: 700px;
+    margin: 0 auto 24px;
+    line-height: 1.45;
+    position: relative;
+    z-index: 1;
+  }
+
+  .pull-quote span {
+    color: var(--gold-light);
+  }
+
+  .pull-attr {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ─── VOICE RULES ─── */
+  .rules-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media(max-width: 600px) {
+    .rules-grid { grid-template-columns: 1fr; }
+  }
+
+  .rule-card {
+    background: white;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+  }
+
+  .rule-icon {
+    font-size: 22px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .rule-title {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--navy);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .rule-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--mid);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .rule-example {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--accent-sky);
+    border-radius: 8px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-style: italic;
+    color: var(--navy);
+  }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    background: var(--navy);
+    padding: 48px 40px;
+    text-align: center;
+  }
+
+  .footer-brand {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    letter-spacing: 4px;
+    color: white;
+    margin-bottom: 8px;
+  }
+
+  .footer-liam {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .divider-line {
+    border: none;
+    border-top: 1px solid var(--light);
+    margin: 60px 0 0;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .cover-badge, .cover-title, .cover-sub, .cover-divider, .cover-liam {
+    animation: fadeUp 0.8s ease forwards;
+  }
+
+  .cover-title { animation-delay: 0.1s; }
+  .cover-sub { animation-delay: 0.2s; }
+  .cover-divider { animation-delay: 0.3s; }
+  .cover-liam { animation-delay: 0.4s; }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-badge">Visual Style Guide</div>
+  <h1 class="cover-title">Lifeward<br><span>Coaching</span></h1>
+  <p class="cover-sub">Identity · Clarity · Transformation</p>
+  <div class="cover-divider"></div>
+  <div class="cover-liam">
+    <div class="liam-letter"><span class="liam-char">L</span><span class="liam-word">Lifeward</span></div>
+    <div class="liam-letter"><span class="liam-char">I</span><span class="liam-word">Identity</span></div>
+    <div class="liam-letter"><span class="liam-char">A</span><span class="liam-word">Alignment</span></div>
+    <div class="liam-letter"><span class="liam-char">M</span><span class="liam-word">Method</span></div>
+  </div>
+</div>
+
+<!-- PALETTE -->
+<div class="section">
+  <div class="section-label">01 — Colour Palette</div>
+  <h2 class="section-title">Rooted in authority.<br>Warmed by wisdom.</h2>
+  <div class="palette-grid">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#1A3260;"></div>
+      <div class="swatch-info">
+        <span class="swatch-name">Deep Navy</span>
+        <span class="swatch-hex">#1A3260</span>
+        <span class="swatch-role">Primary — Authority</span>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#2050A0;"></div>
+      <div class="swatch-info">
+        <span class="swatch-name">Royal Blue</span>
+        <span class="swatch-hex">#2050A0</span>
+        <span class="swatch-role">Secondary — Trust</span>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#C8952A;"></div>
+      <div class="swatch-info">
+        <span class="swatch-name">Covenant Gold</span>
+        <span class="swatch-hex">#C8952A</span>
+        <span class="swatch-role">Accent — Wisdom</span>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#FAF8F4;"></div>
+      <div class="swatch-info">
+        <span class="swatch-name">Parchment</span>
+        <span class="swatch-hex">#FAF8F4</span>
+        <span class="swatch-role">Background — Calm</span>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#D6E6F7;"></div>
+      <div class="swatch-info">
+        <span class="swatch-name">Morning Sky</span>
+        <span class="swatch-hex">#D6E6F7</span>
+        <span class="swatch-role">Highlight — Clarity</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider-line" style="max-width:820px;margin:0 auto;">
+
+<!-- TYPOGRAPHY -->
+<div class="section">
+  <div class="section-label">02 — Typography</div>
+  <h2 class="section-title">Words that carry weight.</h2>
+  <div class="type-specimens">
+    <div class="type-specimen">
+      <div class="type-label">Display / Article Titles — Cormorant Garamond</div>
+      <div class="type-display">Everything changed when I understood <em>God this way.</em></div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-label">Section Headers — Cinzel</div>
+      <div class="type-heading">The LIAM Framework</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-label">Body / Notes — DM Sans Light</div>
+      <div class="type-body">The people who live without limitation don't have more talent. They simply know who they are — and that settled sense of identity becomes their confidence.</div>
+    </div>
+    <div class="type-specimen">
+      <div class="type-label">Labels & Tags — DM Sans Uppercase</div>
+      <div class="type-caption">Mind Renewal · Identity · Lifeward Coaching</div>
+    </div>
+  </div>
+</div>
+
+<!-- PULL QUOTE -->
+<div class="pull-quote-section">
+  <p class="pull-quote">"You don't need more motivation.<br>You need <span>clarity.</span>"</p>
+  <span class="pull-attr">— Lifeward Coaching · LIAM Framework</span>
+</div>
+
+<!-- NOTE TEMPLATES -->
+<div class="section">
+  <div class="section-label">03 — Note Templates</div>
+  <h2 class="section-title">How your voice looks on screen.</h2>
+  <div class="templates-grid">
+    <div class="note-card">
+      <span class="note-type">Contrarian · Light</span>
+      <p class="note-text">Most people don't have a God problem.<br><br>They have a <em>concept</em> problem.</p>
+      <div class="note-divider"></div>
+      <span class="note-author">Albert Blibo · Lifeward Coaching</span>
+    </div>
+    <div class="note-card dark">
+      <span class="note-type">Philosophical · Dark</span>
+      <p class="note-text">Confidence was never about doing more.<br><br>It was always about <em>understanding more deeply.</em></p>
+      <div class="note-divider"></div>
+      <span class="note-author">Albert Blibo · Lifeward Coaching</span>
+    </div>
+    <div class="note-card dark">
+      <span class="note-type">Problem → Solution · Dark</span>
+      <p class="note-text">You don't stay stuck because life is fixed.<br><br>You stay stuck because <em>your thinking is.</em></p>
+      <div class="note-divider"></div>
+      <span class="note-author">Albert Blibo · Lifeward Coaching</span>
+    </div>
+    <div class="note-card">
+      <span class="note-type">Wisdom · Light</span>
+      <p class="note-text">Feed your mind differently —<br><br>and your life will <em>respond accordingly.</em></p>
+      <div class="note-divider"></div>
+      <span class="note-author">Albert Blibo · Lifeward Coaching</span>
+    </div>
+  </div>
+</div>
+
+<hr class="divider-line" style="max-width:820px;margin:0 auto;">
+
+<!-- VOICE RULES -->
+<div class="section">
+  <div class="section-label">04 — Voice & Tone</div>
+  <h2 class="section-title">The soul behind the style.</h2>
+  <div class="rules-grid">
+    <div class="rule-card">
+      <span class="rule-icon">🪞</span>
+      <div class="rule-title">Reflective, Not Preachy</div>
+      <div class="rule-desc">Invite the reader into a discovery. Share what you found — don't lecture what they must believe.</div>
+      <div class="rule-example">"What I found wasn't a hack. It was this..."</div>
+    </div>
+    <div class="rule-card">
+      <span class="rule-icon">⚖️</span>
+      <div class="rule-title">Precise, Not Vague</div>
+      <div class="rule-desc">Every sentence earns its place. Clarity over volume. One sharp idea beats five cloudy ones.</div>
+      <div class="rule-example">"Thought is the raw material of your life."</div>
+    </div>
+    <div class="rule-card">
+      <span class="rule-icon">🌊</span>
+      <div class="rule-title">Calm Authority</div>
+      <div class="rule-desc">You write from a place of settled knowing — not urgency, not hype. The tone is still water, not rushing rapids.</div>
+      <div class="rule-example">"Let understanding mature gently."</div>
+    </div>
+    <div class="rule-card">
+      <span class="rule-icon">🔑</span>
+      <div class="rule-title">Spiritual but Practical</div>
+      <div class="rule-desc">Every spiritual principle lands in daily life. The LIAM framework bridges the eternal and the everyday.</div>
+      <div class="rule-example">"When you know God, you know yourself."</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-brand">LIFEWARD COACHING</div>
+  <div class="footer-liam">Lifeward Identity Alignment Method</div>
+</div>
+
+</body>
+</html>

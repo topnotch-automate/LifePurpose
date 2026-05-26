@@ -5,7 +5,7 @@ import { LikeButton } from "@/components/article/LikeButton";
 import { CommentsSection } from "@/components/article/CommentsSection";
 import { MarkdownContent } from "@/components/article/MarkdownContent";
 import { CourseReference } from "@/components/article/CourseReference";
-import { BookEmailCapture } from "@/components/email/BookEmailCapture";
+import { SubstackSubscribe } from "@/components/lifeward/SubstackSubscribe";
 import { generateBookMetadata, generateStructuredData } from "@/lib/metadata";
 import type { Metadata } from "next";
 
@@ -150,7 +150,15 @@ export default async function BookPage({
           </div>
         </div>
 
-        <BookEmailCapture book={book} />
+        <SubstackSubscribe
+          theme="light"
+          source={`book:${book.slug}`}
+          className="mt-12 border-t border-gray-200 pt-8"
+          description="If you would like a free companion reflection to this guide, subscribe to the Lifeward Coaching newsletter on Substack."
+          submitLabel="Subscribe on Substack"
+          successMessage="Thank you. Confirm your subscription via the email from Substack to receive the companion reflection and weekly writing."
+          finePrint="No noise. Only clarity. Unsubscribe anytime on Substack."
+        />
 
         <div className="flex items-center gap-4 mt-8">
           <LikeButton contentType="book" contentId={book.slug} />

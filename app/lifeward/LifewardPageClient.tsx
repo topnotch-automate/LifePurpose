@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useMemo } from "react";
 import { ArticleCard } from "@/components/article/ArticleCard";
 import { CategoryFilter } from "@/components/ui/CategoryFilter";
@@ -12,19 +13,11 @@ interface LifewardPageClientProps {
 
 export function LifewardPageClient({ articles, categories }: LifewardPageClientProps) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [showComingSoon, setShowComingSoon] = useState(false);
 
   const filteredArticles = useMemo(() => {
     if (!selectedCategory) return articles;
     return articles.filter((article) => article.category === selectedCategory);
   }, [articles, selectedCategory]);
-
-  const handlePracticeClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setShowComingSoon(true);
-    // Auto-hide after 5 seconds
-    setTimeout(() => setShowComingSoon(false), 5000);
-  };
 
   return (
     <div className="min-h-screen bg-[#FFFDF8] py-12">
@@ -43,28 +36,12 @@ export function LifewardPageClient({ articles, categories }: LifewardPageClientP
 
             The aim is simple: to grow into a life that is more ordered, faithful, and abundant.
           </p>
-          <div className="relative inline-block">
-            <button
-              onClick={handlePracticeClick}
-              onMouseEnter={() => setShowComingSoon(true)}
-              onMouseLeave={() => setShowComingSoon(false)}
-              className="inline-block px-6 py-3 bg-[#9A7B4F] text-white font-medium rounded-md hover:bg-[#8B7355] transition-colors cursor-pointer"
-              aria-label="Daily Practice - Coming Soon"
-            >
-              Daily Practice
-            </button>
-            {showComingSoon && (
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg p-4 z-10">
-                <p className="text-sm font-medium text-gray-900 mb-2">Coming Soon</p>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  The Daily Practice feature is in development. In the meantime, continue reading and anticipate this powerful tool for your daily journey.
-                </p>
-                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full">
-                  <div className="w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-white"></div>
-                </div>
-              </div>
-            )}
-          </div>
+          <Link
+            href="/lifeward/practice"
+            className="inline-block px-6 py-3 bg-[#9A7B4F] text-white font-medium rounded-md hover:bg-[#8B7355] transition-colors"
+          >
+            Daily Practice
+          </Link>
         </header>
 
         <div className="mb-12">

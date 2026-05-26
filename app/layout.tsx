@@ -1,24 +1,33 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { DM_Sans, Cinzel, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollToTop } from "@/components/ui/ScrollToTop";
 
-const inter = Inter({
-  variable: "--font-geist-sans",
+const dmSans = DM_Sans({
+  variable: "--font-body",
   subsets: ["latin"],
   display: "swap",
+  weight: ["300", "400", "500"],
 });
 
-const playfair = Playfair_Display({
-  variable: "--font-serif",
+const cinzel = Cinzel({
+  variable: "--font-label",
   subsets: ["latin"],
   display: "swap",
+  weight: ["400", "600"],
+});
+
+const cormorant = Cormorant_Garamond({
+  variable: "--font-display",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["300", "400"],
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://albertblibo.com";
-const siteName = "Albert Blibo - Writer, Teacher, Guide";
+const siteName = "Lifeward Coaching Inc.";
 const twitterHandle = process.env.NEXT_PUBLIC_TWITTER_HANDLE || "@thealbertblibo";
 
 export const metadata: Metadata = {
@@ -27,18 +36,17 @@ export const metadata: Metadata = {
     default: siteName,
     template: `%s | ${siteName}`,
   },
-  description: "I write to awaken clarity, discipline, and life. Explore Esoteriment and Lifeward through timeless wisdom and practical application.",
+  description:
+    "Lifeward Coaching helps you discover true identity and live from alignment through timeless spiritual truth and daily practice.",
   keywords: [
-    "esoteriment",
     "lifeward",
-    "spiritual growth",
-    "personal development",
-    "wisdom",
-    "consciousness",
-    "faith",
-    "discipline",
-    "metaphysical",
-    "esoteric",
+    "lifeward coaching",
+    "identity alignment",
+    "spiritual truth",
+    "daily practice",
+    "faith and discipline",
+    "LIAM framework",
+    "Christian transformation",
   ],
   authors: [{ name: "Albert Blibo" }],
   creator: "Albert Blibo",
@@ -104,7 +112,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${inter.variable} ${playfair.variable} antialiased bg-white min-h-screen flex flex-col`}
+        className={`${dmSans.variable} ${cinzel.variable} ${cormorant.variable} antialiased min-h-screen flex flex-col bg-[var(--cream)] text-[var(--charcoal)]`}
       >
         <Navigation />
         <main className="flex-1">{children}</main>

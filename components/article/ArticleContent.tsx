@@ -10,6 +10,7 @@ import { AuthorBio } from "./AuthorBio";
 import { FunnelCTA } from "@/components/funnel/FunnelCTA";
 import { CourseReference } from "./CourseReference";
 import { getAllArticles } from "@/lib/mdx";
+import { learnTypeLabel } from "@/lib/learn-items";
 
 interface ArticleContentProps {
   article: Article;
@@ -19,6 +20,8 @@ export function ArticleContent({ article }: ArticleContentProps) {
   const sectionColor = article.section === "esoteriment" ? "text-[#7C8A9E]" : "text-[#9A7B4F]";
   const sectionBg = article.section === "esoteriment" ? "bg-[#FAFAF9]" : "bg-[#FFFDF8]";
   const sectionBgAlt = article.section === "esoteriment" ? "bg-[#F5F4F2]" : "bg-[#FDF9F3]";
+  const learnFilter = article.section === "esoteriment" ? "understanding" : "practice";
+  const sectionLabel = learnTypeLabel(learnFilter);
   const allArticles = getAllArticles();
   const articleUrl = `/${article.section}/${article.slug}`;
   
@@ -29,7 +32,7 @@ export function ArticleContent({ article }: ArticleContentProps) {
         <header className="mb-8">
           <div className="flex items-center gap-3 mb-4 flex-wrap">
             <span className={`text-sm font-medium uppercase tracking-wide ${sectionColor}`}>
-              {article.section}
+              {sectionLabel}
             </span>
             {article.category && (
               <>

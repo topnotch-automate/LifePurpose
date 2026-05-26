@@ -1,46 +1,46 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CourseEmbed } from "@/components/course/CourseEmbed";
+import { OwwlishCourseEmbed } from "@/components/course/OwwlishCourseEmbed";
+import { isPlaceholderUrl, siteConfig } from "@/lib/site-config";
 
-const courseTitle = process.env.NEXT_PUBLIC_COURSE_TITLE || "Online Course";
-const courseDescription =
-  process.env.NEXT_PUBLIC_COURSE_DESCRIPTION ||
-  "Learn in a structured and practical way through this guided course.";
-const courseEmbedUrl = process.env.NEXT_PUBLIC_COURSE_EMBED_URL || "";
-const courseCtaUrl = process.env.NEXT_PUBLIC_COURSE_CTA_URL || "";
-const courseCtaLabel = process.env.NEXT_PUBLIC_COURSE_CTA_LABEL || "Open Course";
+export const metadata: Metadata = {
+  title: "Online Course",
+  description: siteConfig.course.description,
+};
 
 export default function CoursePage() {
+  const { course } = siteConfig;
+  const useIframeEmbed = !isPlaceholderUrl(course.embedUrl);
+
   return (
-    <div className="min-h-screen bg-white">
-      <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="mb-3 text-4xl font-serif font-bold text-gray-900 md:text-5xl">{courseTitle}</h1>
-          <p className="max-w-3xl text-lg text-gray-600">{courseDescription}</p>
+    <div className="min-h-screen bg-[var(--cream)]">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-16">
+        <header className="text-center mb-10 max-w-3xl mx-auto">
+          <div className="font-[family-name:var(--font-label)] text-xs uppercase tracking-[0.25em] text-[var(--gold)] mb-3">
+            Online Course
+          </div>
+          <h1 className="font-[family-name:var(--font-display)] text-4xl md:text-5xl font-light text-[var(--navy)] mb-4">
+            {course.title}
+          </h1>
+          <p className="text-lg text-[var(--mid)]">{course.description}</p>
+        </header>
+
+        <div className="rounded-2xl border border-[var(--light)] bg-white/80 p-6 sm:p-8 shadow-sm">
+          {useIframeEmbed ? (
+            <CourseEmbed src={course.embedUrl} title={course.title} />
+          ) : (
+            <OwwlishCourseEmbed />
+          )}
         </div>
 
-        {courseEmbedUrl ? (
-          <CourseEmbed src={courseEmbedUrl} title={courseTitle} />
-        ) : (
-          <div className="rounded-xl border border-amber-200 bg-amber-50 p-6 text-amber-900">
-            <p className="font-medium">Course embed URL is not configured yet.</p>
-            <p className="mt-2 text-sm">
-              Set <code>NEXT_PUBLIC_COURSE_EMBED_URL</code> in your environment, then reload the page.
-            </p>
-          </div>
-        )}
-
-        {courseCtaUrl && (
-          <div className="mt-6">
-            <Link
-              href={courseCtaUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center rounded-lg bg-gray-900 px-5 py-3 font-medium text-white transition-colors hover:bg-gray-800"
-            >
-              {courseCtaLabel}
-            </Link>
-          </div>
-        )}
+        <p className="text-center text-sm text-[var(--mid)] mt-8">
+          New here?{" "}
+          <Link href="/start-here" className="text-[var(--royal)] underline underline-offset-4">
+            Start with the reading path
+          </Link>
+          .
+        </p>
       </section>
     </div>
   );

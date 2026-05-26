@@ -7,18 +7,22 @@ interface CourseReferenceProps {
 export function CourseReference({ className = "" }: CourseReferenceProps) {
   return (
     <section
-      className={`mt-10 rounded-lg border border-[#EADCC6] bg-[#FFF9F1] p-6 ${className}`.trim()}
+      className={`mt-10 rounded-2xl border border-[var(--light)] bg-white/80 p-6 ${className}`.trim()}
       aria-label="Course reference"
     >
-      <h2 className="text-lg font-semibold text-gray-900">Course</h2>
-      <p className="mt-2 text-gray-700">
-        If this content helped, continue through the guided Course path in Start Here.
+      <div className="font-[family-name:var(--font-label)] text-xs uppercase tracking-[0.2em] text-[var(--gold)] mb-2">
+        Online Course
+      </div>
+      <h2 className="text-lg font-medium text-[var(--navy)]">Continue with the course</h2>
+      <p className="mt-2 text-[var(--charcoal)]/90">
+        If this content helped, take the next step with the guided course — structured
+        lessons for understanding and daily practice.
       </p>
       <Link
-        href="/#start-here"
-        className="mt-4 inline-flex items-center text-sm font-medium text-[#8B7355] hover:underline"
+        href="/course"
+        className="mt-4 inline-flex items-center text-sm font-medium text-[var(--royal)] hover:underline underline-offset-4"
       >
-        Go to Course →
+        Open the course →
       </Link>
     </section>
   );

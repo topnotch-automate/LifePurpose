@@ -2,7 +2,7 @@ import { Article, Video, Book } from "./types";
 import type { Metadata } from "next";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://albertblibo.com";
-const siteName = "Albert Blibo - Writer, Teacher, Guide";
+const siteName = "Lifeward Coaching Inc.";
 const authorName = "Albert Blibo";
 const twitterHandle = process.env.NEXT_PUBLIC_TWITTER_HANDLE || "@albertblibo";
 
@@ -18,7 +18,8 @@ function getDefaultMetadata(): Metadata {
       url: siteUrl,
       siteName,
       title: siteName,
-      description: "I write to awaken clarity, discipline, and life. Explore Esoteriment and Lifeward.",
+      description:
+        "Lifeward Coaching helps you discover true identity and live from alignment through timeless spiritual truth and daily practice.",
     },
     twitter: {
       card: "summary_large_image",

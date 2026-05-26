@@ -38,7 +38,7 @@ export default async function PracticePage({
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <header className="mb-12 text-center">
           <Link
-            href="/lifeward"
+            href="/learn?filter=practice"
             className="text-sm font-medium text-[#9A7B4F] hover:text-[#8B7355] transition-colors inline-block mb-4"
           >
             ← Back to Lifeward
@@ -147,7 +147,7 @@ export default async function PracticePage({
               <p className="text-body text-gray-700 leading-relaxed">
                 If you desire guidance in living these principles more deeply,{" "}
                 <Link
-                  href="/contact"
+                  href="/about#contact"
                   className="text-[#9A7B4F] hover:text-[#8B7355] underline transition-colors"
                 >
                   coaching is available

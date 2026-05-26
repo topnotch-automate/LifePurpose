@@ -8,14 +8,14 @@ export async function GET() {
   const rss = `<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Albert Blibo - Writer, Teacher, Guide</title>
-    <description>I write to awaken clarity, discipline, and life. Explore Esoteriment and Lifeward.</description>
+    <title>Lifeward Coaching | Albert Blibo</title>
+    <description>Writing on identity, alignment, and daily practice — Lifeward Coaching.</description>
     <link>${siteUrl}</link>
     <atom:link href="${siteUrl}/rss" rel="self" type="application/rss+xml" />
     <language>en-us</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-    <managingEditor>albert@example.com (Albert Blibo)</managingEditor>
-    <webMaster>albert@example.com (Albert Blibo)</webMaster>
+    <managingEditor>${process.env.AUTHOR_EMAIL || process.env.CONTACT_EMAIL || "contact@lifewardcoaching.com"} (Albert Blibo)</managingEditor>
+    <webMaster>${process.env.AUTHOR_EMAIL || process.env.CONTACT_EMAIL || "contact@lifewardcoaching.com"} (Albert Blibo)</webMaster>
     <copyright>Copyright ${new Date().getFullYear()} Albert Blibo</copyright>
     ${articles
       .map(

@@ -27,11 +27,16 @@ npm install
 
 ### Development
 
+Run the dev server from **this folder** (`Purpose`), not from the nested `author-platform/` copy (that tree is outdated).
+
 ```bash
+cd C:\Users\Albert\PycharmProjects\Purpose
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to see the platform.
+
+You should see **Lifeward Coaching** in the nav and routes like `/work-with-me` and `/learn`. If you still see Esoteriment/Lifeward/Course in the nav, you are in the wrong directory.
 
 ### Building
 

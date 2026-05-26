@@ -1,277 +1,144 @@
 import Link from "next/link";
-import Script from "next/script";
-import { SectionPanel } from "@/components/ui/SectionPanel";
-import { ArticleCard } from "@/components/article/ArticleCard";
-import { VideoCarousel } from "@/components/video/VideoCarousel";
-import { getAllArticles, getAllVideos, getFirstFoundationalMessage } from "@/lib/mdx";
+import { getAllArticles } from "@/lib/mdx";
+import { LiamFramework } from "@/components/lifeward/LiamFramework";
+import { LearnArticleCard } from "@/components/lifeward/LearnArticleCard";
+import { OnlineCourseSection } from "@/components/lifeward/OnlineCourseSection";
+import { siteConfig } from "@/lib/site-config";
 
 export const dynamic = "force-dynamic";
 
 export default function HomePage() {
-  const latestArticles = getAllArticles().slice(0, 6);
-  const featuredVideos = getAllVideos().slice(0, 4); // Show up to 4 videos in carousel
-  
-  // Get foundational messages for CTAs (if no foundational message, fallback to first article)
-  const esoterimentFoundational = getFirstFoundationalMessage("esoteriment");
-  const lifewardFoundational = getFirstFoundationalMessage("lifeward");
-  
-  // Fallback to first article if no foundational message exists
-  const esoterimentArticles = getAllArticles("esoteriment");
-  const lifewardArticles = getAllArticles("lifeward");
-  const firstEsoterimentArticle = esoterimentFoundational || (esoterimentArticles.length > 0 ? esoterimentArticles[0] : null);
-  const firstLifewardArticle = lifewardFoundational || (lifewardArticles.length > 0 ? lifewardArticles[0] : null);
-  
+  const latestArticles = getAllArticles().slice(0, 3);
+
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[var(--cream)]">
       {/* Hero Section */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl md:text-6xl font-serif font-bold text-gray-900 mb-4 leading-tight">
-            I write to awaken clarity, discipline, and life.
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-20">
+        <div className="text-center mb-14">
+          <h1 className="font-[family-name:var(--font-display)] text-4xl md:text-6xl font-light text-[var(--navy)] mb-5 leading-tight">
+            Know who you truly are. Live the life that follows.
           </h1>
-          <p className="text-lg text-gray-500 max-w-2xl mx-auto mb-4 italic">
-            Explore spiritual and practical wisdom for inner clarity and abundant life.
+          <p className="text-lg md:text-xl text-[var(--mid)] max-w-3xl mx-auto mb-8">
+            I help young Ghanaians discover their true identity — beneath culture,
+            failure, and expectation — so they can build lives of purpose,
+            clarity, and success, grounded in timeless spiritual truth.
           </p>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-            Welcome to a digital sanctuary where understanding becomes practice.
-            Explore timeless principles and their lived application through <strong>Esoteriment</strong> and <strong>Lifeward.</strong>
-          </p>
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/esoteriment"
-              className="px-6 py-3 bg-gray-900 text-white rounded-lg font-medium hover:bg-gray-800 transition-colors"
+              href="/work-with-me"
+              className="inline-flex items-center justify-center px-7 py-3 rounded-lg font-medium bg-[var(--gold)] text-white hover:bg-[#B08424] transition-colors min-w-[12rem]"
             >
-              Read
+              Work With Me
             </Link>
             <Link
-              href="/videos"
-              className="px-6 py-3 border-2 border-gray-900 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+              href="/start-here"
+              className="inline-flex items-center justify-center px-7 py-3 rounded-lg font-medium border-2 border-[var(--navy)] text-[var(--navy)] hover:bg-[var(--sky)] transition-colors min-w-[12rem]"
             >
-              Watch
-            </Link>
-            <Link
-              href="/books"
-              className="px-6 py-3 border-2 border-gray-900 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors"
-            >
-              Practice
+              Start Here
             </Link>
           </div>
         </div>
-      </section>
 
-      {/* Start Here Section */}
-      <section aria-labelledby="start-here" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
-        <div>
-          <h2 id="start-here" className="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-6">
-            Start Here
-          </h2>
-          
-          <div className="space-y-4 text-lg text-gray-700 mb-8">
-            <p>
-              This platform is centered on one idea: truth must be understood and lived.
-            </p>
-            
-            <p>
-              If you are drawn to understanding the deeper laws of mind, consciousness,
-              and reality, begin with <strong>Esoteriment</strong>.
-            </p>
-            
-            <p>
-              If you are drawn to applying truth faithfully in daily life—through
-              discipline, character, and practice—begin with <strong>Lifeward</strong>.
-            </p>
-            
-            <p className="text-gray-600">
-              Many readers find value in walking both paths together.
-            </p>
-          </div>
-
-          <nav className="flex flex-col sm:flex-row gap-4">
-            {firstEsoterimentArticle ? (
-              <Link
-                href={`/esoteriment/${firstEsoterimentArticle.slug}`}
-                className="px-6 py-3 border-2 border-gray-900 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors inline-flex items-center justify-center gap-2"
-              >
-                Begin with Esoteriment
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-            ) : (
-              <Link
-                href="/esoteriment"
-                className="px-6 py-3 border-2 border-gray-900 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors inline-flex items-center justify-center gap-2"
-              >
-                Begin with Esoteriment
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-            )}
-            {firstLifewardArticle ? (
-              <Link
-                href={`/lifeward/${firstLifewardArticle.slug}`}
-                className="px-6 py-3 border-2 border-gray-900 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors inline-flex items-center justify-center gap-2"
-              >
-                Begin with Lifeward
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-            ) : (
-              <Link
-                href="/lifeward"
-                className="px-6 py-3 border-2 border-gray-900 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors inline-flex items-center justify-center gap-2"
-              >
-                Begin with Lifeward
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-            )}
-          </nav>
-
-          <div id="start-here-course" className="mt-10 rounded-lg border border-gray-200 bg-white p-4 sm:p-6">
-            <h3 className="mb-3 text-2xl font-serif font-semibold text-gray-900">Online Course</h3>
-            <p className="mb-4 text-gray-600">
-              Start the course directly here.
-            </p>
-            <div id="oww-embed-course-all" />
-          </div>
-        </div>
-      </section>
-      <Script id="owwlish-config" strategy="afterInteractive">
-        {`
-          window.owwlish_id = "a196aefe-67c7-491f-9808-c44dda58d3ff";
-          window.owwlish_platform_name = "Static HTML";
-        `}
-      </Script>
-      <Script
-        src="https://app.owwlish.com/integration/js/embed-prod.min.js"
-        strategy="afterInteractive"
-      />
-
-      {/* Two Feature Panels */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
-        <div className="grid md:grid-cols-2 gap-8">
-          <SectionPanel
-            title="Esoteriment"
-            subtitle="Understand the unseen"
-            tagline="Understand the unseen with clear metaphysical insights"
-            description="Esoteriment exists to bring clarity to what is often hidden or misunderstood. Here I simplify esoteric, metaphysical, and mystical ideas so they can be understood, tested, and lived. This work explores consciousness, mind, energy, symbolism, and the universal laws that quietly shape experience and reality."
-            href="/esoteriment"
-            theme="esoteriment"
-          />
-          <SectionPanel
-            title="Lifeward"
-            subtitle="Live the truth"
-            tagline="Apply timeless spiritual truths to everyday life"
-            description="Lifeward is devoted to the daily practice of God's timeless principles. Here, faith is not abstract belief, but something lived and expressed through discipline, character, gratitude, prayer, health, and ordinary daily life. The aim is simple: to grow into a life that is more ordered, faithful, and abundant."
-            href="/lifeward"
-            theme="lifeward"
-          />
-        </div>
-      </section>
-
-      {/* Featured Videos */}
-      {featuredVideos.length > 0 && (
-        <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
-          <div className="mb-12">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-4">
-              Featured Teachings
-            </h2>
-            <p className="text-lg text-gray-600">
-              Curated video teachings to inspire and guide.
-            </p>
-          </div>
-          <VideoCarousel videos={featuredVideos} />
-        </section>
-      )}
-
-      {/* Latest Writings */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
-        <div className="mb-12">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-4">
-            Latest Writings
-          </h2>
-          <p className="text-lg text-gray-600">
-            Recent thoughts from both Esoteriment and Lifeward.
+        {/* Philosophy Bridge */}
+        <div className="max-w-[580px] mx-auto mb-14">
+          <p className="text-[var(--charcoal)]/90 text-lg leading-relaxed">
+            Most people live from a mistaken identity — shaped by failure,
+            culture, and expectation. I help you understand your true nature
+            and build a life that reflects it. This involves both deep
+            understanding and daily practice. They are not separate — they are
+            one journey.
           </p>
         </div>
-        
-        {latestArticles.length > 0 ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {latestArticles.map((article) => (
-              <ArticleCard key={article.slug} article={article} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12 text-gray-500">
-            <p>Articles coming soon...</p>
-          </div>
-        )}
+
+        {/* Three Panel Section */}
+        <div className="grid md:grid-cols-3 gap-6 mb-14">
+          <Link
+            href="/about"
+            className="rounded-2xl border border-[var(--light)] bg-white/60 p-7 hover:shadow-sm transition-shadow"
+          >
+            <div className="font-[family-name:var(--font-label)] text-xs uppercase tracking-[0.25em] text-[var(--gold)] mb-3">
+              Who I Help
+            </div>
+            <p className="text-[var(--charcoal)]">
+              For identity confusion, faith-ambition tension, and feeling stuck
+              — you are not alone.
+            </p>
+          </Link>
+
+          <Link
+            href="/work-with-me"
+            className="rounded-2xl border border-[var(--light)] bg-white/60 p-7 hover:shadow-sm transition-shadow"
+          >
+            <div className="font-[family-name:var(--font-label)] text-xs uppercase tracking-[0.25em] text-[var(--gold)] mb-3">
+              How I Work
+            </div>
+            <p className="text-[var(--charcoal)]">
+              Through the LIAM Framework — Lifeward, Identity, Alignment, and
+              Method — we bring truth into daily life.
+            </p>
+          </Link>
+
+          <Link
+            href="/learn"
+            className="rounded-2xl border border-[var(--light)] bg-white/60 p-7 hover:shadow-sm transition-shadow"
+          >
+            <div className="font-[family-name:var(--font-label)] text-xs uppercase tracking-[0.25em] text-[var(--gold)] mb-3">
+              Explore Writing
+            </div>
+            <p className="text-[var(--charcoal)]">
+              Articles, mini-books, and teachings — Understanding and Practice
+              in one library.
+            </p>
+          </Link>
+        </div>
       </section>
 
-      {/* Gentle CTAs for Deeper Exploration */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
-        <div className="border-t border-gray-200 pt-12">
-          <div className="grid md:grid-cols-3 gap-6">
-            {firstEsoterimentArticle && (
-              <Link
-                href={`/esoteriment/${firstEsoterimentArticle.slug}`}
-                className="group p-6 bg-white border border-gray-200 rounded-lg hover:shadow-md hover:border-gray-300 transition-all"
-              >
-                <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-gray-700">
-                  Read a foundational Esoteriment article
-                </h3>
-                <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-                  {firstEsoterimentArticle.title}
-                </p>
-                <span className="text-sm text-gray-500 inline-flex items-center gap-1 group-hover:text-gray-700">
-                  Begin reading
-                  <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </span>
-              </Link>
-            )}
-            {firstLifewardArticle && (
-              <Link
-                href={`/lifeward/${firstLifewardArticle.slug}`}
-                className="group p-6 bg-white border border-gray-200 rounded-lg hover:shadow-md hover:border-gray-300 transition-all"
-              >
-                <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-gray-700">
-                  Start your Lifeward journey here
-                </h3>
-                <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-                  {firstLifewardArticle.title}
-                </p>
-                <span className="text-sm text-gray-500 inline-flex items-center gap-1 group-hover:text-gray-700">
-                  Begin reading
-                  <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </span>
-              </Link>
-            )}
-            <Link
-              href="/books"
-              className="group p-6 bg-white border border-gray-200 rounded-lg hover:shadow-md hover:border-gray-300 transition-all"
-            >
-              <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-gray-700">
-                Browse the Mini-Books Library
-              </h3>
-              <p className="text-sm text-gray-600 mb-3">
-                Explore practical guides and teachings in book format.
-              </p>
-              <span className="text-sm text-gray-500 inline-flex items-center gap-1 group-hover:text-gray-700">
-                View books
-                <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </span>
-            </Link>
+      {/* LIAM Framework Block */}
+      <LiamFramework />
+
+      {/* Latest Writing Preview */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-20">
+        <div className="flex items-end justify-between gap-6 mb-10">
+          <div>
+            <div className="font-[family-name:var(--font-label)] text-xs uppercase tracking-[0.25em] text-[var(--navy)]">
+              LATEST WRITING
+            </div>
+            <h2 className="font-[family-name:var(--font-display)] text-3xl md:text-4xl font-light text-[var(--navy)] mt-3">
+              Recent reflections from the Lifeward library
+            </h2>
           </div>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {latestArticles.map((article) => (
+            <LearnArticleCard key={article.slug} article={article} />
+          ))}
+        </div>
+      </section>
+
+      <OnlineCourseSection showLegacyAnchor />
+
+      {/* Newsletter CTA Strip */}
+      <section className="bg-[var(--navy)] text-white py-14 md:py-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="text-center md:text-left">
+            <div className="font-[family-name:var(--font-label)] text-xs uppercase tracking-[0.25em] text-[var(--gold-lt)] mb-2">
+              STAY GROUNDED
+            </div>
+            <p className="text-white/80 max-w-xl">
+              Weekly reflections on identity, discipline, and the daily practice
+              of truth — delivered to your inbox.
+            </p>
+          </div>
+          <a
+            href={siteConfig.substackUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center px-7 py-3 rounded-lg font-medium bg-[var(--gold)] text-white hover:bg-[#B08424] transition-colors"
+          >
+            Subscribe on Substack
+          </a>
         </div>
       </section>
     </div>

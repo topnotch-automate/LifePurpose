@@ -27,10 +27,10 @@ export default function NotFound() {
             Go Home
           </Link>
           <Link
-            href="/esoteriment"
+            href="/learn"
             className="px-6 py-3 border-2 border-gray-900 text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors"
           >
-            Browse Articles
+            Explore the Writing
           </Link>
         </div>
       </div>

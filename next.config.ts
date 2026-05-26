@@ -59,12 +59,34 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Redirects for SEO
+  // Legacy hubs → unified Learn library (article URLs under /esoteriment/* and /lifeward/* unchanged)
   async redirects() {
     return [
-      // Add any redirects here if needed
-      // Note: Vercel automatically handles HTTP to HTTPS redirects
-      
+      {
+        source: "/esoteriment",
+        destination: "/learn?filter=understanding",
+        permanent: true,
+      },
+      {
+        source: "/lifeward",
+        destination: "/learn?filter=practice",
+        permanent: true,
+      },
+      {
+        source: "/lifeward/practice",
+        destination: "/learn?filter=practice",
+        permanent: true,
+      },
+      {
+        source: "/videos",
+        destination: "/learn?filter=videos",
+        permanent: true,
+      },
+      {
+        source: "/rss.xml",
+        destination: "/rss",
+        permanent: true,
+      },
     ];
   },
 };
