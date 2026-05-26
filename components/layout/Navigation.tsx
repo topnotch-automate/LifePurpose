@@ -38,11 +38,11 @@ export function Navigation() {
             onClick={() => setMobileMenuOpen(false)}
           >
             <Image
-              src="/favicon-32x32.png"
+              src="/logo.png"
               alt=""
-              width={28}
-              height={28}
-              className="shrink-0 rounded-sm"
+              width={40}
+              height={40}
+              className="shrink-0 h-10 w-10 object-contain"
               priority
             />
             <span>Lifeward Coaching</span>
