@@ -31,8 +31,30 @@ export default function AboutPage() {
               live, work, and understand God.
             </p>
             <p className="mb-5">
-              [Albert’s personal turning point story here — 3–4 sentences. Keep
-              it specific and grounded, not generic coaching language.]
+              My own life is a clear example of moving from confusion toward
+              clarity. For a long season I did what everyone else was doing —
+              without much reason — going where people went, wanting the kind of
+              life I saw others living, and often hitting a dead end.
+            </p>
+            <p className="mb-5">
+              I experience life as an introvert, so I rarely asked others for
+              help. When I faced a challenge, something in my gut said I was
+              meant for more — but I could not name what that was. The question
+              that changed everything was simple:{" "}
+              <em className="text-[var(--navy)]">How do men become great?</em>
+            </p>
+            <p className="mb-5">
+              Answers came as inspiration — and again and again, as books that
+              showed up at the right time. Through one of them I understood that
+              identity is the real battlefield, and that what separates people is
+              not the unfairness of life but the knowledge of God and of
+              yourself.
+            </p>
+            <p className="mb-5">
+              What I share now is that integration: knowing God and knowing self,
+              so you can move beyond victimhood and keep advancing toward who you
+              were made to be — with clarity about where you come from, who you
+              are, and where you are going.
             </p>
           </div>
 

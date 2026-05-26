@@ -2,22 +2,30 @@ import Link from "next/link";
 import { SmartCta } from "@/components/lifeward/ComingSoonControl";
 import { siteConfig } from "@/lib/site-config";
 
+const programmeTitle = "How to Dissolve the Identity That Hid Your Best Version";
+const programmePrice = "$20";
+
 export const metadata = {
   title: "Work With Me",
-  description:
-    "Six-week Lifeward Coaching programme to help you move from confusion to clear identity and purposeful daily practice.",
+  description: `${programmeTitle} — a six-week Lifeward Coaching programme to move from confusion to clear identity and purposeful daily practice.`,
 };
 
 export default function WorkWithMePage() {
   return (
     <div className="min-h-screen bg-[var(--cream)] py-12 md:py-16 lg:py-20 px-4">
       <div className="max-w-5xl mx-auto">
-        <header className="text-center mb-12">
-          <h1 className="font-[family-name:var(--font-display)] text-4xl md:text-5xl font-light text-[var(--navy)] leading-tight mb-4">
+        <header className="text-center mb-12 max-w-4xl mx-auto">
+          <div className="font-[family-name:var(--font-label)] text-xs uppercase tracking-[0.25em] text-[var(--gold)] mb-4">
+            Lifeward Coaching Programme
+          </div>
+          <h1 className="font-[family-name:var(--font-display)] text-3xl md:text-5xl font-light text-[var(--navy)] leading-tight mb-5">
+            {programmeTitle}
+          </h1>
+          <p className="text-lg md:text-xl text-[var(--charcoal)]/90 leading-relaxed">
             In six weeks, you will go from feeling lost and reactive to living
             with clear identity and purposeful direction — grounded in who God
             made you to be.
-          </h1>
+          </p>
         </header>
 
         <section className="grid gap-10 lg:grid-cols-2">
@@ -126,10 +134,7 @@ export default function WorkWithMePage() {
             </div>
             <div className="space-y-3 text-[var(--charcoal)]">
               <p>
-                <span className="font-medium">
-                  Programme:
-                </span>{" "}
-                [Name Your Programme]
+                <span className="font-medium">Programme:</span> {programmeTitle}
               </p>
               <p>
                 <span className="font-medium">Duration:</span> 6 weeks
@@ -138,7 +143,7 @@ export default function WorkWithMePage() {
                 <span className="font-medium">Format:</span> Weekly 1-on-1 sessions (60 minutes)
               </p>
               <p>
-                <span className="font-medium">Investment:</span> [Add your price]
+                <span className="font-medium">Investment:</span> {programmePrice}
               </p>
               <p>
                 <span className="font-medium">Booking:</span>{" "}
