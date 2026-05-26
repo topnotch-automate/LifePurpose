@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://albertblibo.com";
 const siteName = "Lifeward Coaching Inc.";
 const authorName = "Albert Blibo";
-const twitterHandle = process.env.NEXT_PUBLIC_TWITTER_HANDLE || "@albertblibo";
+const twitterHandle = process.env.NEXT_PUBLIC_TWITTER_HANDLE || "@TheAlbertBlibo";
 
 function getDefaultMetadata(): Metadata {
   return {

@@ -28,7 +28,9 @@ const cormorant = Cormorant_Garamond({
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://albertblibo.com";
 const siteName = "Lifeward Coaching Inc.";
-const twitterHandle = process.env.NEXT_PUBLIC_TWITTER_HANDLE || "@thealbertblibo";
+const siteDescription =
+  "Lifeward Coaching helps you discover true identity and live from alignment through timeless spiritual truth and daily practice.";
+const twitterHandle = process.env.NEXT_PUBLIC_TWITTER_HANDLE || "@TheAlbertBlibo";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -36,8 +38,7 @@ export const metadata: Metadata = {
     default: siteName,
     template: `%s | ${siteName}`,
   },
-  description:
-    "Lifeward Coaching helps you discover true identity and live from alignment through timeless spiritual truth and daily practice.",
+  description: siteDescription,
   keywords: [
     "lifeward",
     "lifeward coaching",
@@ -62,7 +63,7 @@ export const metadata: Metadata = {
     url: siteUrl,
     siteName,
     title: siteName,
-    description: "I write to awaken clarity, discipline, and life. Explore Esoteriment and Lifeward.",
+    description: siteDescription,
     images: [
       {
         url: `${siteUrl}/og-image.png`,
@@ -75,10 +76,18 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: siteName,
-    description: "I write to awaken clarity, discipline, and life. Explore Esoteriment and Lifeward.",
+    description: siteDescription,
     creator: twitterHandle,
     site: twitterHandle,
     images: [`${siteUrl}/og-image.png`],
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
   },
   robots: {
     index: true,
