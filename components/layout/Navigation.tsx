@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -33,19 +32,10 @@ export function Navigation() {
         <div className="flex justify-between items-center h-16">
           <Link
             href="/"
-            aria-label="Lifeward Coaching home"
-            className="inline-flex items-center gap-2.5 font-[family-name:var(--font-label)] text-[13px] uppercase tracking-[0.25em] text-[var(--navy)] hover:text-[var(--royal)] transition-colors"
+            className="font-[family-name:var(--font-label)] text-[13px] uppercase tracking-[0.25em] text-[var(--navy)] hover:text-[var(--royal)] transition-colors"
             onClick={() => setMobileMenuOpen(false)}
           >
-            <Image
-              src="/logo.png"
-              alt=""
-              width={40}
-              height={40}
-              className="shrink-0 h-10 w-10 object-contain"
-              priority
-            />
-            <span>Lifeward Coaching</span>
+            Lifeward Coaching
           </Link>
 
           <div className="hidden md:flex items-center space-x-8">
