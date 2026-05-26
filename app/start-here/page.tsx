@@ -90,9 +90,9 @@ export default function StartHerePage() {
             </div>
             <SubstackSubscribe
               theme="dark"
-              source="start-here"
-              title="[Add title of your mini-book or PDF here]"
-              description="[Add 1–2 sentence description of the free resource here. Subscribers join the Lifeward Coaching newsletter on Substack.]"
+              source="start-here:love-and-a-sound-mind"
+              title="Love and A Sound Mind"
+              description="A disciplined exploration of love and mental clarity as lawful structures of consciousness. This mini-book reframes emotion, fear, and power through spiritual principle, revealing how inner government restores stability, courage, and right perception."
               submitLabel="Subscribe on Substack"
               successMessage="You're subscribed via Substack. Check your inbox to confirm, then watch for the free resource and weekly reflections."
             />
