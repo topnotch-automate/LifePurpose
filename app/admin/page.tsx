@@ -19,6 +19,7 @@ export default function AdminLoginPage() {
       const response = await fetch("/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
         body: JSON.stringify({ password }),
       });
 

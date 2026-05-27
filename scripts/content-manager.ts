@@ -12,127 +12,13 @@ import fs from "fs";
 import path from "path";
 import prompts from "prompts";
 import matter from "gray-matter";
+import {
+  extractDescription,
+  generateFrontmatter,
+  slugify,
+} from "../lib/content-files";
 
 const CONTENT_ROOT = path.join(process.cwd(), "content");
-
-// Simple slugify function
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/[\s_-]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-}
-
-// Extract first paragraph as description
-function extractDescription(content: string, maxLength: number = 160): string {
-  const lines = content.trim().split("\n").filter(line => line.trim());
-  const firstParagraph = lines.find(line => 
-    line.trim().length > 20 && 
-    !line.startsWith("#") && 
-    !line.startsWith(">") &&
-    !line.match(/^[-*+]\s/)
-  ) || lines[0] || "";
-  
-  let desc = firstParagraph.trim();
-  // Remove markdown formatting
-  desc = desc.replace(/\*\*/g, "").replace(/\*/g, "").replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1");
-  
-  if (desc.length > maxLength) {
-    desc = desc.substring(0, maxLength - 3) + "...";
-  }
-  return desc;
-}
-
-// Generate frontmatter based on content type
-function generateFrontmatter(
-  type: "article" | "video" | "book",
-  data: {
-    title: string;
-    section?: "esoteriment" | "lifeward";
-    description?: string;
-    date?: string;
-    [key: string]: any;
-  }
-): string {
-  const baseFields: Record<string, any> = {
-    title: data.title,
-    description: data.description || "",
-    date: data.date || new Date().toISOString().split("T")[0],
-  };
-
-  if (type === "article") {
-    const lines = [
-      "---",
-      `title: "${baseFields.title}"`,
-      `description: "${baseFields.description}"`,
-      `date: "${baseFields.date}"`,
-      `section: "${data.section || "esoteriment"}"`,
-    ];
-    
-    if (data.category) lines.push(`category: "${data.category}"`);
-    if (data.tags && data.tags.length > 0) {
-      lines.push(`tags: [${data.tags.map((t: string) => `"${t}"`).join(", ")}]`);
-    }
-    if (data.image) lines.push(`image: "${data.image}"`);
-    if (data.foundational) lines.push(`foundational: true`);
-    if (data.funnel) {
-      lines.push(`funnel:`);
-      lines.push(`  book: "${data.funnel.book}"`);
-      if (data.funnel.ctaType) lines.push(`  ctaType: "${data.funnel.ctaType}"`);
-    }
-    
-    lines.push("---");
-    return lines.join("\n") + "\n";
-  }
-
-  if (type === "video") {
-    const lines = [
-      "---",
-      `title: "${baseFields.title}"`,
-      `description: "${baseFields.description}"`,
-      `date: "${baseFields.date}"`,
-      `platform: "${data.platform || "youtube"}"`,
-      `embedUrl: "${data.embedUrl || ""}"`,
-      `section: "${data.section || "lifeward"}"`,
-    ];
-    
-    if (data.relatedArticle) lines.push(`relatedArticle: "${data.relatedArticle}"`);
-    if (data.thumbnail) lines.push(`thumbnail: "${data.thumbnail}"`);
-    
-    lines.push("---");
-    return lines.join("\n") + "\n";
-  }
-
-  if (type === "book") {
-    const lines = [
-      "---",
-      `title: "${baseFields.title}"`,
-    ];
-    
-    if (data.subtitle) lines.push(`subtitle: "${data.subtitle}"`);
-    lines.push(`description: "${baseFields.description}"`);
-    lines.push(`date: "${baseFields.date}"`);
-    
-    if (data.cover) lines.push(`cover: "${data.cover}"`);
-    if (data.themes && data.themes.length > 0) {
-      lines.push(`themes: [${data.themes.map((t: string) => `"${t}"`).join(", ")}]`);
-    }
-    if (data.price !== undefined) lines.push(`price: ${data.price}`);
-    if (data.currency) lines.push(`currency: "${data.currency}"`);
-    if (data.status) lines.push(`status: "${data.status}"`);
-    if (data.downloadLink) lines.push(`downloadLink: "${data.downloadLink}"`);
-    if (data.purchaseLink) lines.push(`purchaseLink: "${data.purchaseLink}"`);
-    if (data.purchaseUrl) lines.push(`purchaseUrl: "${data.purchaseUrl}"`);
-    if (data.excerpt !== undefined) lines.push(`excerpt: ${data.excerpt}`);
-    
-    lines.push("---");
-    return lines.join("\n") + "\n";
-  }
-
-  return `---\ntitle: "${baseFields.title}"\ndate: "${baseFields.date}"\n---\n`;
-}
 
 async function createContent() {
   const { contentType } = await prompts({

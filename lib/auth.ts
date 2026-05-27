@@ -1,15 +1,23 @@
 import { cookies } from "next/headers";
 import { createHmac, timingSafeEqual } from "node:crypto";
+import type { NextResponse } from "next/server";
 
-const SESSION_COOKIE_NAME = "admin_session";
+export const ADMIN_SESSION_COOKIE = "admin_session";
 const SESSION_DURATION_SECONDS = 60 * 60 * 24 * 7; // 7 days
 
+function trimEnv(value: string | undefined): string {
+  return value?.trim() ?? "";
+}
+
 function getAdminPassword() {
-  return process.env.ADMIN_PASSWORD || "admin";
+  const fromEnv = trimEnv(process.env.ADMIN_PASSWORD);
+  return fromEnv || "admin";
 }
 
 function getSessionSecret() {
-  return process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_PASSWORD || "admin";
+  const fromEnv =
+    trimEnv(process.env.ADMIN_SESSION_SECRET) || trimEnv(process.env.ADMIN_PASSWORD);
+  return fromEnv || "admin";
 }
 
 function sign(value: string) {
@@ -17,8 +25,8 @@ function sign(value: string) {
 }
 
 function safeEqual(a: string, b: string) {
-  const bufferA = Buffer.from(a);
-  const bufferB = Buffer.from(b);
+  const bufferA = Buffer.from(a, "utf8");
+  const bufferB = Buffer.from(b, "utf8");
 
   if (bufferA.length !== bufferB.length) {
     return false;
@@ -27,7 +35,7 @@ function safeEqual(a: string, b: string) {
   return timingSafeEqual(bufferA, bufferB);
 }
 
-function buildSessionPayload() {
+export function createSessionToken(): string {
   const issuedAt = Date.now().toString();
   return `${issuedAt}.${sign(issuedAt)}`;
 }
@@ -42,24 +50,36 @@ function isValidSessionPayload(payload: string) {
   return safeEqual(signature, expectedSignature);
 }
 
-export function verifyAdminPassword(password: string) {
-  return safeEqual(password, getAdminPassword());
-}
-
-export async function createAdminSession() {
-  const cookieStore = await cookies();
-  cookieStore.set(SESSION_COOKIE_NAME, buildSessionPayload(), {
+export function getSessionCookieOptions() {
+  return {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: "lax" as const,
     path: "/",
     maxAge: SESSION_DURATION_SECONDS,
+  };
+}
+
+/** Set session on a Route Handler response (reliable in production). */
+export function attachSessionCookie(response: NextResponse, token: string) {
+  response.cookies.set(ADMIN_SESSION_COOKIE, token, getSessionCookieOptions());
+}
+
+/** Clear session on a Route Handler response. */
+export function clearSessionCookie(response: NextResponse) {
+  response.cookies.set(ADMIN_SESSION_COOKIE, "", {
+    ...getSessionCookieOptions(),
+    maxAge: 0,
   });
+}
+
+export function verifyAdminPassword(password: string) {
+  return safeEqual(password.trim(), getAdminPassword());
 }
 
 export async function isAdminAuthenticated() {
   const cookieStore = await cookies();
-  const session = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+  const session = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
   if (!session) {
     return false;
   }
@@ -67,7 +87,14 @@ export async function isAdminAuthenticated() {
   return isValidSessionPayload(session);
 }
 
+/** @deprecated Prefer attachSessionCookie on NextResponse in API routes */
+export async function createAdminSession() {
+  const cookieStore = await cookies();
+  cookieStore.set(ADMIN_SESSION_COOKIE, createSessionToken(), getSessionCookieOptions());
+}
+
+/** @deprecated Prefer clearSessionCookie on NextResponse in API routes */
 export async function destroyAdminSession() {
   const cookieStore = await cookies();
-  cookieStore.delete(SESSION_COOKIE_NAME);
+  cookieStore.delete(ADMIN_SESSION_COOKIE);
 }

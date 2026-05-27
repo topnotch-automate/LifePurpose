@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyAdminPassword, createAdminSession } from "@/lib/auth";
+import {
+  attachSessionCookie,
+  createSessionToken,
+  verifyAdminPassword,
+} from "@/lib/auth";
+
+export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,14 +17,14 @@ export async function POST(request: NextRequest) {
     }
 
     if (verifyAdminPassword(password)) {
-      await createAdminSession();
-      return NextResponse.json({ success: true });
-    } else {
-      return NextResponse.json({ error: "Invalid password" }, { status: 401 });
+      const response = NextResponse.json({ success: true });
+      attachSessionCookie(response, createSessionToken());
+      return response;
     }
+
+    return NextResponse.json({ error: "Invalid password" }, { status: 401 });
   } catch (error) {
     console.error("Login error:", error);
     return NextResponse.json({ error: "Login failed" }, { status: 500 });
   }
 }
-

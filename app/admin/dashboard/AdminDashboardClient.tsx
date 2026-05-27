@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { AdminNav } from "@/components/admin/AdminNav";
 
 interface Comment {
   id: string;
@@ -25,7 +26,7 @@ export function AdminDashboardClient() {
 
   const fetchComments = async () => {
     try {
-      const response = await fetch("/api/admin/comments");
+      const response = await fetch("/api/admin/comments", { credentials: "same-origin" });
       if (response.status === 401) {
         router.push("/admin");
         return;
@@ -98,6 +99,7 @@ export function AdminDashboardClient() {
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <AdminNav />
         <div className="bg-white rounded-lg shadow-sm border border-gray-200">
           <div className="border-b border-gray-200 px-6 py-4 flex justify-between items-center">
             <h1 className="text-2xl font-serif font-bold text-gray-900">Comment Management</h1>
