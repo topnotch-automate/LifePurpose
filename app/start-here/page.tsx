@@ -1,40 +1,34 @@
-"use client";
-
-import { useMemo } from "react";
 import Link from "next/link";
-import { SubstackSubscribe } from "@/components/lifeward/SubstackSubscribe";
+import { KitLandingEmbedDark } from "@/components/lifeward/KitLandingEmbed";
 
 export default function StartHerePage() {
-  const readingPath = useMemo(
-    () => [
-      {
-        href: "/esoteriment/understanding-esoteriment",
-        title: "Understanding Esoteriment",
-        desc: "What this work is — and why it matters.",
-      },
-      {
-        href: "/esoteriment/identity-the-foundation-of-all-seeking",
-        title: "Identity: The Foundation of All Seeking",
-        desc: "The first and most important question answered.",
-      },
-      {
-        href: "/esoteriment/spirit-creation-and-consciousness",
-        title: "Spirit, Creation, and Consciousness",
-        desc: "How identity connects to reality.",
-      },
-      {
-        href: "/lifeward/living-lifeward",
-        title: "Living Lifeward",
-        desc: "How understanding becomes daily practice.",
-      },
-      {
-        href: "/esoteriment/thought-belief-and-feeling",
-        title: "Thought, Belief, and Feeling",
-        desc: "The mechanics of transformation.",
-      },
-    ],
-    []
-  );
+  const readingPath = [
+    {
+      href: "/esoteriment/understanding-esoteriment",
+      title: "Understanding Esoteriment",
+      desc: "What this work is — and why it matters.",
+    },
+    {
+      href: "/esoteriment/identity-the-foundation-of-all-seeking",
+      title: "Identity: The Foundation of All Seeking",
+      desc: "The first and most important question answered.",
+    },
+    {
+      href: "/esoteriment/spirit-creation-and-consciousness",
+      title: "Spirit, Creation, and Consciousness",
+      desc: "How identity connects to reality.",
+    },
+    {
+      href: "/lifeward/living-lifeward",
+      title: "Living Lifeward",
+      desc: "How understanding becomes daily practice.",
+    },
+    {
+      href: "/esoteriment/thought-belief-and-feeling",
+      title: "Thought, Belief, and Feeling",
+      desc: "The mechanics of transformation.",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-[var(--cream)] py-12 md:py-16 lg:py-20 px-4">
@@ -86,15 +80,12 @@ export default function StartHerePage() {
         <section className="mb-14">
           <div className="bg-[var(--navy)] text-white rounded-2xl border border-white/10 p-7">
             <div className="font-[family-name:var(--font-label)] text-xs uppercase tracking-[0.25em] text-[var(--gold-lt)] mb-3">
-              FREE RESOURCE + NEWSLETTER
+              FREE CHAPTER + EMAIL LIST
             </div>
-            <SubstackSubscribe
-              theme="dark"
-              source="start-here:love-and-a-sound-mind"
-              title="Love and A Sound Mind"
-              description="A disciplined exploration of love and mental clarity as lawful structures of consciousness. This mini-book reframes emotion, fear, and power through spiritual principle, revealing how inner government restores stability, courage, and right perception."
-              submitLabel="Subscribe on Substack"
-              successMessage="You're subscribed via Substack. Check your inbox to confirm, then watch for the free resource and weekly reflections."
+            <KitLandingEmbedDark
+              title="Download the first chapter of How to Befriend Your Ego"
+              description="Enter your email below to get the first chapter and join the Lifeward Coaching list — clarity on identity, the ego, and daily practice."
+              height={720}
             />
           </div>
         </section>
@@ -111,4 +102,3 @@ export default function StartHerePage() {
     </div>
   );
 }
-

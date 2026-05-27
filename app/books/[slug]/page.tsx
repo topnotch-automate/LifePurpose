@@ -5,7 +5,7 @@ import { LikeButton } from "@/components/article/LikeButton";
 import { CommentsSection } from "@/components/article/CommentsSection";
 import { MarkdownContent } from "@/components/article/MarkdownContent";
 import { CourseReference } from "@/components/article/CourseReference";
-import { SubstackSubscribe } from "@/components/lifeward/SubstackSubscribe";
+import { KitLandingEmbed } from "@/components/lifeward/KitLandingEmbed";
 import { generateBookMetadata, generateStructuredData } from "@/lib/metadata";
 import type { Metadata } from "next";
 
@@ -150,14 +150,11 @@ export default async function BookPage({
           </div>
         </div>
 
-        <SubstackSubscribe
-          theme="light"
-          source={`book:${book.slug}`}
+        <KitLandingEmbed
           className="mt-12 border-t border-gray-200 pt-8"
-          description="If you would like a free companion reflection to this guide, subscribe to the Lifeward Coaching newsletter on Substack."
-          submitLabel="Subscribe on Substack"
-          successMessage="Thank you. Confirm your subscription via the email from Substack to receive the companion reflection and weekly writing."
-          finePrint="No noise. Only clarity. Unsubscribe anytime on Substack."
+          title="Get the first chapter free"
+          description="Join the Lifeward Coaching email list and download the first chapter of How to Befriend Your Ego — on identity, the ego, and alignment with truth."
+          height={680}
         />
 
         <div className="flex items-center gap-4 mt-8">

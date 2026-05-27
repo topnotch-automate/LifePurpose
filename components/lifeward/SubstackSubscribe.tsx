@@ -92,6 +92,13 @@ export function SubstackSubscribe({
     if (firstUrlInput) firstUrlInput.value = url;
     if (referrerInput) referrerInput.value = document.referrer || url;
 
+    // Backup capture for admin (in case Substack subscribe fails)
+    void fetch("/api/subscribers", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: trimmed, source, pageUrl: url }),
+    }).catch(() => {});
+
     // Native form POST to Substack from the visitor's browser (not our server).
   }
 
