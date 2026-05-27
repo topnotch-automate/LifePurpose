@@ -133,8 +133,7 @@ body {
   background-color: var(--lifeward-background);
 }
 
-/* Kit inline embed — modal format from dashboard is hidden on-page */
-.kit-embed-root .formkit-form[data-format="inline"] {
-  display: block !important;
+/* Kit newsletter embed */
+.kit-embed-root .kit-newsletter-form {
   max-width: 100%;
 }
