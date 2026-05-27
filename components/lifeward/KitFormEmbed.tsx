@@ -153,24 +153,3 @@ export function KitFormEmbed({
   );
 }
 
-/** For navy sections — form card stays white; optional outer copy */
-export function KitFormEmbedOnDark({
-  className,
-  source,
-  title,
-  description,
-}: KitFormEmbedProps & { title?: string; description?: string }) {
-  return (
-    <div className={className}>
-      {title ? (
-        <h2 className="font-[family-name:var(--font-display)] text-2xl font-light text-white mb-3">
-          {title}
-        </h2>
-      ) : null}
-      {description ? (
-        <p className="text-white/85 mb-6 leading-relaxed">{description}</p>
-      ) : null}
-      <KitFormEmbed source={source} />
-    </div>
-  );
-}

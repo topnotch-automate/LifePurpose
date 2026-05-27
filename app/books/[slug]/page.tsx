@@ -151,13 +151,6 @@ export default async function BookPage({
         </div>
 
         <section className="mt-12 border-t border-gray-200 pt-8">
-          <h2 className="font-[family-name:var(--font-display)] text-2xl font-light text-[var(--navy)] mb-3">
-            Get the first chapter free
-          </h2>
-          <p className="text-[var(--mid)] mb-6 leading-relaxed">
-            Join the Lifeward Coaching email list and download the first chapter of
-            How to Befriend Your Ego — on identity, the ego, and alignment with truth.
-          </p>
           <KitFormEmbed source={`kit:book-${book.slug}`} />
         </section>
 
