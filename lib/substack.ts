@@ -32,8 +32,8 @@ export function getSubstackEmbedUrl(): string {
 }
 
 /**
- * Endpoint used by Substack's own subscribe forms (browser POST only — server calls are blocked).
- * @see https://support.substack.com/hc/en-us/articles/360041759232
+ * Endpoint used by Substack's own subscribe forms.
+ * Must be called from the visitor's browser only — Vercel/server requests get 403 (Cloudflare).
  */
 export function getSubstackFreeSubscribeUrl(): string {
   return `${getSubstackBaseUrl()}/api/v1/free?nojs=true`;
