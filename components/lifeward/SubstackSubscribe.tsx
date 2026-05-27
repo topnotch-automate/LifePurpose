@@ -1,11 +1,10 @@
 "use client";
 
-import { FormEvent, useEffect, useId, useRef, useState } from "react";
+import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import {
   getSubstackEmbedUrl,
-  getSubstackFreeSubscribeUrl,
   getSubstackSubscribePageUrl,
 } from "@/lib/substack";
 
@@ -13,7 +12,10 @@ type SubstackSubscribeVariant = "form" | "embed";
 type SubstackSubscribeTheme = "light" | "dark";
 
 interface SubstackSubscribeProps {
-  /** `form` = browser POST to Substack (required — server proxies get 403); `embed` = official iframe */
+  /**
+   * `embed` = official Substack iframe (most reliable on production).
+   * `form` = custom UI posting via /api/substack/subscribe (may be blocked by Substack from Vercel).
+   */
   variant?: SubstackSubscribeVariant;
   theme?: SubstackSubscribeTheme;
   className?: string;
@@ -21,13 +23,16 @@ interface SubstackSubscribeProps {
   description?: string;
   submitLabel?: string;
   successMessage?: string;
-  /** Passed to Substack as `source` (analytics in Substack dashboard) */
   source?: string;
   finePrint?: string;
 }
 
+/**
+ * Substack newsletter signup.
+ * Prefer variant="embed" on the homepage — Substack often blocks server/datacenter POSTs.
+ */
 export function SubstackSubscribe({
-  variant = "form",
+  variant = "embed",
   theme = "light",
   className,
   title,
@@ -37,45 +42,17 @@ export function SubstackSubscribe({
   source = "website",
   finePrint = "By subscribing, you agree to Substack's terms. You can unsubscribe anytime.",
 }: SubstackSubscribeProps) {
-  const iframeName = `substack-${useId().replace(/:/g, "")}`;
-  const pendingSubmitRef = useRef(false);
-  const [pageUrl, setPageUrl] = useState("");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
   const isDark = theme === "dark";
-  const action = getSubstackFreeSubscribeUrl();
 
-  useEffect(() => {
-    setPageUrl(window.location.href);
-  }, []);
-
-  useEffect(() => {
-    if (status !== "submitting") return;
-
-    const timeout = window.setTimeout(() => {
-      if (!pendingSubmitRef.current) return;
-      pendingSubmitRef.current = false;
-      setStatus("success");
-      setEmail("");
-    }, 10000);
-
-    return () => window.clearTimeout(timeout);
-  }, [status]);
-
-  function handleIframeLoad() {
-    if (!pendingSubmitRef.current) return;
-    pendingSubmitRef.current = false;
-    setStatus("success");
-    setEmail("");
-  }
-
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     const trimmed = email.trim();
 
     if (!trimmed || !trimmed.includes("@")) {
-      e.preventDefault();
       setStatus("error");
       setErrorMessage("Please enter a valid email address.");
       return;
@@ -83,23 +60,35 @@ export function SubstackSubscribe({
 
     setStatus("submitting");
     setErrorMessage("");
-    pendingSubmitRef.current = true;
 
-    const form = e.currentTarget;
-    const firstUrlInput = form.elements.namedItem("first_url") as HTMLInputElement | null;
-    const referrerInput = form.elements.namedItem("referrer") as HTMLInputElement | null;
-    const url = window.location.href;
-    if (firstUrlInput) firstUrlInput.value = url;
-    if (referrerInput) referrerInput.value = document.referrer || url;
+    try {
+      const res = await fetch("/api/substack/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: trimmed,
+          source,
+          pageUrl: window.location.href,
+        }),
+      });
 
-    // Backup capture for admin (in case Substack subscribe fails)
-    void fetch("/api/subscribers", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: trimmed, source, pageUrl: url }),
-    }).catch(() => {});
+      const data = (await res.json().catch(() => ({}))) as { error?: string };
 
-    // Native form POST to Substack from the visitor's browser (not our server).
+      if (!res.ok) {
+        setStatus("error");
+        setErrorMessage(
+          data.error ||
+            "Could not subscribe right now. Use the Substack link below or try the embedded form."
+        );
+        return;
+      }
+
+      setStatus("success");
+      setEmail("");
+    } catch {
+      setStatus("error");
+      setErrorMessage("Network error. Please try again or subscribe on Substack directly.");
+    }
   }
 
   function openSubscribePage() {
@@ -128,7 +117,7 @@ export function SubstackSubscribe({
           src={getSubstackEmbedUrl()}
           width="100%"
           height={320}
-          className="max-w-full border-0 rounded-xl bg-white"
+          className="max-w-full border-0 rounded-xl bg-white min-h-[320px]"
           title="Subscribe to Lifeward Coaching on Substack"
         />
         <p className={cn("mt-3 text-xs", isDark ? "text-white/60" : "text-[var(--mid)]")}>
@@ -184,24 +173,7 @@ export function SubstackSubscribe({
         </p>
       ) : null}
 
-      <iframe
-        name={iframeName}
-        title="Substack subscription"
-        className="sr-only"
-        onLoad={handleIframeLoad}
-      />
-
-      <form
-        action={action}
-        method="POST"
-        target={iframeName}
-        onSubmit={handleSubmit}
-        className="space-y-4"
-      >
-        <input type="hidden" name="source" value={source} />
-        <input type="hidden" name="first_url" value={pageUrl} />
-        <input type="hidden" name="referrer" value={pageUrl} />
-
+      <form onSubmit={handleSubmit} className="space-y-4">
         <label className="block">
           <span className={cn("text-sm", isDark ? "text-white/70" : "text-[var(--mid)]")}>
             Email
@@ -227,14 +199,14 @@ export function SubstackSubscribe({
         </label>
 
         {status === "error" && errorMessage ? (
-          <p className={cn("text-sm", isDark ? "text-white/80" : "text-red-700")}>{errorMessage}</p>
+          <p className={cn("text-sm", isDark ? "text-red-200" : "text-red-700")}>{errorMessage}</p>
         ) : null}
 
         <button
           type="submit"
           disabled={status === "submitting"}
           className={cn(
-            "inline-flex w-full items-center justify-center px-6 py-3 rounded-lg font-medium transition-colors disabled:opacity-70 disabled:cursor-not-allowed",
+            "inline-flex w-full cursor-pointer items-center justify-center px-6 py-3 rounded-lg font-medium transition-colors disabled:opacity-70 disabled:cursor-not-allowed",
             isDark
               ? "bg-[var(--gold)] text-white hover:bg-[#B08424]"
               : "bg-[var(--navy)] text-white hover:bg-[var(--royal)]"

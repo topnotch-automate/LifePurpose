@@ -1,12 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { FormEvent, useEffect, useId, useRef, useState } from "react";
+import { FormEvent, useId, useState } from "react";
 import { cn } from "@/lib/utils";
-import {
-  getKitFormAction,
-  KIT_FORM_IMAGE_URL,
-} from "@/lib/kit";
+import { KIT_FORM_IMAGE_URL } from "@/lib/kit";
 
 interface KitFormEmbedProps {
   className?: string;
@@ -17,17 +14,9 @@ interface KitFormEmbedProps {
   successMessage?: string;
 }
 
-async function captureSubscriberEmail(email: string, source: string, pageUrl: string) {
-  await fetch("/api/subscribers", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, source, pageUrl }),
-  }).catch(() => {});
-}
-
 /**
- * Inline Kit newsletter form — browser POST to Kit (no ck.js; that script breaks
- * custom markup and can leave the submit button unclickable).
+ * Kit newsletter form — subscribes via /api/kit/subscribe (ConvertKit v3 API).
+ * Set KIT_API_KEY in Vercel (Kit → Settings → Advanced → API).
  */
 export function KitFormEmbed({
   className,
@@ -35,37 +24,16 @@ export function KitFormEmbed({
   showIntro = true,
   successMessage = "Success! Now check your email to confirm your subscription.",
 }: KitFormEmbedProps) {
-  const iframeName = `kit-${useId().replace(/:/g, "")}`;
-  const pendingSubmitRef = useRef(false);
+  const formId = useId().replace(/:/g, "");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
-  useEffect(() => {
-    if (status !== "submitting") return;
-
-    const timeout = window.setTimeout(() => {
-      if (!pendingSubmitRef.current) return;
-      pendingSubmitRef.current = false;
-      setStatus("success");
-      setEmail("");
-    }, 10000);
-
-    return () => window.clearTimeout(timeout);
-  }, [status]);
-
-  function handleIframeLoad() {
-    if (!pendingSubmitRef.current) return;
-    pendingSubmitRef.current = false;
-    setStatus("success");
-    setEmail("");
-  }
-
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     const trimmed = email.trim();
 
     if (!trimmed || !trimmed.includes("@")) {
-      e.preventDefault();
       setStatus("error");
       setErrorMessage("Please enter a valid email address.");
       return;
@@ -73,10 +41,35 @@ export function KitFormEmbed({
 
     setStatus("submitting");
     setErrorMessage("");
-    pendingSubmitRef.current = true;
 
-    void captureSubscriberEmail(trimmed, source, window.location.href);
-    // Native POST to Kit from the visitor's browser.
+    try {
+      const res = await fetch("/api/kit/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: trimmed,
+          source,
+          pageUrl: window.location.href,
+        }),
+      });
+
+      const data = (await res.json().catch(() => ({}))) as { error?: string };
+
+      if (!res.ok) {
+        setStatus("error");
+        setErrorMessage(
+          data.error ||
+            "Could not subscribe right now. Please try again or contact us."
+        );
+        return;
+      }
+
+      setStatus("success");
+      setEmail("");
+    } catch {
+      setStatus("error");
+      setErrorMessage("Network error. Please try again.");
+    }
   }
 
   if (status === "success") {
@@ -91,17 +84,7 @@ export function KitFormEmbed({
 
   return (
     <div className={cn("kit-embed-root", className)}>
-      <iframe
-        name={iframeName}
-        title="Kit subscription"
-        className="sr-only"
-        onLoad={handleIframeLoad}
-      />
-
       <form
-        action={getKitFormAction()}
-        method="post"
-        target={iframeName}
         onSubmit={handleSubmit}
         className="kit-newsletter-form w-full overflow-hidden rounded-xl bg-white shadow-sm"
       >
@@ -147,11 +130,11 @@ export function KitFormEmbed({
             <div className="relative z-10 flex flex-col justify-center p-6 md:p-8">
               <div className="space-y-4">
                 <div>
-                  <label htmlFor={`${iframeName}-email`} className="sr-only">
+                  <label htmlFor={`${formId}-email`} className="sr-only">
                     Email Address
                   </label>
                   <input
-                    id={`${iframeName}-email`}
+                    id={`${formId}-email`}
                     className="w-full rounded border border-[#e3e3e3] px-4 py-3 text-[15px] text-black focus:border-[#1a3260] focus:outline-none focus:ring-2 focus:ring-[#c8952a]/40"
                     name="email_address"
                     aria-label="Email Address"

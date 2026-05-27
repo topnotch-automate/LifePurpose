@@ -132,9 +132,9 @@ export default function HomePage() {
             </p>
           </div>
           <SubstackSubscribe
+            variant="embed"
             theme="dark"
             source="homepage"
-            submitLabel="Subscribe"
             finePrint="Confirm via the email Substack sends you. Unsubscribe anytime."
           />
         </div>
