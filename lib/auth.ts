@@ -86,15 +86,3 @@ export async function isAdminAuthenticated() {
 
   return isValidSessionPayload(session);
 }
-
-/** @deprecated Prefer attachSessionCookie on NextResponse in API routes */
-export async function createAdminSession() {
-  const cookieStore = await cookies();
-  cookieStore.set(ADMIN_SESSION_COOKIE, createSessionToken(), getSessionCookieOptions());
-}
-
-/** @deprecated Prefer clearSessionCookie on NextResponse in API routes */
-export async function destroyAdminSession() {
-  const cookieStore = await cookies();
-  cookieStore.delete(ADMIN_SESSION_COOKIE);
-}

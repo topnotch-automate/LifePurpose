@@ -83,6 +83,11 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/books",
+        destination: "/learn?filter=books",
+        permanent: true,
+      },
+      {
         source: "/rss.xml",
         destination: "/rss",
         permanent: true,

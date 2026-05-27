@@ -2,21 +2,23 @@
 
 **Site:** [albertblibo.com](https://www.albertblibo.com/)  
 **Repo:** `Purpose` (Next.js 16, App Router, MDX content)  
-**Audit date:** May 25, 2026  
-**Branch at audit:** `main` (clean, matches `origin/main`)  
+**Audit date:** May 27, 2026  
+**Branch at audit:** `main` (Lifeward redesign + admin content editor)  
 **Build:** `npm run build` passes
 
-Use this document as the source of truth before a major redesign. It records what production matches today, what is built but hidden, and what should be fixed or decided first.
+Production parity reference. Legacy hub UI routes were removed; `next.config.ts` redirects send traffic to `/learn`.
 
 ---
 
 ## Executive summary
 
-The public marketing site and this codebase are **largely aligned**. Homepage copy, navigation, 12 articles, 5 books, section hubs, About/contact, footer links, and the Owwlish course embed on the home page all match what visitors see live.
+**Live site ([albertblibo.com](https://www.albertblibo.com/)) matches the Lifeward redesign:** 5-item nav, new homepage (LIAM, course, Substack), `/learn` (17 items), `/work-with-me`, `/start-here`, `/about#contact`, navy footer.
 
-The highest-impact gaps are **not missing pages** but **wiring and configuration**: Daily Practice is implemented but marked “Coming Soon,” `/contact` is a dead link, videos have no content, SEO images are missing, and canonical URL / RSS / Twitter settings are inconsistent.
+**Redirects:** `/esoteriment`, `/lifeward`, `/lifeward/practice`, `/videos`, `/books` → `/learn?filter=…`. Article URLs unchanged.
 
-Prioritize **decisions** (what stays in the new IA) then **P0 fixes** (broken links, canonical URL, sitemap) before visual redesign work.
+**Admin:** `/admin` (comments + content editor); production needs `ADMIN_PASSWORD`, `GITHUB_TOKEN`, `GITHUB_REPO` on Vercel.
+
+**Placeholders:** Work With Me testimonials; 0 videos; `/checkout/[slug]` stub; optional article-page styling refresh.
 
 ---
 
@@ -24,11 +26,11 @@ Prioritize **decisions** (what stays in the new IA) then **P0 fixes** (broken li
 
 | Area | Live | Code |
 |------|------|------|
-| Homepage | Hero, Start Here, Esoteriment/Lifeward panels, Latest Writings (6), bottom CTAs, Online Course (Owwlish) | `app/page.tsx` |
-| Nav | Home, Esoteriment, Lifeward, Books, Videos, Course, About | `components/layout/Navigation.tsx` |
-| Esoteriment hub | 9 articles + category filters | `content/esoteriment/*.mdx`, `EsoterimentPageClient.tsx` |
-| Lifeward hub | 3 articles + category filters | `content/lifeward/*.mdx`, `LifewardPageClient.tsx` |
-| Books | 5 mini-books | `content/books/*.mdx`, covers in `public/images/books/` |
+| Homepage | Hero, LIAM, latest articles, Owwlish course, Substack | `app/page.tsx` |
+| Nav | Home, About, Work With Me, Learn, Start Here | `components/layout/Navigation.tsx` |
+| Learn | Unified library + search/filters | `app/learn/`, `lib/get-learn-items.ts` |
+| Legacy hubs | Redirect to Learn | `next.config.ts` redirects (hub `page.tsx` removed) |
+| Books | Listed on Learn; detail at `/books/[slug]` | `content/books/*.mdx` |
 | Foundational CTAs | Intro articles for each path | `getFirstFoundationalMessage()` → `understanding-esoteriment`, `living-lifeward` |
 | About | Mission + contact form | `app/about/page.tsx`, `POST /api/contact` |
 | Footer | X, RSS, Newsletter (Substack), copyright | `components/layout/Footer.tsx` |
@@ -225,13 +227,13 @@ Answer these before locking visual design or URL structure.
 
 | Check | Result |
 |-------|--------|
-| `npm run build` | Pass |
-| Git `main` vs `origin/main` | In sync |
+| `npm run build` | Pass (May 27, 2026) |
 | Live homepage vs `app/page.tsx` | Match |
-| Live Esoteriment (9) / Lifeward (3) / Books (5) | Match repo |
-| `content/videos/` | Missing (0 videos) |
-| `getFirstFoundationalMessage` | `understanding-esoteriment`, `living-lifeward` |
-| Production `sitemap.xml` | 500 at audit time — re-verify |
-| `public/og-image.png` | Missing |
+| Live `/learn` (17 items) vs repo | Match |
+| Redirect `/esoteriment` → Learn Understanding | Match |
+| Nav 5 items | Match |
+| Removed dead code | Legacy hub pages, unused Search/SectionPanel/ArticleCard, `lib/theme.ts`, `/api/search`, `/api/admin/check` |
+| `content/videos/` | 0 videos |
+| Admin content editor | Code on `main`; requires Vercel env + redeploy |
 
-*Update the Audit log section after the next deploy or crawl.*
+*Update after deploys or content changes.*
