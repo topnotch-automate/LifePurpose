@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { SmartCta } from "@/components/lifeward/ComingSoonControl";
-import { siteConfig } from "@/lib/site-config";
+import { ComingSoonControl } from "@/components/lifeward/ComingSoonControl";
 
 const programmeTitle = "How to Dissolve the Identity That Hid Your Best Version";
 const programmePrice = "$20";
@@ -151,14 +150,9 @@ export default function WorkWithMePage() {
               </p>
             </div>
             <div className="mt-6">
-              <SmartCta
-                href={siteConfig.calendlyUrl}
-                variant="primary"
-                className="w-full"
-                external
-              >
+              <ComingSoonControl variant="primary" className="w-full">
                 Book a Free Discovery Call
-              </SmartCta>
+              </ComingSoonControl>
             </div>
           </div>
 

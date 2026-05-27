@@ -3,7 +3,7 @@ import { getAllArticles } from "@/lib/mdx";
 import { LiamFramework } from "@/components/lifeward/LiamFramework";
 import { LearnArticleCard } from "@/components/lifeward/LearnArticleCard";
 import { OnlineCourseSection } from "@/components/lifeward/OnlineCourseSection";
-import { siteConfig } from "@/lib/site-config";
+import { SubstackSubscribe } from "@/components/lifeward/SubstackSubscribe";
 
 export const dynamic = "force-dynamic";
 
@@ -121,8 +121,8 @@ export default function HomePage() {
 
       {/* Newsletter CTA Strip */}
       <section className="bg-[var(--navy)] text-white py-14 md:py-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="text-center md:text-left">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid gap-8 lg:grid-cols-2 lg:items-center">
+          <div>
             <div className="font-[family-name:var(--font-label)] text-xs uppercase tracking-[0.25em] text-[var(--gold-lt)] mb-2">
               STAY GROUNDED
             </div>
@@ -131,14 +131,12 @@ export default function HomePage() {
               of truth — delivered to your inbox.
             </p>
           </div>
-          <a
-            href={siteConfig.substackUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center px-7 py-3 rounded-lg font-medium bg-[var(--gold)] text-white hover:bg-[#B08424] transition-colors"
-          >
-            Subscribe on Substack
-          </a>
+          <SubstackSubscribe
+            theme="dark"
+            source="homepage"
+            submitLabel="Subscribe"
+            finePrint="Confirm via the email Substack sends you. Unsubscribe anytime."
+          />
         </div>
       </section>
     </div>

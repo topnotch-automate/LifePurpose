@@ -1,11 +1,10 @@
 "use client";
 
-import { FormEvent, useId, useRef, useState } from "react";
+import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import {
   getSubstackEmbedUrl,
-  getSubstackFreeSubscribeUrl,
   getSubstackSubscribePageUrl,
 } from "@/lib/substack";
 
@@ -13,7 +12,7 @@ type SubstackSubscribeVariant = "form" | "embed";
 type SubstackSubscribeTheme = "light" | "dark";
 
 interface SubstackSubscribeProps {
-  /** `form` = branded email field posting to Substack; `embed` = official Substack iframe */
+  /** `form` = email field via site API; `embed` = official Substack iframe */
   variant?: SubstackSubscribeVariant;
   theme?: SubstackSubscribeTheme;
   className?: string;
@@ -37,29 +36,56 @@ export function SubstackSubscribe({
   source = "website",
   finePrint = "By subscribing, you agree to Substack's terms. You can unsubscribe anytime.",
 }: SubstackSubscribeProps) {
-  const iframeName = `substack-${useId().replace(/:/g, "")}`;
-  const iframeRef = useRef<HTMLIFrameElement>(null);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const isDark = theme === "dark";
-  const action = getSubstackFreeSubscribeUrl();
 
-  function handleIframeLoad() {
-    if (status === "submitting") {
-      setStatus("success");
-      setEmail("");
-    }
-  }
-
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!email.trim() || !email.includes("@")) {
+    const trimmed = email.trim();
+
+    if (!trimmed || !trimmed.includes("@")) {
       setStatus("error");
+      setErrorMessage("Please enter a valid email address.");
       return;
     }
+
     setStatus("submitting");
-    e.currentTarget.submit();
+    setErrorMessage("");
+
+    try {
+      const response = await fetch("/api/substack/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: trimmed, source }),
+      });
+
+      if (response.ok) {
+        setStatus("success");
+        setEmail("");
+        return;
+      }
+
+      const data = await response.json().catch(() => ({}));
+
+      if (response.status === 400) {
+        setStatus("error");
+        setErrorMessage(
+          typeof data.error === "string" ? data.error : "Please enter a valid email address."
+        );
+        return;
+      }
+
+      // Substack blocked server proxy — open official subscribe page with email prefilled
+      window.open(getSubstackSubscribePageUrl(trimmed), "_blank", "noopener,noreferrer");
+      setStatus("success");
+      setEmail("");
+    } catch {
+      setStatus("error");
+      setErrorMessage("Something went wrong. Try again or subscribe directly on Substack.");
+    }
   }
 
   if (variant === "embed") {
@@ -140,22 +166,7 @@ export function SubstackSubscribe({
         </p>
       ) : null}
 
-      <iframe
-        ref={iframeRef}
-        name={iframeName}
-        title="Substack subscription"
-        className="sr-only"
-        onLoad={handleIframeLoad}
-      />
-
-      <form
-        action={action}
-        method="POST"
-        target={iframeName}
-        onSubmit={handleSubmit}
-        className="space-y-4"
-      >
-        <input type="hidden" name="source" value={source} />
+      <form onSubmit={handleSubmit} className="space-y-4">
         <label className="block">
           <span className={cn("text-sm", isDark ? "text-white/70" : "text-[var(--mid)]")}>
             Email
@@ -180,10 +191,8 @@ export function SubstackSubscribe({
           />
         </label>
 
-        {status === "error" ? (
-          <p className={cn("text-sm", isDark ? "text-white/80" : "text-red-700")}>
-            Please enter a valid email address.
-          </p>
+        {status === "error" && errorMessage ? (
+          <p className={cn("text-sm", isDark ? "text-white/80" : "text-red-700")}>{errorMessage}</p>
         ) : null}
 
         <button

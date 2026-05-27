@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { DM_Sans, Cinzel, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { Navigation } from "@/components/layout/Navigation";
@@ -127,6 +128,7 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
         <Footer />
         <ScrollToTop />
+        <Analytics />
       </body>
     </html>
   );
