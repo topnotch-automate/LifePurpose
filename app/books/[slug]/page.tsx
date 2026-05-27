@@ -5,7 +5,7 @@ import { LikeButton } from "@/components/article/LikeButton";
 import { CommentsSection } from "@/components/article/CommentsSection";
 import { MarkdownContent } from "@/components/article/MarkdownContent";
 import { CourseReference } from "@/components/article/CourseReference";
-import { KitLandingEmbed } from "@/components/lifeward/KitLandingEmbed";
+import { KitFormEmbed } from "@/components/lifeward/KitFormEmbed";
 import { generateBookMetadata, generateStructuredData } from "@/lib/metadata";
 import type { Metadata } from "next";
 
@@ -150,12 +150,16 @@ export default async function BookPage({
           </div>
         </div>
 
-        <KitLandingEmbed
-          className="mt-12 border-t border-gray-200 pt-8"
-          title="Get the first chapter free"
-          description="Join the Lifeward Coaching email list and download the first chapter of How to Befriend Your Ego — on identity, the ego, and alignment with truth."
-          height={680}
-        />
+        <section className="mt-12 border-t border-gray-200 pt-8">
+          <h2 className="font-[family-name:var(--font-display)] text-2xl font-light text-[var(--navy)] mb-3">
+            Get the first chapter free
+          </h2>
+          <p className="text-[var(--mid)] mb-6 leading-relaxed">
+            Join the Lifeward Coaching email list and download the first chapter of
+            How to Befriend Your Ego — on identity, the ego, and alignment with truth.
+          </p>
+          <KitFormEmbed source={`kit:book-${book.slug}`} />
+        </section>
 
         <div className="flex items-center gap-4 mt-8">
           <LikeButton contentType="book" contentId={book.slug} />

@@ -132,3 +132,9 @@ body {
 .section-lifeward {
   background-color: var(--lifeward-background);
 }
+
+/* Kit inline embed — modal format from dashboard is hidden on-page */
+.kit-embed-root .formkit-form[data-format="inline"] {
+  display: block !important;
+  max-width: 100%;
+}

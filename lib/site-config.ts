@@ -4,9 +4,7 @@ export const siteConfig = {
   substackUrl:
     process.env.NEXT_PUBLIC_SUBSTACK_URL?.trim() ||
     "https://lifewardcoaching.substack.com/",
-  kitLandingUrl:
-    process.env.NEXT_PUBLIC_KIT_LANDING_URL?.trim() ||
-    "https://lifeward-coaching.kit.com/15b19d6404",
+  kitFormId: process.env.NEXT_PUBLIC_KIT_FORM_ID?.trim() || "9491943",
   twitterUrl: "https://x.com/TheAlbertBlibo",
   calendlyUrl:
     process.env.NEXT_PUBLIC_CALENDLY_URL ??

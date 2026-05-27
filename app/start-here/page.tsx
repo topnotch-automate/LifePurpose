@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { KitLandingEmbedDark } from "@/components/lifeward/KitLandingEmbed";
+import { KitFormEmbedOnDark } from "@/components/lifeward/KitFormEmbed";
 
 export default function StartHerePage() {
   const readingPath = [
@@ -82,10 +82,10 @@ export default function StartHerePage() {
             <div className="font-[family-name:var(--font-label)] text-xs uppercase tracking-[0.25em] text-[var(--gold-lt)] mb-3">
               FREE CHAPTER + EMAIL LIST
             </div>
-            <KitLandingEmbedDark
+            <KitFormEmbedOnDark
+              source="kit:start-here"
               title="Download the first chapter of How to Befriend Your Ego"
               description="Enter your email below to get the first chapter and join the Lifeward Coaching list — clarity on identity, the ego, and daily practice."
-              height={720}
             />
           </div>
         </section>
