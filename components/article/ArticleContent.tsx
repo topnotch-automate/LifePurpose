@@ -1,6 +1,6 @@
 import { Article } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
-import Image from "next/image";
+import { ArticleFeaturedImage } from "./ArticleFeaturedImage";
 import { MarkdownContent } from "./MarkdownContent";
 import { ReadingProgress } from "./ReadingProgress";
 import { ShareButtons } from "./ShareButtons";
@@ -30,6 +30,15 @@ export function ArticleContent({ article }: ArticleContentProps) {
     <article className={`min-h-screen ${sectionBg} py-12 relative`}>
       <ReadingProgress />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {article.image ? (
+          <ArticleFeaturedImage
+            src={article.image}
+            alt={article.title}
+            priority
+            className="mt-2"
+          />
+        ) : null}
+
         <header className="mb-8">
           <div className="flex items-center gap-3 mb-4 flex-wrap">
             <span className={`text-sm font-medium uppercase tracking-wide ${sectionColor}`}>
@@ -72,18 +81,6 @@ export function ArticleContent({ article }: ArticleContentProps) {
             </div>
           )}
 
-          {article.image ? (
-            <div className="relative mb-8 aspect-[16/9] w-full overflow-hidden rounded-xl bg-gray-100">
-              <Image
-                src={article.image}
-                alt=""
-                fill
-                className="object-cover"
-                sizes="(max-width: 896px) 100vw, 896px"
-                priority
-              />
-            </div>
-          ) : null}
         </header>
         
         <ShareButtons title={article.title} url={articleUrl} description={article.description} />

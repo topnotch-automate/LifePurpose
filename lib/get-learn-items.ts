@@ -1,4 +1,5 @@
 import { getAllArticles, getAllBooks, getAllVideos } from "@/lib/mdx";
+import { resolveArticleImagePath } from "@/lib/article-image";
 import { buildArticleSearchText, type LearnItem } from "@/lib/learn-items";
 
 export function getLearnItems(): LearnItem[] {
@@ -13,6 +14,7 @@ export function getLearnItems(): LearnItem[] {
     description: article.description,
     date: article.date,
     href: `/${article.section}/${article.slug}`,
+    cover: resolveArticleImagePath(article.image),
     readingTime: article.readingTime,
     searchText: buildArticleSearchText({
       title: article.title,

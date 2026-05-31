@@ -21,20 +21,24 @@ export function LearnItemCard({ item }: LearnItemCardProps) {
       href={item.href}
       className="group block h-full rounded-2xl border border-[var(--light)] bg-white overflow-hidden shadow-sm transition-shadow hover:shadow-md"
     >
-      {item.cover && (item.type === "book" || item.type === "video") && (
+      {item.cover ? (
         <div
           className={cn(
             "bg-[var(--cream)] overflow-hidden",
-            item.type === "book" ? "aspect-[3/4] max-h-48" : "aspect-video"
+            item.type === "book"
+              ? "aspect-[3/4] max-h-48"
+              : "aspect-video"
           )}
         >
           <img
             src={item.cover}
-            alt=""
+            alt={item.title}
             className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+            loading="lazy"
+            decoding="async"
           />
         </div>
-      )}
+      ) : null}
       <div className="p-6">
         <span
           className={cn(
