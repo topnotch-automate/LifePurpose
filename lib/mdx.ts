@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import readingTime from "reading-time";
+import { resolveArticleImagePath } from "./article-image";
 import { Article, Video, Book, Practice } from "./types";
 
 const contentDirectory = path.join(process.cwd(), "content");
@@ -39,7 +40,7 @@ export function getArticleBySlug(
     readingTime: Math.ceil(stats.minutes),
     content,
     funnel: data.funnel || undefined,
-    image: data.image,
+    image: resolveArticleImagePath(data.image ? String(data.image) : undefined),
     foundational: data.foundational || false,
   };
 }

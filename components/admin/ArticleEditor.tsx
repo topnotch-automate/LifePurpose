@@ -203,9 +203,14 @@ export function ArticleEditor({ mode, initialValues, onSubmit }: ArticleEditorPr
             type="text"
             value={values.image}
             onChange={(e) => updateField("image", e.target.value)}
-            placeholder="/images/articles/example.jpg"
+            placeholder="/images/articles/example.png"
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent"
           />
+          <p className="text-xs text-gray-500 mt-1">
+            Path under <code className="text-xs">public/</code>, e.g.{" "}
+            <code className="text-xs">/images/articles/my-image.png</code>. Include the file
+            extension and commit the image to the repo.
+          </p>
         </div>
 
         <div className="md:col-span-2 flex items-center gap-2">

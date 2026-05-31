@@ -1,5 +1,6 @@
 import { Article, Video, Book } from "./types";
 import type { Metadata } from "next";
+import { getAbsoluteArticleImageUrl } from "./article-image";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://albertblibo.com";
 const siteName = "Lifeward Coaching Inc.";
@@ -43,7 +44,8 @@ function getDefaultMetadata(): Metadata {
 export function generateArticleMetadata(article: Article): Metadata {
   const sectionName = article.section.charAt(0).toUpperCase() + article.section.slice(1);
   const url = `${siteUrl}/${article.section}/${article.slug}`;
-  const imageUrl = article.image || `${siteUrl}/og-image.png`;
+  const imageUrl =
+    getAbsoluteArticleImageUrl(article.image) || `${siteUrl}/og-image.png`;
 
   return {
     ...getDefaultMetadata(),
@@ -162,7 +164,7 @@ export function generateStructuredData(type: "Article" | "Video" | "Book", data:
       "@type": "Article",
       headline: article.title,
       description: article.description,
-      image: article.image || `${baseUrl}/og-image.png`,
+      image: getAbsoluteArticleImageUrl(article.image) || `${baseUrl}/og-image.png`,
       datePublished: article.date,
       dateModified: article.date,
       author: {

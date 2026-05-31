@@ -1,5 +1,6 @@
 import { Article } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
+import Image from "next/image";
 import { MarkdownContent } from "./MarkdownContent";
 import { ReadingProgress } from "./ReadingProgress";
 import { ShareButtons } from "./ShareButtons";
@@ -59,7 +60,7 @@ export function ArticleContent({ article }: ArticleContentProps) {
           </p>
           
           {article.tags && article.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 mb-6">
               {article.tags.map((tag) => (
                 <span
                   key={tag}
@@ -70,6 +71,19 @@ export function ArticleContent({ article }: ArticleContentProps) {
               ))}
             </div>
           )}
+
+          {article.image ? (
+            <div className="relative mb-8 aspect-[16/9] w-full overflow-hidden rounded-xl bg-gray-100">
+              <Image
+                src={article.image}
+                alt=""
+                fill
+                className="object-cover"
+                sizes="(max-width: 896px) 100vw, 896px"
+                priority
+              />
+            </div>
+          ) : null}
         </header>
         
         <ShareButtons title={article.title} url={articleUrl} description={article.description} />
