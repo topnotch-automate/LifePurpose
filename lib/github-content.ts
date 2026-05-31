@@ -84,9 +84,58 @@ export async function getGitHubFile(
   return { content, sha: data.sha };
 }
 
+export async function getGitHubFileSha(relativePath: string): Promise<string | null> {
+  const config = getGitHubConfig();
+  if (!config) {
+    throw new Error("GitHub is not configured");
+  }
+
+  const encodedPath = relativePath
+    .split("/")
+    .map((segment) => encodeURIComponent(segment))
+    .join("/");
+
+  const response = await fetch(
+    `https://api.github.com/repos/${config.repo}/contents/${encodedPath}?ref=${config.branch}`,
+    {
+      headers: {
+        Authorization: `Bearer ${config.token}`,
+        Accept: "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+    }
+  );
+
+  if (response.status === 404) {
+    return null;
+  }
+
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(`GitHub API error (${response.status}): ${detail}`);
+  }
+
+  const data = await response.json();
+  return typeof data.sha === "string" ? data.sha : null;
+}
+
 export async function putGitHubFile(
   relativePath: string,
   content: string,
+  message: string,
+  sha?: string
+): Promise<void> {
+  await putGitHubBinaryFile(
+    relativePath,
+    Buffer.from(content, "utf8"),
+    message,
+    sha
+  );
+}
+
+export async function putGitHubBinaryFile(
+  relativePath: string,
+  content: Buffer,
   message: string,
   sha?: string
 ): Promise<void> {
@@ -105,7 +154,7 @@ export async function putGitHubFile(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       message,
-      content: Buffer.from(content, "utf8").toString("base64"),
+      content: content.toString("base64"),
       branch: config.branch,
       ...(sha ? { sha } : {}),
     }),

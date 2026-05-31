@@ -8,6 +8,7 @@ import {
   SECTION_LABELS,
   slugify,
 } from "@/lib/content-files";
+import { FeaturedImageField } from "@/components/admin/FeaturedImageField";
 
 export interface ArticleFormValues {
   title: string;
@@ -197,20 +198,13 @@ export function ArticleEditor({ mode, initialValues, onSubmit }: ArticleEditorPr
 
         <div className="md:col-span-2">
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Featured image path (optional)
+            Featured image (optional)
           </label>
-          <input
-            type="text"
+          <FeaturedImageField
             value={values.image}
-            onChange={(e) => updateField("image", e.target.value)}
-            placeholder="/images/articles/example.png"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+            slug={previewSlug}
+            onChange={(path) => updateField("image", path)}
           />
-          <p className="text-xs text-gray-500 mt-1">
-            Path under <code className="text-xs">public/</code>, e.g.{" "}
-            <code className="text-xs">/images/articles/my-image.png</code>. Include the file
-            extension and commit the image to the repo.
-          </p>
         </div>
 
         <div className="md:col-span-2 flex items-center gap-2">
