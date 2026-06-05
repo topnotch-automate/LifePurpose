@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { getSiteUrl } from "./site-url";
 
 const IMAGE_EXTENSIONS = [".png", ".jpg", ".jpeg", ".webp", ".gif", ".avif"];
 
@@ -47,9 +48,6 @@ export function getAbsoluteArticleImageUrl(image?: string): string | undefined {
     return resolved;
   }
 
-  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://albertblibo.com").replace(
-    /\/$/,
-    ""
-  );
+  const siteUrl = getSiteUrl();
   return `${siteUrl}${resolved.startsWith("/") ? resolved : `/${resolved}`}`;
 }

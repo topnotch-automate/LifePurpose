@@ -1,9 +1,9 @@
 import { MetadataRoute } from "next";
 import { getAllArticles, getAllVideos, getAllBooks } from "@/lib/mdx";
+import { getSiteUrl } from "@/lib/site-url";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://albertblibo.com";
-  const baseUrl = siteUrl;
+  const baseUrl = getSiteUrl();
 
   // Get all content
   const articles = getAllArticles();

@@ -27,7 +27,9 @@ const cormorant = Cormorant_Garamond({
   weight: ["300", "400"],
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://albertblibo.com";
+import { getSiteUrl } from "@/lib/site-url";
+
+const siteUrl = getSiteUrl();
 const siteName = "Lifeward Coaching Inc.";
 const siteDescription =
   "Lifeward Coaching helps you discover true identity and live from alignment through timeless spiritual truth and daily practice.";
