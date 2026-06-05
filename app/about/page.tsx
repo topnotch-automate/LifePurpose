@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ContactForm } from "@/components/ui/ContactForm";
+import { generatePageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = generatePageMetadata({
+  path: "/about",
   title: "About",
   description:
     "Learn the Lifeward Coaching approach and the LIAM framework behind identity, alignment, and daily practice.",
-};
+});
 
 export default function AboutPage() {
   return (

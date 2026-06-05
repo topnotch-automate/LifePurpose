@@ -1,13 +1,16 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ComingSoonControl } from "@/components/lifeward/ComingSoonControl";
+import { generatePageMetadata } from "@/lib/metadata";
 
 const programmeTitle = "How to Dissolve the Identity That Hid Your Best Version";
 const programmePrice = "$20";
 
-export const metadata = {
+export const metadata: Metadata = generatePageMetadata({
+  path: "/work-with-me",
   title: "Work With Me",
   description: `${programmeTitle} — a six-week Lifeward Coaching programme to move from confusion to clear identity and purposeful daily practice.`,
-};
+});
 
 export default function WorkWithMePage() {
   return (

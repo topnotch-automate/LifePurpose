@@ -1,5 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { KitFormEmbed } from "@/components/lifeward/KitFormEmbed";
+import { generatePageMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = generatePageMetadata({
+  path: "/start-here",
+  title: "Start Here",
+  description:
+    "New to Lifeward Coaching? Follow this reading path through identity, understanding, and daily practice.",
+});
 
 export default function StartHerePage() {
   const readingPath = [

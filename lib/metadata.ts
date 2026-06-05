@@ -4,23 +4,26 @@ import { getAbsoluteArticleImageUrl } from "./article-image";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://albertblibo.com";
 const siteName = "Lifeward Coaching Inc.";
+const siteDescription =
+  "Lifeward Coaching helps you discover true identity and live from alignment through timeless spiritual truth and daily practice.";
 const authorName = "Albert Blibo";
 const twitterHandle = process.env.NEXT_PUBLIC_TWITTER_HANDLE || "@TheAlbertBlibo";
+const defaultOgImage = `${siteUrl}/og-image.png`;
+
+function pageUrl(path: string): string {
+  return path === "/" ? siteUrl : `${siteUrl}${path}`;
+}
 
 function getDefaultMetadata(): Metadata {
   return {
     metadataBase: new URL(siteUrl),
-    alternates: {
-      canonical: "/",
-    },
     openGraph: {
       type: "website",
       locale: "en_US",
       url: siteUrl,
       siteName,
       title: siteName,
-      description:
-        "Lifeward Coaching helps you discover true identity and live from alignment through timeless spiritual truth and daily practice.",
+      description: siteDescription,
     },
     twitter: {
       card: "summary_large_image",
@@ -41,15 +44,61 @@ function getDefaultMetadata(): Metadata {
   };
 }
 
+export function generatePageMetadata({
+  path,
+  title,
+  description,
+  ogImage = defaultOgImage,
+}: {
+  path: string;
+  title: string | { absolute: string };
+  description: string;
+  ogImage?: string;
+}): Metadata {
+  const resolvedTitle = typeof title === "string" ? title : title.absolute;
+  const url = pageUrl(path);
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: path,
+    },
+    openGraph: {
+      type: "website",
+      locale: "en_US",
+      url,
+      siteName,
+      title: resolvedTitle,
+      description,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: resolvedTitle,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: resolvedTitle,
+      description,
+      creator: twitterHandle,
+      site: twitterHandle,
+      images: [ogImage],
+    },
+  };
+}
+
 export function generateArticleMetadata(article: Article): Metadata {
-  const sectionName = article.section.charAt(0).toUpperCase() + article.section.slice(1);
   const url = `${siteUrl}/${article.section}/${article.slug}`;
   const imageUrl =
     getAbsoluteArticleImageUrl(article.image) || `${siteUrl}/og-image.png`;
 
   return {
     ...getDefaultMetadata(),
-    title: `${article.title} | ${sectionName}`,
+    title: article.title,
     description: article.description,
     alternates: {
       canonical: `/${article.section}/${article.slug}`,
@@ -88,7 +137,7 @@ export function generateVideoMetadata(video: Video): Metadata {
 
   return {
     ...getDefaultMetadata(),
-    title: `${video.title} | Videos`,
+    title: video.title,
     description: video.description,
     alternates: {
       canonical: `/videos/${video.slug}`,
@@ -124,7 +173,7 @@ export function generateBookMetadata(book: Book): Metadata {
 
   return {
     ...getDefaultMetadata(),
-    title: `${book.title} | Books`,
+    title: book.title,
     description: book.description,
     alternates: {
       canonical: `/books/${book.slug}`,

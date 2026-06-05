@@ -1,9 +1,18 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { getAllArticles } from "@/lib/mdx";
+import { generatePageMetadata } from "@/lib/metadata";
 import { LiamFramework } from "@/components/lifeward/LiamFramework";
 import { LearnArticleCard } from "@/components/lifeward/LearnArticleCard";
 import { OnlineCourseSection } from "@/components/lifeward/OnlineCourseSection";
 import { SubstackSubscribe } from "@/components/lifeward/SubstackSubscribe";
+
+export const metadata: Metadata = generatePageMetadata({
+  path: "/",
+  title: { absolute: "Lifeward Coaching Inc." },
+  description:
+    "Lifeward Coaching helps you discover true identity and live from alignment through timeless spiritual truth and daily practice.",
+});
 
 export const dynamic = "force-dynamic";
 

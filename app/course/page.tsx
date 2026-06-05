@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CourseEmbed } from "@/components/course/CourseEmbed";
 import { OwwlishCourseEmbed } from "@/components/course/OwwlishCourseEmbed";
+import { generatePageMetadata } from "@/lib/metadata";
 import { isPlaceholderUrl, siteConfig } from "@/lib/site-config";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = generatePageMetadata({
+  path: "/course",
   title: "Online Course",
   description: siteConfig.course.description,
-};
+});
 
 export default function CoursePage() {
   const { course } = siteConfig;
