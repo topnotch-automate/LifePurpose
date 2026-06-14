@@ -9,6 +9,9 @@ export const siteConfig = {
   calendlyUrl:
     process.env.NEXT_PUBLIC_CALENDLY_URL ??
     "https://calendly.com/theincurableoptimist13/discovery-call",
+  selarStoreUrl:
+    process.env.NEXT_PUBLIC_SELAR_URL?.trim() ||
+    "https://selar.com/m/lifeward-coaching",
   freeResourceEnabled: process.env.NEXT_PUBLIC_FREE_RESOURCE_ENABLED === "true",
   course: {
     title: process.env.NEXT_PUBLIC_COURSE_TITLE ?? "Online Course",

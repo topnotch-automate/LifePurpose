@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { KitFormEmbed } from "@/components/lifeward/KitFormEmbed";
 import { generatePageMetadata } from "@/lib/metadata";
+import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = generatePageMetadata({
   path: "/start-here",
@@ -84,6 +85,29 @@ export default function StartHerePage() {
               </li>
             ))}
           </ol>
+        </section>
+
+        <section className="mb-12">
+          <div className="rounded-2xl border border-[var(--light)] bg-white/60 p-7 md:p-8 text-center">
+            <div className="font-[family-name:var(--font-label)] text-xs uppercase tracking-[0.25em] text-[var(--gold)] mb-3">
+              Books &amp; Resources
+            </div>
+            <h2 className="font-[family-name:var(--font-display)] text-2xl md:text-3xl font-light text-[var(--navy)] mb-3">
+              Mini-books and teachings on Selar
+            </h2>
+            <p className="text-[var(--mid)] max-w-2xl mx-auto mb-6">
+              Explore Lifeward mini-books and other resources — available to
+              read, download, or purchase through our Selar storefront.
+            </p>
+            <a
+              href={siteConfig.selarStoreUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-7 py-3 rounded-lg font-medium bg-[var(--gold)] text-white hover:bg-[#B08424] transition-colors"
+            >
+              Visit the Storefront
+            </a>
+          </div>
         </section>
 
         <section className="mb-14">
