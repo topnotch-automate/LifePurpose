@@ -1,4 +1,4 @@
-import { OwwlishCourseEmbed } from "@/components/course/OwwlishCourseEmbed";
+import { CourseOfferings } from "@/components/course/CourseOfferings";
 import { siteConfig } from "@/lib/site-config";
 
 interface OnlineCourseSectionProps {
@@ -34,7 +34,7 @@ export function OnlineCourseSection({
           <p className="text-[var(--charcoal)]/90 mb-6 max-w-2xl">
             {siteConfig.course.description}
           </p>
-          <OwwlishCourseEmbed />
+          <CourseOfferings />
         </div>
       </div>
     </section>

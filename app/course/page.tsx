@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CourseEmbed } from "@/components/course/CourseEmbed";
-import { OwwlishCourseEmbed } from "@/components/course/OwwlishCourseEmbed";
+import { CourseOfferings } from "@/components/course/CourseOfferings";
 import { generatePageMetadata } from "@/lib/metadata";
-import { isPlaceholderUrl, siteConfig } from "@/lib/site-config";
+import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = generatePageMetadata({
   path: "/course",
@@ -13,7 +12,6 @@ export const metadata: Metadata = generatePageMetadata({
 
 export default function CoursePage() {
   const { course } = siteConfig;
-  const useIframeEmbed = !isPlaceholderUrl(course.embedUrl);
 
   return (
     <div className="min-h-screen bg-[var(--cream)]">
@@ -29,11 +27,7 @@ export default function CoursePage() {
         </header>
 
         <div className="rounded-2xl border border-[var(--light)] bg-white/80 p-6 sm:p-8 shadow-sm">
-          {useIframeEmbed ? (
-            <CourseEmbed src={course.embedUrl} title={course.title} />
-          ) : (
-            <OwwlishCourseEmbed />
-          )}
+          <CourseOfferings />
         </div>
 
         <p className="text-center text-sm text-[var(--mid)] mt-8">

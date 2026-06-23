@@ -14,11 +14,29 @@ export const siteConfig = {
     "https://selar.com/m/lifeward-coaching",
   freeResourceEnabled: process.env.NEXT_PUBLIC_FREE_RESOURCE_ENABLED === "true",
   course: {
-    title: process.env.NEXT_PUBLIC_COURSE_TITLE ?? "Online Course",
+    title:
+      process.env.NEXT_PUBLIC_COURSE_TITLE ??
+      "How to Clear Confusion, Align Your Life, and Unlock Your Future",
     description:
       process.env.NEXT_PUBLIC_COURSE_DESCRIPTION ??
-      "Start the course directly here — structured guidance for understanding and daily practice.",
+      "Free pillars on Selar plus a guided course on this site — structured lessons to move from confusion toward clarity, alignment, and purposeful living.",
     homeAnchorId: "online-course",
+    pillars: [
+      {
+        label: "Pillar #1",
+        title: "How to Clear Confusion, Align Your Life, and Unlock Your Future",
+        url:
+          process.env.NEXT_PUBLIC_SELAR_PILLAR_1_URL?.trim() ||
+          "https://selar.com/18fe6ex978",
+      },
+      {
+        label: "Pillar #2",
+        title: "How to Clear Confusion, Align Your Life, and Unlock Your Future",
+        url:
+          process.env.NEXT_PUBLIC_SELAR_PILLAR_2_URL?.trim() ||
+          "https://selar.com/417p1r8543",
+      },
+    ],
     embedElementId: "oww-embed-course-all",
     owwlishId: "a196aefe-67c7-491f-9808-c44dda58d3ff",
     embedUrl: process.env.NEXT_PUBLIC_COURSE_EMBED_URL ?? "",
