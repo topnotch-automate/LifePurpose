@@ -31,7 +31,7 @@ export function SelarFreeCourses() {
         </article>
       ))}
       <p className="text-sm text-[var(--mid)] text-center pt-1">
-        Opens on Selar in a new tab. Start with Pillar #1, then continue to Pillar #2.
+        Opens on Selar in a new tab. Start with Pillar #1, then continue through #2 and #3.
       </p>
     </div>
   );

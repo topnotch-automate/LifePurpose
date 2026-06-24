@@ -36,6 +36,13 @@ export const siteConfig = {
           process.env.NEXT_PUBLIC_SELAR_PILLAR_2_URL?.trim() ||
           "https://selar.com/417p1r8543",
       },
+      {
+        label: "Pillar #3",
+        title: "How to Clear Confusion, Align Your Life, and Unlock Your Future",
+        url:
+          process.env.NEXT_PUBLIC_SELAR_PILLAR_3_URL?.trim() ||
+          "https://selar.com/2e8t7w5m58",
+      },
     ],
     embedElementId: "oww-embed-course-all",
     owwlishId: "a196aefe-67c7-491f-9808-c44dda58d3ff",

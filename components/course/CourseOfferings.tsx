@@ -23,10 +23,10 @@ export function CourseOfferings() {
           id="selar-courses-heading"
           className="font-[family-name:var(--font-display)] text-xl md:text-2xl font-light text-[var(--navy)] mb-2"
         >
-          Two-pillar free course
+          Three-pillar free course
         </h3>
         <p className="text-[var(--mid)] mb-5 max-w-2xl">
-          Enroll at no cost on Selar — start with Pillar #1, then continue to Pillar #2.
+          Enroll at no cost on Selar — work through Pillar #1, then #2, then #3.
         </p>
         <SelarFreeCourses />
       </section>
