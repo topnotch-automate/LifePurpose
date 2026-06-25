@@ -24,7 +24,11 @@ export async function POST(request: NextRequest) {
     }
 
     await storage.upsertSubscriber({ email, source, pageUrl });
-    return NextResponse.json({ success: true });
+    return NextResponse.json({
+      success: true,
+      requiresConfirmation: kitResult.requiresConfirmation,
+      state: kitResult.state,
+    });
   } catch (error) {
     console.error("Kit subscribe route error:", error);
     return NextResponse.json({ error: "Failed to subscribe" }, { status: 500 });

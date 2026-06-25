@@ -11,6 +11,7 @@
 import fs from "fs";
 import path from "path";
 import { randomUUID } from "node:crypto";
+import { createPostgresSql } from "@/lib/postgres";
 
 // Storage interfaces
 export interface CommentRecord {
@@ -216,6 +217,7 @@ class DatabaseStorage implements StorageAdapter {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private db: any = null;
   private initialized = false;
+  private initFailed = false;
   private initPromise: Promise<void> | null = null;
 
   constructor() {
@@ -228,76 +230,65 @@ class DatabaseStorage implements StorageAdapter {
     }
 
     this.initPromise = (async () => {
-      if (this.initialized) return;
+      if (this.initialized || this.initFailed) return;
 
       try {
-        // Only try Vercel Postgres if POSTGRES_URL is set
-        // Note: @vercel/postgres must be installed if using database storage
-        // If not installed, this will fail gracefully and use file system fallback
-        if (process.env.POSTGRES_URL) {
-          try {
-            // Dynamic import - will throw if module not installed
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const postgresModule = await import("@vercel/postgres") as any;
-            const { sql } = postgresModule;
-            this.db = sql;
-            
-            // Initialize tables if they don't exist (with error handling)
-            try {
-              await this.db`
-                CREATE TABLE IF NOT EXISTS likes (
-                  id SERIAL PRIMARY KEY,
-                  key VARCHAR(255) UNIQUE NOT NULL,
-                  count INTEGER NOT NULL DEFAULT 0,
-                  updated_at TIMESTAMP DEFAULT NOW()
-                )
-              `;
-              
-              await this.db`
-                CREATE TABLE IF NOT EXISTS comments (
-                  id VARCHAR(255) PRIMARY KEY,
-                  author VARCHAR(255) NOT NULL,
-                  content TEXT NOT NULL,
-                  date TIMESTAMP NOT NULL,
-                  type VARCHAR(50) NOT NULL,
-                  content_id VARCHAR(255) NOT NULL,
-                  parent_id VARCHAR(255),
-                  author_liked BOOLEAN DEFAULT FALSE,
-                  created_at TIMESTAMP DEFAULT NOW()
-                )
-              `;
-
-              await this.db`
-                CREATE TABLE IF NOT EXISTS email_subscribers (
-                  id VARCHAR(255) PRIMARY KEY,
-                  email VARCHAR(255) UNIQUE NOT NULL,
-                  source VARCHAR(255) NOT NULL DEFAULT 'website',
-                  page_url TEXT,
-                  synced BOOLEAN DEFAULT FALSE,
-                  created_at TIMESTAMP DEFAULT NOW(),
-                  updated_at TIMESTAMP DEFAULT NOW()
-                )
-              `;
-              
-              this.initialized = true;
-              console.log("DatabaseStorage: Initialized with PostgreSQL");
-            } catch (tableError) {
-              console.warn("DatabaseStorage: Table creation failed, will use fallback:", tableError);
-              this.initialized = false;
-            }
-          } catch {
-            // Module not found or other import error - use file system fallback
-            console.warn("DatabaseStorage: @vercel/postgres not available, will use file system fallback");
-            this.initialized = false;
-          }
+        const sql = await createPostgresSql();
+        if (!sql) {
+          this.initialized = false;
           return;
         }
 
-        // No database configured
-        this.initialized = false;
+        this.db = sql;
+
+        try {
+          await this.db`
+            CREATE TABLE IF NOT EXISTS likes (
+              id SERIAL PRIMARY KEY,
+              key VARCHAR(255) UNIQUE NOT NULL,
+              count INTEGER NOT NULL DEFAULT 0,
+              updated_at TIMESTAMP DEFAULT NOW()
+            )
+          `;
+
+          await this.db`
+            CREATE TABLE IF NOT EXISTS comments (
+              id VARCHAR(255) PRIMARY KEY,
+              author VARCHAR(255) NOT NULL,
+              content TEXT NOT NULL,
+              date TIMESTAMP NOT NULL,
+              type VARCHAR(50) NOT NULL,
+              content_id VARCHAR(255) NOT NULL,
+              parent_id VARCHAR(255),
+              author_liked BOOLEAN DEFAULT FALSE,
+              created_at TIMESTAMP DEFAULT NOW()
+            )
+          `;
+
+          await this.db`
+            CREATE TABLE IF NOT EXISTS email_subscribers (
+              id VARCHAR(255) PRIMARY KEY,
+              email VARCHAR(255) UNIQUE NOT NULL,
+              source VARCHAR(255) NOT NULL DEFAULT 'website',
+              page_url TEXT,
+              synced BOOLEAN DEFAULT FALSE,
+              created_at TIMESTAMP DEFAULT NOW(),
+              updated_at TIMESTAMP DEFAULT NOW()
+            )
+          `;
+
+          this.initialized = true;
+          console.log("DatabaseStorage: Initialized with PostgreSQL");
+        } catch (tableError) {
+          console.warn("DatabaseStorage: Table creation failed, will use fallback:", tableError);
+          this.db = null;
+          this.initialized = false;
+          this.initFailed = true;
+        }
       } catch (error) {
         console.warn("DatabaseStorage: Initialization failed, will use fallback:", error);
         this.initialized = false;
+        this.initFailed = true;
       }
     })();
 
@@ -306,7 +297,7 @@ class DatabaseStorage implements StorageAdapter {
 
   async isAvailable(): Promise<boolean> {
     await this.initialize();
-    return this.initialized && this.db !== null && !!process.env.POSTGRES_URL;
+    return this.initialized && this.db !== null;
   }
 
   async getLikes(): Promise<Record<string, number>> {

@@ -26,13 +26,16 @@ export function NewsletterSignup({
   theme = "light",
   layout = "inline",
   submitLabel = "Subscribe",
-  successMessage = "You're subscribed. Check your inbox for a confirmation email.",
+  successMessage,
   finePrint = "Unsubscribe anytime. We respect your privacy.",
 }: NewsletterSignupProps) {
   const inputId = useId().replace(/:/g, "");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [successText, setSuccessText] = useState(
+    successMessage ?? "You're subscribed. Welcome to the newsletter."
+  );
 
   const isDark = theme === "dark";
 
@@ -60,7 +63,10 @@ export function NewsletterSignup({
         }),
       });
 
-      const data = (await res.json().catch(() => ({}))) as { error?: string };
+      const data = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        requiresConfirmation?: boolean;
+      };
 
       if (!res.ok) {
         setStatus("error");
@@ -70,6 +76,12 @@ export function NewsletterSignup({
         return;
       }
 
+      setSuccessText(
+        successMessage ??
+          (data.requiresConfirmation
+            ? "Almost there — check your inbox and click the confirmation link to finish subscribing."
+            : "You're subscribed. Welcome to the newsletter.")
+      );
       setStatus("success");
       setEmail("");
     } catch {
@@ -89,7 +101,7 @@ export function NewsletterSignup({
           className
         )}
       >
-        {successMessage}
+        {successText}
       </div>
     );
   }
