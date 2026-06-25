@@ -12,6 +12,7 @@ interface KitFormEmbedProps {
   /** Show headline column from your Kit form design */
   showIntro?: boolean;
   successMessage?: string;
+  onSubscribed?: (options: { requiresConfirmation: boolean }) => void;
 }
 
 /**
@@ -22,12 +23,16 @@ export function KitFormEmbed({
   className,
   source = "kit",
   showIntro = true,
-  successMessage = "Success! Now check your email to confirm your subscription.",
+  successMessage,
+  onSubscribed,
 }: KitFormEmbedProps) {
   const formId = useId().replace(/:/g, "");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [successText, setSuccessText] = useState(
+    successMessage ?? "Success! Now check your email to confirm your subscription."
+  );
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -53,7 +58,10 @@ export function KitFormEmbed({
         }),
       });
 
-      const data = (await res.json().catch(() => ({}))) as { error?: string };
+      const data = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        requiresConfirmation?: boolean;
+      };
 
       if (!res.ok) {
         setStatus("error");
@@ -64,8 +72,16 @@ export function KitFormEmbed({
         return;
       }
 
+      const requiresConfirmation = data.requiresConfirmation ?? true;
+      setSuccessText(
+        successMessage ??
+          (requiresConfirmation
+            ? "You're almost in — check your inbox and click the confirmation link to finish subscribing."
+            : "You're subscribed. Welcome to the newsletter.")
+      );
       setStatus("success");
       setEmail("");
+      onSubscribed?.({ requiresConfirmation });
     } catch {
       setStatus("error");
       setErrorMessage("Network error. Please try again.");
@@ -76,7 +92,7 @@ export function KitFormEmbed({
     return (
       <div className={cn("kit-embed-root", className)}>
         <div className="rounded-xl border border-green-200 bg-green-50 p-6 text-green-900">
-          <p className="font-medium">{successMessage}</p>
+          <p className="font-medium">{successText}</p>
         </div>
       </div>
     );
@@ -129,6 +145,9 @@ export function KitFormEmbed({
 
             <div className="relative z-10 flex flex-col justify-center p-6 md:p-8">
               <div className="space-y-4">
+                <p className="text-sm text-[#1a3260] font-medium">
+                  Enter your email below, then click Subscribe to join the newsletter.
+                </p>
                 <div>
                   <label htmlFor={`${formId}-email`} className="sr-only">
                     Email Address

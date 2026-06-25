@@ -1,8 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
+import { KIT_FORM_ID } from "@/lib/kit";
 import { subscribeToKit } from "@/lib/kit-subscribe";
+import { siteConfig } from "@/lib/site-config";
 import { storage } from "@/lib/storage";
 
 export const dynamic = "force-dynamic";
+
+function resolveKitFormId(requested?: string): string {
+  const trimmed = requested?.trim();
+  if (trimmed) return trimmed;
+  return KIT_FORM_ID || siteConfig.kitFormId;
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -26,7 +34,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true, stored: true });
     }
 
-    const kitResult = await subscribeToKit(email);
+    const formId = resolveKitFormId(
+      typeof body.formId === "string" ? body.formId : undefined
+    );
+
+    const kitResult = await subscribeToKit(email, formId);
     if (!kitResult.ok) {
       return NextResponse.json({ error: kitResult.error, stored: true }, { status: kitResult.status });
     }

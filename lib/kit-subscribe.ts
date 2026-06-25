@@ -8,24 +8,29 @@ export type KitSubscribeResult =
     }
   | { ok: false; status: number; error: string };
 
-function resolveKitApiKey(): string | undefined {
+/** Kit v3 form subscribe requires the public API key — not the secret. */
+function resolveKitPublicApiKey(): string | undefined {
   return (
-    process.env.KIT_API_KEY?.trim() ||
-    process.env.KIT_API_SECRET?.trim() ||
-    process.env.CONVERTKIT_API_KEY?.trim() ||
-    process.env.CONVERTKIT_API_SECRET?.trim()
+    process.env.KIT_API_KEY?.trim() || process.env.CONVERTKIT_API_KEY?.trim()
   );
 }
 
 function isPendingKitState(state: string | undefined): boolean {
-  if (!state) return false;
+  if (!state) return true;
   const normalized = state.toLowerCase();
-  return normalized === "inactive" || normalized === "unconfirmed" || normalized === "pending";
+  return (
+    normalized === "inactive" ||
+    normalized === "unconfirmed" ||
+    normalized === "pending"
+  );
 }
 
 /** Subscribe via Kit (ConvertKit) v3 API — requires KIT_API_KEY on the server. */
-export async function subscribeToKit(email: string): Promise<KitSubscribeResult> {
-  const apiKey = resolveKitApiKey();
+export async function subscribeToKit(
+  email: string,
+  formId: string = KIT_FORM_ID
+): Promise<KitSubscribeResult> {
+  const apiKey = resolveKitPublicApiKey();
 
   if (!apiKey) {
     return {
@@ -36,8 +41,16 @@ export async function subscribeToKit(email: string): Promise<KitSubscribeResult>
     };
   }
 
+  if (!formId) {
+    return {
+      ok: false,
+      status: 503,
+      error: "Kit form ID is not configured.",
+    };
+  }
+
   const res = await fetch(
-    `https://api.convertkit.com/v3/forms/${KIT_FORM_ID}/subscribe`,
+    `https://api.convertkit.com/v3/forms/${formId}/subscribe`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json; charset=utf-8" },
@@ -57,23 +70,27 @@ export async function subscribeToKit(email: string): Promise<KitSubscribeResult>
     data.subscription?.id != null || data.subscriber?.id != null;
 
   if (res.ok && hasSubscriber) {
+    const requiresConfirmation = isPendingKitState(state);
     return {
       ok: true,
-      requiresConfirmation: isPendingKitState(state),
+      requiresConfirmation,
       state,
     };
   }
 
   const message =
     data.message || data.error || `Kit API returned ${res.status}`;
-  console.error("Kit subscribe failed:", res.status, message, data);
+  console.error("Kit subscribe failed:", res.status, message, {
+    formId,
+    data,
+  });
 
   if (res.status === 401 || res.status === 403) {
     return {
       ok: false,
       status: 502,
       error:
-        "Invalid Kit API key. Use the public API key from Kit → Settings → Advanced → API.",
+        "Invalid Kit API key. Use the public API key from Kit → Settings → Advanced → API (not the secret).",
     };
   }
 

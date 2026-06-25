@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { NewsletterSignup } from "@/components/lifeward/NewsletterSignup";
+import { KitFormEmbed } from "@/components/lifeward/KitFormEmbed";
 import { siteConfig } from "@/lib/site-config";
 
 const DISMISS_KEY = "lifeward-newsletter-popup-dismissed";
@@ -29,21 +29,24 @@ export function NewsletterPopup() {
     closePopup();
   }, [closePopup]);
 
-  const handleSubscribed = useCallback(() => {
-    try {
-      localStorage.setItem(SUBSCRIBED_KEY, "1");
-    } catch {
-      // ignore
-    }
+  const handleSubscribed = useCallback(
+    ({ requiresConfirmation }: { requiresConfirmation: boolean }) => {
+      try {
+        localStorage.setItem(SUBSCRIBED_KEY, "1");
+      } catch {
+        // ignore
+      }
 
-    if (closeTimerRef.current) {
-      clearTimeout(closeTimerRef.current);
-    }
+      if (closeTimerRef.current) {
+        clearTimeout(closeTimerRef.current);
+      }
 
-    closeTimerRef.current = setTimeout(() => {
-      closePopup();
-    }, 1800);
-  }, [closePopup]);
+      closeTimerRef.current = setTimeout(() => {
+        closePopup();
+      }, requiresConfirmation ? 4500 : 2200);
+    },
+    [closePopup]
+  );
 
   useEffect(() => {
     if (!enabled || isAdmin) return;
@@ -105,32 +108,19 @@ export function NewsletterPopup() {
         onClick={dismissPopup}
       />
 
-      <div className="relative w-full max-w-md rounded-2xl border border-[var(--light)] bg-[var(--cream)] shadow-xl p-6 sm:p-8">
+      <div className="relative w-full max-w-2xl rounded-2xl border border-[var(--light)] bg-[var(--cream)] shadow-xl p-4 sm:p-6">
         <button
           type="button"
           onClick={dismissPopup}
-          className="absolute top-4 right-4 text-[var(--mid)] hover:text-[var(--navy)] text-2xl leading-none"
+          className="absolute top-3 right-3 z-10 text-[var(--mid)] hover:text-[var(--navy)] text-2xl leading-none"
           aria-label="Close"
         >
           ×
         </button>
 
-        <div className="font-[family-name:var(--font-label)] text-xs uppercase tracking-[0.25em] text-[var(--gold)] mb-2">
-          Stay grounded
-        </div>
-        <h2
-          id="newsletter-popup-title"
-          className="font-[family-name:var(--font-display)] text-2xl md:text-3xl font-light text-[var(--navy)] mb-2 pr-8"
-        >
-          Weekly reflections in your inbox
-        </h2>
-        <p className="text-[var(--mid)] text-sm mb-6">
-          Identity, discipline, and the daily practice of truth — one email to subscribe.
-        </p>
-
-        <NewsletterSignup
+        <KitFormEmbed
           source="newsletter:popup"
-          layout="stacked"
+          showIntro
           onSubscribed={handleSubscribed}
         />
       </div>
