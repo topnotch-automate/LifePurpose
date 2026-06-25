@@ -9,6 +9,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const email = typeof body.email === "string" ? body.email.trim() : "";
     const source = typeof body.source === "string" ? body.source.trim() : "newsletter";
+    const adminOnly = body.adminOnly === true;
     const pageUrl =
       typeof body.pageUrl === "string"
         ? body.pageUrl.trim()
@@ -20,6 +21,10 @@ export async function POST(request: NextRequest) {
 
     // Always capture in admin first — even if Kit is slow or fails later.
     await storage.upsertSubscriber({ email, source, pageUrl, synced: false });
+
+    if (adminOnly) {
+      return NextResponse.json({ success: true, stored: true });
+    }
 
     const kitResult = await subscribeToKit(email);
     if (!kitResult.ok) {
