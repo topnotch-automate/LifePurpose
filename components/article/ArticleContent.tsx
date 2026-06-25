@@ -10,6 +10,7 @@ import { CommentsSection } from "./CommentsSection";
 import { AuthorBio } from "./AuthorBio";
 import { FunnelCTA } from "@/components/funnel/FunnelCTA";
 import { CourseReference } from "./CourseReference";
+import { NewsletterSignup } from "@/components/lifeward/NewsletterSignup";
 import { getAllArticles } from "@/lib/mdx";
 import { learnTypeLabel } from "@/lib/learn-items";
 
@@ -102,6 +103,22 @@ export function ArticleContent({ article }: ArticleContentProps) {
         </div>
 
         <CommentsSection contentType="article" contentId={article.slug} />
+
+        <section className="mt-10 rounded-2xl border border-[var(--light)] bg-white/80 p-6 md:p-8">
+          <div className="font-[family-name:var(--font-label)] text-xs uppercase tracking-[0.25em] text-[var(--gold)] mb-2">
+            Newsletter
+          </div>
+          <h2 className="font-[family-name:var(--font-display)] text-xl md:text-2xl font-light text-[var(--navy)] mb-2">
+            Get weekly reflections in your inbox
+          </h2>
+          <p className="text-[var(--mid)] mb-5 max-w-xl">
+            Identity, discipline, and the daily practice of truth — enter your email to subscribe.
+          </p>
+          <NewsletterSignup
+            source={`newsletter:${article.section}/${article.slug}`}
+            layout="stacked"
+          />
+        </section>
 
         <CourseReference />
         

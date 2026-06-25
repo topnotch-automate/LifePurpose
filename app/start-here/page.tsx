@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { KitFormEmbed } from "@/components/lifeward/KitFormEmbed";
+import { NewsletterSignup } from "@/components/lifeward/NewsletterSignup";
 import { generatePageMetadata } from "@/lib/metadata";
 import { siteConfig } from "@/lib/site-config";
 
@@ -115,7 +115,7 @@ export default function StartHerePage() {
             <div className="font-[family-name:var(--font-label)] text-xs uppercase tracking-[0.25em] text-[var(--gold-lt)] mb-5">
               Newsletter
             </div>
-            <KitFormEmbed source="kit:start-here" />
+            <NewsletterSignup theme="dark" source="newsletter:start-here" />
           </div>
         </section>
 

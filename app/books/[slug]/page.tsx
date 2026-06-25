@@ -5,7 +5,7 @@ import { LikeButton } from "@/components/article/LikeButton";
 import { CommentsSection } from "@/components/article/CommentsSection";
 import { MarkdownContent } from "@/components/article/MarkdownContent";
 import { CourseReference } from "@/components/article/CourseReference";
-import { KitFormEmbed } from "@/components/lifeward/KitFormEmbed";
+import { NewsletterSignup } from "@/components/lifeward/NewsletterSignup";
 import { generateBookMetadata, generateStructuredData } from "@/lib/metadata";
 import type { Metadata } from "next";
 
@@ -151,7 +151,13 @@ export default async function BookPage({
         </div>
 
         <section className="mt-12 border-t border-gray-200 pt-8">
-          <KitFormEmbed source={`kit:book-${book.slug}`} />
+          <div className="font-[family-name:var(--font-label)] text-xs uppercase tracking-[0.25em] text-[var(--gold)] mb-3">
+            Newsletter
+          </div>
+          <p className="text-[var(--mid)] mb-4 max-w-xl">
+            Weekly reflections on identity and daily practice — one email field to subscribe.
+          </p>
+          <NewsletterSignup source={`newsletter:book-${book.slug}`} />
         </section>
 
         <div className="flex items-center gap-4 mt-8">

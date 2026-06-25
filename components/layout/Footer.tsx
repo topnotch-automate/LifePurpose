@@ -75,13 +75,21 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link
+                  href="/#newsletter"
+                  className="text-white/80 hover:text-white transition-colors"
+                >
+                  Newsletter
+                </Link>
+              </li>
+              <li>
                 <a
                   href={siteConfig.substackUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-white/80 hover:text-white transition-colors"
                 >
-                  Newsletter (Substack)
+                  Read on Substack
                 </a>
               </li>
               <li>

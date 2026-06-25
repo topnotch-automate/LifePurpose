@@ -5,7 +5,7 @@ import { generatePageMetadata } from "@/lib/metadata";
 import { LiamFramework } from "@/components/lifeward/LiamFramework";
 import { LearnArticleCard } from "@/components/lifeward/LearnArticleCard";
 import { OnlineCourseSection } from "@/components/lifeward/OnlineCourseSection";
-import { SubstackSubscribe } from "@/components/lifeward/SubstackSubscribe";
+import { NewsletterSignup } from "@/components/lifeward/NewsletterSignup";
 
 export const metadata: Metadata = generatePageMetadata({
   path: "/",
@@ -128,8 +128,7 @@ export default function HomePage() {
 
       <OnlineCourseSection showLegacyAnchor />
 
-      {/* Newsletter CTA Strip */}
-      <section className="bg-[var(--navy)] text-white py-14 md:py-16">
+      <section id="newsletter" className="bg-[var(--navy)] text-white py-14 md:py-16 scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid gap-8 lg:grid-cols-2 lg:items-center">
           <div>
             <div className="font-[family-name:var(--font-label)] text-xs uppercase tracking-[0.25em] text-[var(--gold-lt)] mb-2">
@@ -140,12 +139,7 @@ export default function HomePage() {
               of truth — delivered to your inbox.
             </p>
           </div>
-          <SubstackSubscribe
-            variant="embed"
-            theme="dark"
-            source="homepage"
-            finePrint="Confirm via the email Substack sends you. Unsubscribe anytime."
-          />
+          <NewsletterSignup theme="dark" source="newsletter:homepage" />
         </div>
       </section>
     </div>
