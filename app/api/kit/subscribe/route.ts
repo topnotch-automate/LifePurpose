@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const email = typeof body.email === "string" ? body.email.trim() : "";
-    const source = typeof body.source === "string" ? body.source.trim() : "kit";
+    const source = typeof body.source === "string" ? body.source.trim() : "newsletter";
     const pageUrl =
       typeof body.pageUrl === "string"
         ? body.pageUrl.trim()
@@ -18,12 +18,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Valid email is required" }, { status: 400 });
     }
 
+    // Always capture in admin first — even if Kit is slow or fails later.
+    await storage.upsertSubscriber({ email, source, pageUrl, synced: false });
+
     const kitResult = await subscribeToKit(email);
     if (!kitResult.ok) {
-      return NextResponse.json({ error: kitResult.error }, { status: kitResult.status });
+      return NextResponse.json({ error: kitResult.error, stored: true }, { status: kitResult.status });
     }
 
-    await storage.upsertSubscriber({ email, source, pageUrl });
+    await storage.upsertSubscriber({ email, source, pageUrl, synced: true });
+
     return NextResponse.json({
       success: true,
       requiresConfirmation: kitResult.requiresConfirmation,

@@ -30,7 +30,7 @@ export interface SubscriberRecord {
   email: string;
   source: string;
   pageUrl?: string;
-  /** Admin marked as manually added to Substack */
+  /** Admin marked as successfully sent to Kit */
   synced: boolean;
   createdAt: string;
   updatedAt: string;
@@ -40,6 +40,26 @@ export interface UpsertSubscriberInput {
   email: string;
   source: string;
   pageUrl?: string;
+  /** When true, marks the subscriber as successfully sent to Kit */
+  synced?: boolean;
+}
+
+function mergeSources(existing: string, incoming: string): string {
+  const parts = new Set(
+    `${existing},${incoming}`
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean)
+  );
+  return Array.from(parts).join(", ");
+}
+
+function isPostgresConfigured(): boolean {
+  return Boolean(
+    process.env.POSTGRES_PRISMA_URL ||
+      process.env.POSTGRES_URL ||
+      process.env.POSTGRES_URL_NON_POOLING
+  );
 }
 
 // Storage adapter interface
@@ -166,8 +186,13 @@ class FileSystemStorage implements StorageAdapter {
     const existing = subscribers.find((s) => s.email === email);
 
     if (existing) {
-      existing.source = input.source.trim() || existing.source;
+      existing.source = mergeSources(existing.source, input.source.trim() || existing.source);
       existing.pageUrl = input.pageUrl?.trim() || existing.pageUrl;
+      if (typeof input.synced === "boolean") {
+        if (input.synced) {
+          existing.synced = true;
+        }
+      }
       existing.updatedAt = now;
       this.writeSubscribers(subscribers);
       return existing;
@@ -178,7 +203,7 @@ class FileSystemStorage implements StorageAdapter {
       email,
       source: input.source.trim() || "website",
       pageUrl: input.pageUrl?.trim(),
-      synced: false,
+      synced: input.synced ?? false,
       createdAt: now,
       updatedAt: now,
     };
@@ -449,12 +474,25 @@ class DatabaseStorage implements StorageAdapter {
     const id = randomUUID();
 
     try {
+      const existingRows = await this.db`
+        SELECT source, synced FROM email_subscribers WHERE email = ${email}
+      `;
+      const mergedSource =
+        existingRows.length > 0
+          ? mergeSources(String(existingRows[0].source), source)
+          : source;
+      let mergedSynced = existingRows.length > 0 ? Boolean(existingRows[0].synced) : false;
+      if (input.synced === true) {
+        mergedSynced = true;
+      }
+
       const rows = await this.db`
         INSERT INTO email_subscribers (id, email, source, page_url, synced, created_at, updated_at)
-        VALUES (${id}, ${email}, ${source}, ${pageUrl}, FALSE, NOW(), NOW())
+        VALUES (${id}, ${email}, ${mergedSource}, ${pageUrl}, ${mergedSynced}, NOW(), NOW())
         ON CONFLICT (email) DO UPDATE SET
-          source = EXCLUDED.source,
+          source = ${mergedSource},
           page_url = COALESCE(EXCLUDED.page_url, email_subscribers.page_url),
+          synced = ${mergedSynced},
           updated_at = NOW()
         RETURNING id, email, source, page_url, synced, created_at, updated_at
       `;
@@ -611,7 +649,11 @@ class StorageManager {
       try {
         return await this.dbStorage.getSubscribers();
       } catch (error) {
-        console.warn("Database getSubscribers failed, falling back to file system:", error);
+        console.error("Database getSubscribers failed:", error);
+        if (process.env.VERCEL && isPostgresConfigured()) {
+          throw error;
+        }
+        console.warn("Falling back to file system for getSubscribers");
         return await this.fileStorage.getSubscribers();
       }
     }
@@ -624,6 +666,10 @@ class StorageManager {
       try {
         return await this.dbStorage.upsertSubscriber(input);
       } catch (error) {
+        console.error("Database upsertSubscriber failed:", error);
+        if (process.env.VERCEL && isPostgresConfigured()) {
+          throw error;
+        }
         console.warn("Database upsertSubscriber failed, falling back to file system:", error);
       }
     }

@@ -110,8 +110,7 @@ export function AdminSubscribersClient() {
             <div>
               <h1 className="text-2xl font-serif font-bold text-gray-900">Subscribers</h1>
               <p className="text-sm text-gray-600 mt-1">
-                Emails captured from newsletter forms. Mark as synced after you add them manually
-                on Substack.
+                Emails captured from newsletter forms. Synced means successfully sent to Kit.
               </p>
             </div>
             <button
@@ -130,8 +129,8 @@ export function AdminSubscribersClient() {
                 className="px-4 py-2 border border-gray-300 rounded-lg text-sm"
               >
                 <option value="all">All ({subscribers.length})</option>
-                <option value="pending">Needs Substack ({pendingCount})</option>
-                <option value="synced">Synced on Substack</option>
+                <option value="pending">Pending Kit ({pendingCount})</option>
+                <option value="synced">Synced to Kit</option>
               </select>
               {pendingCount > 0 && (
                 <span className="text-sm text-amber-700 bg-amber-50 border border-amber-200 px-3 py-1 rounded-lg">
