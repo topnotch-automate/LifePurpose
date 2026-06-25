@@ -9,11 +9,6 @@ export const siteConfig = {
     popup: {
       enabled: process.env.NEXT_PUBLIC_NEWSLETTER_POPUP_ENABLED !== "false",
       delayMs: Number(process.env.NEXT_PUBLIC_NEWSLETTER_POPUP_DELAY_MS) || 10_000,
-      kitEmbedUid:
-        process.env.NEXT_PUBLIC_KIT_POPUP_EMBED_UID?.trim() || "b93e63bf74",
-      kitEmbedScriptUrl:
-        process.env.NEXT_PUBLIC_KIT_POPUP_EMBED_SCRIPT_URL?.trim() ||
-        "https://lifeward-coaching.kit.com/b93e63bf74/index.js",
     },
   },
   twitterUrl: "https://x.com/TheAlbertBlibo",

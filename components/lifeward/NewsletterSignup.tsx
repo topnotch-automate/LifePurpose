@@ -14,6 +14,7 @@ interface NewsletterSignupProps {
   submitLabel?: string;
   successMessage?: string;
   finePrint?: string;
+  onSubscribed?: () => void;
 }
 
 /**
@@ -28,6 +29,7 @@ export function NewsletterSignup({
   submitLabel = "Subscribe",
   successMessage,
   finePrint = "Unsubscribe anytime. We respect your privacy.",
+  onSubscribed,
 }: NewsletterSignupProps) {
   const inputId = useId().replace(/:/g, "");
   const [email, setEmail] = useState("");
@@ -84,6 +86,7 @@ export function NewsletterSignup({
       );
       setStatus("success");
       setEmail("");
+      onSubscribed?.();
     } catch {
       setStatus("error");
       setErrorMessage("Network error. Please try again.");

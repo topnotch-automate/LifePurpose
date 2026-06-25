@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { KitPopupForm } from "@/components/lifeward/KitPopupForm";
+import { NewsletterSignup } from "@/components/lifeward/NewsletterSignup";
 import { siteConfig } from "@/lib/site-config";
 
 const DISMISS_KEY = "lifeward-newsletter-popup-dismissed";
@@ -128,7 +128,11 @@ export function NewsletterPopup() {
           Identity, discipline, and the daily practice of truth — one email to subscribe.
         </p>
 
-        <KitPopupForm onSubscribed={handleSubscribed} onDismiss={dismissPopup} />
+        <NewsletterSignup
+          source="newsletter:popup"
+          layout="stacked"
+          onSubscribed={handleSubscribed}
+        />
       </div>
     </div>
   );
