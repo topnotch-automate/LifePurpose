@@ -1,18 +1,38 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { headers } from "next/headers";
 import { ComingSoonControl } from "@/components/lifeward/ComingSoonControl";
 import { generatePageMetadata } from "@/lib/metadata";
+import { resolveSiteHref } from "@/lib/site-links";
+import { LIFEWARD_COACHING_URL, isLifewardCoachingHost } from "@/lib/site-url";
 
 const programmeTitle = "How to Dissolve the Identity That Hid Your Best Version";
 const programmePrice = "$20";
 
-export const metadata: Metadata = generatePageMetadata({
-  path: "/work-with-me",
+const pageDescription = `${programmeTitle} — a six-week Lifeward Coaching programme to move from confusion to clear identity and purposeful daily practice.`;
+
+const baseMetadata = generatePageMetadata({
+  path: "/",
   title: "Work With Me",
-  description: `${programmeTitle} — a six-week Lifeward Coaching programme to move from confusion to clear identity and purposeful daily practice.`,
+  description: pageDescription,
 });
 
-export default function WorkWithMePage() {
+export const metadata: Metadata = {
+  ...baseMetadata,
+  alternates: {
+    canonical: LIFEWARD_COACHING_URL,
+  },
+  openGraph: {
+    ...baseMetadata.openGraph,
+    url: LIFEWARD_COACHING_URL,
+  },
+};
+
+export default async function WorkWithMePage() {
+  const headersList = await headers();
+  const host = headersList.get("host")?.split(":")[0] ?? "";
+  const onCoachingSubdomain = isLifewardCoachingHost(host);
+  const learnHref = resolveSiteHref("/learn", { onCoachingSubdomain });
   return (
     <div className="min-h-screen bg-[var(--cream)] py-12 md:py-16 lg:py-20 px-4">
       <div className="max-w-5xl mx-auto">
@@ -181,7 +201,7 @@ export default function WorkWithMePage() {
         <section className="mt-10 text-center">
           <p className="text-sm text-[var(--mid)]">
             Prefer to explore first?{" "}
-            <Link href="/learn" className="text-[var(--royal)] underline underline-offset-4">
+            <Link href={learnHref} className="text-[var(--royal)] underline underline-offset-4">
               Read the writing
             </Link>
             .

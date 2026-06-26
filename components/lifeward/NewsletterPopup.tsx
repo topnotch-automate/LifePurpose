@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { KitFormEmbed } from "@/components/lifeward/KitFormEmbed";
 import { siteConfig } from "@/lib/site-config";
+import { isLifewardCoachingHost } from "@/lib/site-url";
 
 const DISMISS_KEY = "lifeward-newsletter-popup-dismissed";
 const SUBSCRIBED_KEY = "lifeward-newsletter-popup-subscribed";
@@ -11,10 +12,15 @@ const SUBSCRIBED_KEY = "lifeward-newsletter-popup-subscribed";
 export function NewsletterPopup() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [onCoachingSubdomain, setOnCoachingSubdomain] = useState(false);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { enabled, delayMs } = siteConfig.newsletter.popup;
   const isAdmin = pathname?.startsWith("/admin");
+
+  useEffect(() => {
+    setOnCoachingSubdomain(isLifewardCoachingHost(window.location.hostname));
+  }, []);
 
   const closePopup = useCallback(() => {
     setOpen(false);
@@ -49,7 +55,7 @@ export function NewsletterPopup() {
   );
 
   useEffect(() => {
-    if (!enabled || isAdmin) return;
+    if (!enabled || isAdmin || onCoachingSubdomain) return;
 
     try {
       if (localStorage.getItem(SUBSCRIBED_KEY) || localStorage.getItem(DISMISS_KEY)) {
@@ -61,7 +67,7 @@ export function NewsletterPopup() {
 
     const timer = setTimeout(() => setOpen(true), delayMs);
     return () => clearTimeout(timer);
-  }, [delayMs, enabled, isAdmin]);
+  }, [delayMs, enabled, isAdmin, onCoachingSubdomain]);
 
   useEffect(() => {
     if (!open) return;
@@ -90,7 +96,7 @@ export function NewsletterPopup() {
     };
   }, []);
 
-  if (!open || isAdmin) {
+  if (!open || isAdmin || onCoachingSubdomain) {
     return null;
   }
 

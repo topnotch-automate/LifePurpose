@@ -1,8 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import {
+  getMainSiteHomeUrl,
+  resolveSiteHref,
+} from "@/lib/site-links";
+import { isLifewardCoachingHost } from "@/lib/site-url";
 
 const navItems = [
   { href: "/", label: "Home", cta: false },
@@ -12,26 +17,38 @@ const navItems = [
   { href: "/start-here", label: "Start Here", cta: false },
 ];
 
+function getNavHref(href: string, onCoachingSubdomain: boolean): string {
+  if (onCoachingSubdomain && href === "/work-with-me") {
+    return "/";
+  }
+  return resolveSiteHref(href, { onCoachingSubdomain });
+}
+
 export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [onCoachingSubdomain, setOnCoachingSubdomain] = useState(false);
+
+  useEffect(() => {
+    setOnCoachingSubdomain(isLifewardCoachingHost(window.location.hostname));
+  }, []);
 
   const linkBase =
     "text-sm font-medium text-[var(--navy)] hover:underline hover:decoration-[var(--gold)] underline-offset-4 transition-colors";
 
-  // Desktop: gold-bordered primary CTA
   const ctaBase =
     "px-4 py-2 rounded-lg border-2 border-[var(--gold)] text-[var(--navy)] font-medium hover:bg-[var(--gold)] hover:text-white transition-colors";
 
-  // Mobile: make CTA clearly the primary action
   const ctaMobileBase =
     "px-4 py-2 rounded-lg bg-[var(--gold)] text-white hover:bg-[#B08424] transition-colors";
+
+  const logoHref = onCoachingSubdomain ? getMainSiteHomeUrl() : "/";
 
   return (
     <nav className="border-b border-[var(--light)] bg-[rgba(250,248,244,0.86)] backdrop-blur-sm sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link
-            href="/"
+            href={logoHref}
             className="font-[family-name:var(--font-label)] text-[13px] uppercase tracking-[0.25em] text-[var(--navy)] hover:text-[var(--royal)] transition-colors"
             onClick={() => setMobileMenuOpen(false)}
           >
@@ -40,7 +57,11 @@ export function Navigation() {
 
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <Link key={item.href} href={item.href} className={cn(item.cta ? ctaBase : linkBase)}>
+              <Link
+                key={item.href}
+                href={getNavHref(item.href, onCoachingSubdomain)}
+                className={cn(item.cta ? ctaBase : linkBase)}
+              >
                 {item.label}
               </Link>
             ))}
@@ -73,7 +94,7 @@ export function Navigation() {
               {navItems.map((item) => (
                 <Link
                   key={item.href}
-                  href={item.href}
+                  href={getNavHref(item.href, onCoachingSubdomain)}
                   className={cn(item.cta ? ctaMobileBase : linkBase)}
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -87,4 +108,3 @@ export function Navigation() {
     </nav>
   );
 }
-

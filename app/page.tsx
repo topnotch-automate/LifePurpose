@@ -6,6 +6,7 @@ import { LiamFramework } from "@/components/lifeward/LiamFramework";
 import { LearnArticleCard } from "@/components/lifeward/LearnArticleCard";
 import { OnlineCourseSection } from "@/components/lifeward/OnlineCourseSection";
 import { NewsletterSignup } from "@/components/lifeward/NewsletterSignup";
+import { getWorkWithMeUrl } from "@/lib/site-links";
 
 export const metadata: Metadata = generatePageMetadata({
   path: "/",
@@ -35,7 +36,7 @@ export default function HomePage() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/work-with-me"
+              href={getWorkWithMeUrl()}
               className="inline-flex items-center justify-center px-7 py-3 rounded-lg font-medium bg-[var(--gold)] text-white hover:bg-[#B08424] transition-colors min-w-[12rem]"
             >
               Work With Me
@@ -76,7 +77,7 @@ export default function HomePage() {
           </Link>
 
           <Link
-            href="/work-with-me"
+            href={getWorkWithMeUrl()}
             className="rounded-2xl border border-[var(--light)] bg-white/60 p-7 hover:shadow-sm transition-shadow"
           >
             <div className="font-[family-name:var(--font-label)] text-xs uppercase tracking-[0.25em] text-[var(--gold)] mb-3">

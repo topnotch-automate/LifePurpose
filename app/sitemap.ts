@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 import { getAllArticles, getAllVideos, getAllBooks } from "@/lib/mdx";
-import { getSiteUrl } from "@/lib/site-url";
+import { getSiteUrl, LIFEWARD_COACHING_URL } from "@/lib/site-url";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = getSiteUrl();
@@ -19,7 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: `${baseUrl}/work-with-me`,
+      url: `${LIFEWARD_COACHING_URL}/`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.95,

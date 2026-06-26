@@ -3,6 +3,7 @@ import Link from "next/link";
 import { NewsletterSignup } from "@/components/lifeward/NewsletterSignup";
 import { generatePageMetadata } from "@/lib/metadata";
 import { siteConfig } from "@/lib/site-config";
+import { getWorkWithMeUrl } from "@/lib/site-links";
 
 export const metadata: Metadata = generatePageMetadata({
   path: "/start-here",
@@ -121,7 +122,7 @@ export default function StartHerePage() {
 
         <section className="text-center">
           <Link
-            href="/work-with-me"
+            href={getWorkWithMeUrl()}
             className="inline-flex items-center justify-center px-7 py-3 rounded-lg font-medium bg-[var(--gold)] text-white hover:bg-[#B08424] transition-colors"
           >
             Ready to go deeper? Work With Me.

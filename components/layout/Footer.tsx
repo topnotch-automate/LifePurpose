@@ -1,8 +1,21 @@
 import Link from "next/link";
+import { headers } from "next/headers";
 import { siteConfig } from "@/lib/site-config";
+import {
+  getMainSiteHomeUrl,
+  resolveSiteHref,
+} from "@/lib/site-links";
+import { isLifewardCoachingHost } from "@/lib/site-url";
 
-export function Footer() {
+export async function Footer() {
   const currentYear = new Date().getFullYear();
+  const headersList = await headers();
+  const host = headersList.get("host")?.split(":")[0] ?? "";
+  const onCoachingSubdomain = isLifewardCoachingHost(host);
+
+  function href(path: string): string {
+    return resolveSiteHref(path, { onCoachingSubdomain });
+  }
 
   return (
     <footer className="bg-[var(--navy)] text-white mt-24">
@@ -23,38 +36,35 @@ export function Footer() {
             </h3>
             <ul className="space-y-3 text-sm">
               <li>
-                <Link href="/" className="text-white/80 hover:text-white transition-colors">
+                <Link
+                  href={onCoachingSubdomain ? getMainSiteHomeUrl() : "/"}
+                  className="text-white/80 hover:text-white transition-colors"
+                >
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="text-white/80 hover:text-white transition-colors">
+                <Link href={href("/about")} className="text-white/80 hover:text-white transition-colors">
                   About
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/work-with-me"
-                  className="text-white/80 hover:text-white transition-colors"
-                >
+                <Link href={href("/work-with-me")} className="text-white/80 hover:text-white transition-colors">
                   Work With Me
                 </Link>
               </li>
               <li>
-                <Link href="/learn" className="text-white/80 hover:text-white transition-colors">
+                <Link href={href("/learn")} className="text-white/80 hover:text-white transition-colors">
                   Learn
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/start-here"
-                  className="text-white/80 hover:text-white transition-colors"
-                >
+                <Link href={href("/start-here")} className="text-white/80 hover:text-white transition-colors">
                   Start Here
                 </Link>
               </li>
               <li>
-                <Link href="/course" className="text-white/80 hover:text-white transition-colors">
+                <Link href={href("/course")} className="text-white/80 hover:text-white transition-colors">
                   Online Course
                 </Link>
               </li>
@@ -68,7 +78,7 @@ export function Footer() {
             <ul className="space-y-3 text-sm">
               <li>
                 <Link
-                  href="/about#contact"
+                  href={href("/about#contact")}
                   className="text-white/80 hover:text-white transition-colors"
                 >
                   Contact
@@ -76,7 +86,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/#newsletter"
+                  href={href("/#newsletter")}
                   className="text-white/80 hover:text-white transition-colors"
                 >
                   Newsletter
@@ -103,7 +113,7 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <Link href="/rss" className="text-white/80 hover:text-white transition-colors">
+                <Link href={href("/rss")} className="text-white/80 hover:text-white transition-colors">
                   RSS Feed
                 </Link>
               </li>

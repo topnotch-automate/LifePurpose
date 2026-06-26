@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ContactForm } from "@/components/ui/ContactForm";
 import { generatePageMetadata } from "@/lib/metadata";
+import { getWorkWithMeUrl } from "@/lib/site-links";
 
 export const metadata: Metadata = generatePageMetadata({
   path: "/about",
@@ -105,7 +106,7 @@ export default function AboutPage() {
           {/* Dual CTA (bottom of page) */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-2">
             <Link
-              href="/work-with-me"
+              href={getWorkWithMeUrl()}
               className="inline-flex items-center justify-center px-7 py-3 rounded-lg font-medium bg-[var(--gold)] text-white hover:bg-[#B08424] transition-colors"
             >
               Work With Me
