@@ -11,6 +11,10 @@ interface KitFormEmbedProps {
   source?: string;
   /** Show headline column from your Kit form design */
   showIntro?: boolean;
+  /** Tighter spacing for modal / small screens */
+  compact?: boolean;
+  /** Optional id for the main heading (e.g. popup aria-labelledby) */
+  titleId?: string;
   successMessage?: string;
   onSubscribed?: (options: { requiresConfirmation: boolean }) => void;
 }
@@ -23,6 +27,8 @@ export function KitFormEmbed({
   className,
   source = "kit",
   showIntro = true,
+  compact = false,
+  titleId,
   successMessage,
   onSubscribed,
 }: KitFormEmbedProps) {
@@ -112,10 +118,21 @@ export function KitFormEmbed({
             )}
           >
             {showIntro ? (
-              <div className="relative bg-[#f9fafb] p-6 md:p-8">
+              <div
+                className={cn(
+                  "relative bg-[#f9fafb]",
+                  compact ? "p-4 sm:p-6 md:p-8" : "p-6 md:p-8"
+                )}
+              >
                 <div className="mb-3">
                   <h2
-                    className="font-[family-name:var(--font-display)] text-xl md:text-2xl font-semibold"
+                    id={titleId}
+                    className={cn(
+                      "font-[family-name:var(--font-display)] font-semibold",
+                      compact
+                        ? "text-lg sm:text-xl md:text-2xl"
+                        : "text-xl md:text-2xl"
+                    )}
                     style={{ color: "#c8952a" }}
                   >
                     Join the Lifeward Coaching Newsletter
@@ -130,7 +147,12 @@ export function KitFormEmbed({
                     truth — delivered to your inbox.
                   </p>
                 </div>
-                <div className="relative aspect-[4/3] max-h-48 w-full overflow-hidden rounded-lg">
+                <div
+                  className={cn(
+                    "relative aspect-[4/3] w-full overflow-hidden rounded-lg",
+                    compact ? "max-h-28 sm:max-h-40" : "max-h-48"
+                  )}
+                >
                   <Image
                     src={KIT_FORM_IMAGE_URL}
                     alt=""
@@ -143,9 +165,14 @@ export function KitFormEmbed({
               </div>
             ) : null}
 
-            <div className="relative z-10 flex flex-col justify-center p-6 md:p-8">
-              <div className="space-y-4">
-                <p className="text-sm text-[#1a3260] font-medium">
+            <div
+              className={cn(
+                "relative z-10 flex flex-col justify-center",
+                compact ? "p-4 sm:p-6 md:p-8" : "p-6 md:p-8"
+              )}
+            >
+              <div className="space-y-3 sm:space-y-4">
+                <p className="text-sm text-[#1a3260] font-medium leading-snug">
                   Enter your email below, then click Subscribe to join the newsletter.
                 </p>
                 <div>

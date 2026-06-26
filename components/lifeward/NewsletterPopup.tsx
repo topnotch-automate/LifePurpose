@@ -102,7 +102,7 @@ export function NewsletterPopup() {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      className="fixed inset-0 z-[100] flex items-end justify-center sm:items-center sm:p-4"
       role="dialog"
       aria-modal="true"
       aria-labelledby="newsletter-popup-title"
@@ -114,21 +114,42 @@ export function NewsletterPopup() {
         onClick={dismissPopup}
       />
 
-      <div className="relative w-full max-w-2xl rounded-2xl border border-[var(--light)] bg-[var(--cream)] shadow-xl p-4 sm:p-6">
-        <button
-          type="button"
-          onClick={dismissPopup}
-          className="absolute top-3 right-3 z-10 text-[var(--mid)] hover:text-[var(--navy)] text-2xl leading-none"
-          aria-label="Close"
-        >
-          ×
-        </button>
+      <div className="relative z-10 flex w-full max-w-2xl max-h-[min(92dvh,100%)] flex-col overflow-hidden rounded-t-2xl border border-[var(--light)] bg-[var(--cream)] shadow-xl sm:max-h-[min(90dvh,calc(100dvh-2rem))] sm:rounded-2xl">
+        <div className="sticky top-0 z-20 flex shrink-0 items-center justify-between gap-3 border-b border-[var(--light)] bg-[var(--cream)] px-4 py-3 sm:px-6">
+          <p className="font-[family-name:var(--font-label)] text-[11px] uppercase tracking-[0.2em] text-[var(--mid)] sm:sr-only">
+            Newsletter
+          </p>
+          <button
+            type="button"
+            onClick={dismissPopup}
+            className="ml-auto flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[var(--navy)] hover:bg-[var(--light)]/70 focus:outline-none focus:ring-2 focus:ring-[var(--gold)]"
+            aria-label="Close newsletter popup"
+          >
+            <span aria-hidden="true" className="text-3xl leading-none">
+              &times;
+            </span>
+          </button>
+        </div>
 
-        <KitFormEmbed
-          source="newsletter:popup"
-          showIntro
-          onSubscribed={handleSubscribed}
-        />
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6 sm:py-5 [-webkit-overflow-scrolling:touch]">
+          <KitFormEmbed
+            source="newsletter:popup"
+            showIntro
+            compact
+            titleId="newsletter-popup-title"
+            onSubscribed={handleSubscribed}
+          />
+        </div>
+
+        <div className="shrink-0 border-t border-[var(--light)] bg-[var(--cream)] px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:hidden">
+          <button
+            type="button"
+            onClick={dismissPopup}
+            className="w-full py-2 text-center text-sm font-medium text-[var(--mid)] hover:text-[var(--navy)]"
+          >
+            No thanks
+          </button>
+        </div>
       </div>
     </div>
   );
