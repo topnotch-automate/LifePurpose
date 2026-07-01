@@ -18,6 +18,7 @@ export function ContactForm() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -30,6 +31,7 @@ export function ContactForm() {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus("idle");
+    setErrorMessage("");
 
     try {
       const response = await fetch("/api/contact", {
@@ -44,9 +46,14 @@ export function ContactForm() {
         setSubmitStatus("success");
         setFormData({ name: "", email: "", subject: "", message: "" });
       } else {
+        const data = (await response.json().catch(() => ({}))) as { error?: string };
+        setErrorMessage(
+          data.error || "Something went wrong. Please try again or email lifewardcoach@yahoo.com directly."
+        );
         setSubmitStatus("error");
       }
-    } catch (error) {
+    } catch {
+      setErrorMessage("Something went wrong. Please try again or email lifewardcoach@yahoo.com directly.");
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
@@ -134,7 +141,9 @@ export function ContactForm() {
       {submitStatus === "error" && (
         <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-800">
           <p className="font-medium">Error</p>
-          <p className="text-sm mt-1">Something went wrong. Please try again or send an email directly.</p>
+          <p className="text-sm mt-1">
+            {errorMessage || "Something went wrong. Please try again or email lifewardcoach@yahoo.com directly."}
+          </p>
         </div>
       )}
 
