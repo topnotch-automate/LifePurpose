@@ -11,6 +11,7 @@ import { AuthorBio } from "./AuthorBio";
 import { FunnelCTA } from "@/components/funnel/FunnelCTA";
 import { CourseReference } from "./CourseReference";
 import { NewsletterSignup } from "@/components/lifeward/NewsletterSignup";
+import { ArticleListenPlayer } from "@/components/article/ArticleListenPlayer";
 import { getAllArticles } from "@/lib/mdx";
 import { learnTypeLabel } from "@/lib/learn-items";
 
@@ -83,6 +84,14 @@ export function ArticleContent({ article }: ArticleContentProps) {
           )}
 
         </header>
+
+        <ArticleListenPlayer
+          title={article.title}
+          description={article.description}
+          content={article.content}
+          audioUrl={article.audioUrl}
+          className="mb-6"
+        />
         
         <ShareButtons title={article.title} url={articleUrl} description={article.description} />
         

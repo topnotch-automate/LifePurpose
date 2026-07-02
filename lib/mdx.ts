@@ -42,6 +42,7 @@ export function getArticleBySlug(
     funnel: data.funnel || undefined,
     image: resolveArticleImagePath(data.image ? String(data.image) : undefined),
     foundational: data.foundational || false,
+    audioUrl: data.audioUrl ? String(data.audioUrl).trim() : undefined,
   };
 }
 

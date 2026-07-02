@@ -16,6 +16,8 @@ export interface Article {
   funnel?: FunnelMetadata;
   image?: string;
   foundational?: boolean;
+  /** Optional hosted audio file (MP3, etc.) — overrides browser read-aloud */
+  audioUrl?: string;
 }
 
 export interface Video {
