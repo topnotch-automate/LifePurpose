@@ -1,5 +1,6 @@
 import { getAllArticles, getAllBooks, getAllVideos } from "@/lib/mdx";
 import { resolveArticleImagePath } from "@/lib/article-image";
+import { getVideoThumbnail } from "@/lib/video-embed";
 import { buildArticleSearchText, type LearnItem } from "@/lib/learn-items";
 
 export function getLearnItems(): LearnItem[] {
@@ -42,7 +43,8 @@ export function getLearnItems(): LearnItem[] {
     description: video.description,
     date: video.date,
     href: `/videos/${video.slug}`,
-    cover: video.thumbnail,
+    cover: getVideoThumbnail(video.embedUrl, video.thumbnail),
+    embedUrl: video.embedUrl,
   }));
 
   return [...articleItems, ...bookItems, ...videoItems].sort(

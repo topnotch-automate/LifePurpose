@@ -40,6 +40,8 @@ export interface LearnItem {
   href: string;
   cover?: string;
   readingTime?: number;
+  /** YouTube (or other) embed URL — videos only */
+  embedUrl?: string;
   /** Lowercased plain text for article search (title, description, tags, body). */
   searchText?: string;
 }

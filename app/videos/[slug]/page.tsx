@@ -6,6 +6,7 @@ import { MarkdownContent } from "@/components/article/MarkdownContent";
 import { LikeButton } from "@/components/article/LikeButton";
 import { CommentsSection } from "@/components/article/CommentsSection";
 import { CourseReference } from "@/components/article/CourseReference";
+import { VideoPreview } from "@/components/video/VideoPreview";
 import { generateVideoMetadata, generateStructuredData } from "@/lib/metadata";
 import type { Metadata } from "next";
 
@@ -82,16 +83,12 @@ export default async function VideoPage({
           </p>
         </header>
 
-        <div className="bg-white rounded-lg shadow-sm p-8 mb-8">
-          <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
-            <iframe
-              src={video.embedUrl}
-              className="w-full h-full"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              title={video.title}
-            />
-          </div>
+        <div className="bg-white rounded-lg shadow-sm p-4 sm:p-8 mb-8">
+          <VideoPreview
+            embedUrl={video.embedUrl}
+            title={video.title}
+            className="rounded-lg"
+          />
         </div>
 
         {video.content && (
